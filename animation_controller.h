@@ -23,14 +23,14 @@ class AnimationController {
         void setIdle(bool isIdle);
     private:
         const int* _ledPins;
-        unsigned long _idleTimeoutMs;
+        const unsigned long _idleTimeoutMs;
         unsigned long _fadeStepMs;
+        unsigned long _lastAnimStepMs;
         int _currentZone;
         int _cycleAnimationActive;
         int _currentType;
         int _previousType;
         int _currentBrightness;
-        unsigned long _lastAnimStepMs;
         int _fadePercent;
         int _fadeDir;
         int _fadeColorIndex;

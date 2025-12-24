@@ -66,15 +66,14 @@ AnimationController::AnimationController(const int ledPins[], unsigned long idle
         _cycleAnimationActive(false),
         _currentBrightness(BRIGHTNESS_MAX),
         _staticColorIndex(0) {
-    _setAllLEDs(0, 0, 0);
-    _reset();
+    updateAnimationType(STATIC);
 }
 
 /**
 * Updates the currently selected animation, and tracks the previous set animation.
-* @param anim The animation to set.
+* @param animType The animation type to set.
 */
-void updateAnimationType(ANIMATION_TYPE animType) {
+void AnimationController::updateAnimationType(int animType) {
     _previousType = _currentType;
     _currentType = animType;
     _reset();
@@ -90,23 +89,22 @@ void updateAnimationType(ANIMATION_TYPE animType) {
     }
 }
 
-void cycleAnimationZone(ANIMATION_ZONE zone) {
-    ANIMATION_ZONE nextZone = ANIMATION_ZONE_LIST[(_currentZone + 1) % ANIMATION_ZONE_LIST.size());
+void AnimationController::cycleAnimationZone() {
+    ANIMATION_ZONE nextZone = ANIMATION_ZONE_LIST[(_currentZone + 1) % (sizeof(ANIMATION_ZONE_LIST) / sizeof(ANIMATION_ZONE_LIST)[0])];
     _cycleAnimationActive = true;                                       
 }
 
-void cycleAnimationType() {
-    ANIMATION_TYPE nextType = ANIMATION_TYPE_LIST[(_currentType + 1) % ANIMATION_TYPE_LIST.size()];
+void AnimationController::cycleAnimationType() {
+    ANIMATION_TYPE nextType = ANIMATION_TYPE_LIST[(_currentType + 1) % (sizeof(ANIMATION_TYPE_LIST) / sizeof(ANIMATION_TYPE_LIST)[0])];
     updateAnimationType(nextType);
 }
 
-void cycleAnimationBrightness() {
-    int nextBrightnessIndex = (_currentBrightnessIndex + 1) % ANIMATION_BRIGHTNESS_LIST.size();
-    _previousBrightnessIndex = _currentBrightnessIndex;
-    _currentBrightnessIndex = nextBrightnessIndex;
+void AnimationController::cycleAnimationBrightness() {
+    int nextBrightnessIndex = (_currentBrightness + 1) % ((sizeof(ANIMATION_BRIGHTNESS_LIST) / sizeof(ANIMATION_BRIGHTNESS_LIST)[0]));
+    _currentBrightness = nextBrightnessIndex;
 }
 
-void handleIdleState(bool systemActive) {
+void AnimationController::handleIdleState(bool systemActive) {
     if (!systemActive && _currentType != IDLE) {
         updateAnimationType(IDLE);
     } else if (systemActive && _currentType == IDLE) {
@@ -117,7 +115,7 @@ void handleIdleState(bool systemActive) {
 /**
  * Advances to the next frame of the current animation
  */
-void processAnimation() {
+void AnimationController::processAnimation() {
     unsigned long now = millis();
     if (now - _lastAnimStepMs < _fadeStepMs) {
         return;
@@ -131,11 +129,14 @@ void processAnimation() {
             // To be implemented
             break;
         case FADE:
-            animateFadeRGB();
+            _animateFadeRGB();
             break;
         case PULSE:
             // To be implemented
             break;
+        // case STATIC:
+        //     _setColor(STATIC_COLOR_LIST[_staticColorIndex]);
+        //     break;
         default:
             // No animation
             break;
@@ -145,38 +146,35 @@ void processAnimation() {
 /**
 * Fades each color (R/G/B) in and out, sequentially
 */
-void _animateFadeRGB() {
+void AnimationController::_animateFadeRGB() {
   // Turn off all LEDs first
   _setAllLEDs(0, 0, 0);
 
-  int pin = _ledPins[fadeColorIndex];
+  int pin = _ledPins[_fadeColorIndex];
 
   // Calculate brightness as a percentage of the current brightness setting
-  float normalized = fadePercent / 100.0;
-  int brightness = normalized * ANIMATION_BRIGHTNESS_LIST[_currentBrightnessIndex];
+  float normalized = _fadePercent / 100.0;
+  int brightness = normalized * ANIMATION_BRIGHTNESS_LIST[_currentBrightness];
   _setBrightness(pin, brightness);
 
-  fadePercent += fadeDir;
+  _fadePercent += _fadeDir;
 
-  if (fadePercent >= 100) {
-    fadeDir = -1;
+  if (_fadePercent >= 100) {
+    _fadeDir = -1;
   }
-  else if (fadePercent <= 0) {
-    fadeDir = 1;
-    fadeColorIndex = (fadeColorIndex + 1) % _ledPins.size();
+  else if (_fadePercent <= 0) {
+    _fadeDir = 1;
+    _fadeColorIndex = (_fadeColorIndex + 1) % (sizeof(_ledPins) / sizeof(_ledPins)[0]);
   }
 }
 
 /**
  * Cycles the currently selected animation to the the next modifier
  */
-void cycleAnimationModifier() {
-    int nextColorIndex;
+void AnimationController::cycleAnimationModifier() {
     switch (ANIMATION_TYPE_LIST[_currentType]) {
         case STATIC:
-            nextColorIndex = (_staticColorIndex + 1) % (sizeof(STATIC_COLOR_LIST) / sizeof(STATIC_COLOR_LIST[0]));
-            _setColor(STATIC_COLOR_LIST[nextColorIndex]);
-            _staticColorIndex = nextColorIndex;
+            _staticColorIndex = (_staticColorIndex + 1) % (sizeof(STATIC_COLOR_LIST) / sizeof(STATIC_COLOR_LIST[0]));
             break;
         default:
             // No modifier
@@ -188,7 +186,7 @@ void cycleAnimationModifier() {
  * Sets LEDs to the specified hex color value
  * @param color the hex color value to set the LEDs to
  */
-void _setColor(uint32_t color) {
+void AnimationController::_setColor(uint32_t color) {
     int r = (color >> 16) & 0xFF;
     int g = (color >> 8) & 0xFF;
     int b = color & 0xFF;
@@ -200,7 +198,7 @@ void _setColor(uint32_t color) {
 * @param ledPin The pin number of the LED to set the brightness of
 * @param percent The brightness percentage value (0-100)
 */
-void _setBrightness(int ledPin, int percent) {
+void AnimationController::_setBrightness(int ledPin, int percent) {
     // Constrain percentage to 0-100
     percent = constrain(percent, 0, 100);
 
@@ -217,7 +215,7 @@ void _setBrightness(int ledPin, int percent) {
 * @param gValue the brightness value of the green channel
 * @param bValue the brightness value of the blue channel
 */
-void _setAllLEDs(int rValue, int gValue, int bValue) {
+void AnimationController::_setAllLEDs(int rValue, int gValue, int bValue) {
   _setBrightness(LED_R, rValue);
   _setBrightness(LED_G, gValue);
   _setBrightness(LED_B, bValue);
@@ -226,9 +224,10 @@ void _setAllLEDs(int rValue, int gValue, int bValue) {
 /**
  * Resets all animations to their initial state
  */
-void _reset() {
+void AnimationController::_reset() {
     _lastAnimStepMs = 0;
     _fadePercent = 0;
     _fadeDir = 1;
     _fadeColorIndex = 0;
+    _setAllLEDs(0, 0, 0);
 }

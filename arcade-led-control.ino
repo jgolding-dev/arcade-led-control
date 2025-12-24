@@ -1,4 +1,3 @@
-
 #include "animation_controller.h"
 
 const int LED_PINS[] = { LED_R, LED_G, LED_B };
@@ -24,13 +23,12 @@ unsigned long lastActivityMs = 0;
 
 bool systemActive = true;
 
-// ---- Animations ---- //
-AnimationController animController(LED_PINS, IDLE_TIMEOUT_MS, FADE_STEP_MS);
+AnimationController* animController = new AnimationController(LED_PINS, IDLE_TIMEOUT_MS, FADE_STEP_MS);
+
 
 // local function declarations
 void handleActivity();
 void handleMacroEvent();
-void updateAnimation();
 void updateIdleState();
 
 void setup() {
@@ -53,9 +51,9 @@ void setup() {
 
 void loop() {
   handleActivity();
-  animController.handleIdleState(systemActive);
+  animController->handleIdleState(systemActive);
   handleMacroEvent();
-  animController.processAnimation();
+  animController->processAnimation();
 }
 
 /**
@@ -99,16 +97,16 @@ void handleMacroEvent() {
   PinStatus currentMacro4 = digitalRead(MACRO_4_PIN);
     
   if (currentMacro1 == HIGH && lastMacro1PinState == LOW) {
-    animController.cycleAnimationZone();
+    animController->cycleAnimationZone();
   }
   else if (currentMacro2 == HIGH && lastMacro2PinState == LOW) {
-    animController.cycleAnimationType();
+    animController->cycleAnimationType();
   }
   else if (currentMacro3 == HIGH && lastMacro3PinState == LOW) {
-    animController.cycleAnimationModifier();
+    animController->cycleAnimationModifier();
   }
   else if (currentMacro4 == HIGH && lastMacro4PinState == LOW) {
-    animController.cycleAnimationBrightness();
+    animController->cycleAnimationBrightness();
   }
   lastMacro1PinState = currentMacro1;
   lastMacro2PinState = currentMacro2;
