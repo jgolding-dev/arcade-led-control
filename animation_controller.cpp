@@ -17,10 +17,10 @@ enum ANIMATION_ZONE {
 
 enum ANIMATION_TYPE {
     STATIC,
-    COLOR_SHIFT,
-    RAINBOW,
+    // COLOR_SHIFT,
     FADE,
-    PULSE,
+    // PULSE,
+    OFF,
     IDLE
 };
 
@@ -34,11 +34,10 @@ const ANIMATION_ZONE ANIMATION_ZONE_LIST[] = {
 };
 const ANIMATION_TYPE ANIMATION_TYPE_LIST[] = {    
     STATIC,
-    COLOR_SHIFT,
-    RAINBOW,
+    // COLOR_SHIFT,
     FADE,
-    PULSE,
-    IDLE
+    // PULSE,
+    OFF
 };
 const int ANIMATION_BRIGHTNESS_LIST[] = {
     BRIGHTNESS_OFF,
@@ -59,13 +58,14 @@ const uint32_t STATIC_COLOR_LIST[] = {
 AnimationController::AnimationController(const int ledPins[], unsigned long idleTimeoutMs, unsigned long fadeStepMs):
         _ledPins(ledPins),
         _idleTimeoutMs(idleTimeoutMs),
-        _fadeStepMs(fadeStepMs),
-        _currentType(STATIC),
-        _previousType(IDLE),
-        _currentZone(ALL),
-        _cycleAnimationActive(false),
-        _currentBrightness(BRIGHTNESS_MAX),
-        _staticColorIndex(0) {
+        _fadeStepMs(fadeStepMs){};
+
+void AnimationController::setup() {
+    _currentType = IDLE,
+    _currentZone = ALL,
+    _cycleAnimationActive = false,
+    _currentBrightness = BRIGHTNESS_MAX,
+    _staticColorIndex = 0;
     updateAnimationType(STATIC);
 }
 
@@ -80,9 +80,6 @@ void AnimationController::updateAnimationType(int animType) {
     switch (animType) {
         case STATIC:
             _setColor(STATIC_COLOR_LIST[_staticColorIndex]);
-            break;
-        case IDLE:
-            _setAllLEDs(0, 0, 0);
             break;
         default:
             break;
@@ -116,27 +113,10 @@ void AnimationController::handleIdleState(bool systemActive) {
  * Advances to the next frame of the current animation
  */
 void AnimationController::processAnimation() {
-    unsigned long now = millis();
-    if (now - _lastAnimStepMs < _fadeStepMs) {
-        return;
-    }
-    _lastAnimStepMs = now;
-
-    switch (ANIMATION_TYPE_LIST[_currentType]) {
-        case COLOR_SHIFT:
-            // To be implemented
-        case RAINBOW:
-            // To be implemented
-            break;
+    switch (_currentType) {
         case FADE:
             _animateFadeRGB();
             break;
-        case PULSE:
-            // To be implemented
-            break;
-        // case STATIC:
-        //     _setColor(STATIC_COLOR_LIST[_staticColorIndex]);
-        //     break;
         default:
             // No animation
             break;
@@ -147,34 +127,40 @@ void AnimationController::processAnimation() {
 * Fades each color (R/G/B) in and out, sequentially
 */
 void AnimationController::_animateFadeRGB() {
-  // Turn off all LEDs first
-  _setAllLEDs(0, 0, 0);
+    unsigned long now = millis();
+    if (now - _lastAnimStepMs < _fadeStepMs) {
+        return;
+    }
+    _lastAnimStepMs = now;
+    // Turn off all LEDs first
+    _setAllLEDs(0, 0, 0);
 
-  int pin = _ledPins[_fadeColorIndex];
+    int pin = _ledPins[_fadeColorIndex];
 
-  // Calculate brightness as a percentage of the current brightness setting
-  float normalized = _fadePercent / 100.0;
-  int brightness = normalized * ANIMATION_BRIGHTNESS_LIST[_currentBrightness];
-  _setBrightness(pin, brightness);
+    // Calculate brightness as a percentage of the current brightness setting
+    float normalized = _fadePercent / 100.0;
+    int brightness = normalized * ANIMATION_BRIGHTNESS_LIST[_currentBrightness];
+    _setBrightness(pin, brightness);
 
-  _fadePercent += _fadeDir;
+    _fadePercent += _fadeDir;
 
-  if (_fadePercent >= 100) {
-    _fadeDir = -1;
-  }
-  else if (_fadePercent <= 0) {
-    _fadeDir = 1;
-    _fadeColorIndex = (_fadeColorIndex + 1) % (sizeof(_ledPins) / sizeof(_ledPins)[0]);
-  }
+    if (_fadePercent >= 100) {
+        _fadeDir = -1;
+    }
+    else if (_fadePercent <= 0) {
+        _fadeDir = 1;
+        _fadeColorIndex = (_fadeColorIndex + 1) % (sizeof(_ledPins) / sizeof(_ledPins)[0]);
+    }
 }
 
 /**
  * Cycles the currently selected animation to the the next modifier
  */
 void AnimationController::cycleAnimationModifier() {
-    switch (ANIMATION_TYPE_LIST[_currentType]) {
+    switch (_currentType) {
         case STATIC:
             _staticColorIndex = (_staticColorIndex + 1) % (sizeof(STATIC_COLOR_LIST) / sizeof(STATIC_COLOR_LIST[0]));
+            _setColor(STATIC_COLOR_LIST[_staticColorIndex]);
             break;
         default:
             // No modifier
@@ -214,8 +200,7 @@ void AnimationController::_setBrightness(int ledPin, int percent) {
 * @param rValue the brightness value of the red channel
 * @param gValue the brightness value of the green channel
 * @param bValue the brightness value of the blue channel
-*/
-void AnimationController::_setAllLEDs(int rValue, int gValue, int bValue) {
+*/void AnimationController::_setAllLEDs(int rValue, int gValue, int bValue) {
   _setBrightness(LED_R, rValue);
   _setBrightness(LED_G, gValue);
   _setBrightness(LED_B, bValue);

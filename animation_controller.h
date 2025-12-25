@@ -12,6 +12,7 @@ class AnimationController {
     public:
         AnimationController(const int ledPins[], unsigned long idleTimeoutMs, unsigned long fadeStepMs);
 
+        void setup();
         void update();
         void updateAnimationType(int animType);
         void handleIdleState(bool systemActive);
