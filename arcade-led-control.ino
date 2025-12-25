@@ -2,14 +2,16 @@
 
 const int LED_PINS[] = { LED_R, LED_G, LED_B };
 
-const int ACTIVITY_PIN = 2; // GPIO connected to ActivityPulse
+const int ACTIVITY_PIN = 8; // GPIO connected to ActivityPulse
 const int MACRO_1_PIN = 4; // GPIO connected to Macro1 (Cycle Animation Zone)
 const int MACRO_2_PIN = 6; // GPIO connected to Macro2 (Cycle Animation Type)
-const int MACRO_3_PIN = 8; // GPIO connected to Macro3 (Cycle Animation Modifier)
+const int MACRO_3_PIN = 2; // GPIO connected to Macro3 (Cycle Animation Modifier)
 const int MACRO_4_PIN = 10; // GPIO connected to Macro4 (Cycle Brightness Level)
 
+// const int INPUT_PINS = { ACTIVITY_PIN, MACRO_1_PIN, MACRO_2_PIN, MACRO_3_PIN, MACRO_4_PIN };
+
 // ---- Timing ----
-const unsigned long IDLE_TIMEOUT_MS = 30UL * 1000UL; // 30 seconds
+const unsigned long IDLE_TIMEOUT_MS = 10UL * 60UL * 1000UL; // 10 Minutes
 const unsigned long FADE_STEP_MS = 25;
 
 // ---- Pin States ----
@@ -47,6 +49,7 @@ void setup() {
 
   // Set last activity time and update state
   updateActivityState(true);
+  animController->setup();
 }
 
 void loop() {
