@@ -191,7 +191,7 @@ void AnimationController::_setBrightness(int ledPin, int percent) {
     // set brightness level using gamma correction
     float gamma = 2.2;
     float normalized = percent / 100.0;
-    int brightness = pow(normalized, gamma) * 255;
+    int brightness = poc:\Users\goldi\code\arcade-led-control\zones\headers\player2.h c:\Users\goldi\code\arcade-led-control\zones\headers\backlight.h c:\Users\goldi\code\arcade-led-control\zones\headers\options.h c:\Users\goldi\code\arcade-led-control\zones\headers\player1.hw(normalized, gamma) * 255;
     analogWrite(ledPin, brightness);
 }
 
