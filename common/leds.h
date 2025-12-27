@@ -1,7 +1,6 @@
 #ifndef leds_h
 #define leds_h
 
-//TODO: replace with real values
 #define PLAYER1_BTN1 0
 #define PLAYER1_BTN2 2
 #define PLAYER1_BTN3 4
@@ -12,7 +11,6 @@
 #define PLAYER1_BTN8 14
 // #define PLAYER1_JOYSTICK L3;
 
-//TODO: replace with real values
 #define PLAYER2_BTN1 16
 #define PLAYER2_BTN2 18
 #define PLAYER2_BTN3 20
