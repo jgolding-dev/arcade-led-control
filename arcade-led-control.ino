@@ -1,4 +1,5 @@
 #include "animation_controller.h"
+#include "common/leds.h"
 
 const int LED_PINS[] = { LED_R, LED_G, LED_B };
 
