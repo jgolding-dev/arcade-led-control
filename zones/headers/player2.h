@@ -28,4 +28,4 @@ const ANIMATION_TYPE ANIMATION_TYPES[] = {
 class Player2 : public Zone {
   public:
     Player2::Player2(const int* _leds, const ANIMATION_TYPE animationTypes)
-}
+};

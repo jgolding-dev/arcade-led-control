@@ -17,6 +17,7 @@ class Zone {
     void process();
     void cycleAnimationType();
     void cycleAnimationModifier();
+    void setAllLEDs()
     void idle() {
       previousAnimation = currentAnimation;
       currentAnimation = IDLE;
@@ -28,9 +29,8 @@ class Zone {
         previousAnimation = IDLE;
       }
     }
-  }
   private:
     bool _cycleAnimationActive;
     int _staticColorIndex;
     _reset();
-}
+};
