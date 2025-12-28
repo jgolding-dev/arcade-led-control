@@ -7,35 +7,33 @@
 #define LED_B 20
 
 #include "Arduino.h"
+#include "zones/headers/zone.h"
 
 class AnimationController {
     public:
-        AnimationController(const int ledPins[], unsigned long idleTimeoutMs, unsigned long fadeStepMs);
+        AnimationController(unsigned long idleTimeoutMs);
 
         void setup();
         void update();
         void updateAnimationType(int animType);
         void handleIdleState(bool systemActive);
-        void cycleAnimationZone();
+        void cycleZone();
         void cycleAnimationType();
         void cycleAnimationBrightness();
         void cycleAnimationModifier();
-        void processAnimation();
+        void processAnimations();
         void setIdle(bool isIdle);
     private:
         const int* _ledPins;
+        const Zone* _ledZones;
         const unsigned long _idleTimeoutMs;
         unsigned long _fadeStepMs;
         unsigned long _lastAnimStepMs;
         int _currentZone;
-        int _cycleAnimationActive;
         int _currentType;
         int _previousType;
         int _currentBrightness;
-        int _fadePercent;
-        int _fadeDir;
-        int _fadeColorIndex;
-        int _staticColorIndex;
+        bool _idleStatus;
         void _setBrightness(int ledPin, int percent);
         void _setAllLEDs(int rValue, int gValue, int bValue);
         void _setColor(uint32_t color);
