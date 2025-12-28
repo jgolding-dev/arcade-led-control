@@ -25,4 +25,4 @@ class Options : public Zone {
       leds* = LEDS;
       animationTypes = ANIMATION_TYPES;
     }
-}
+};
