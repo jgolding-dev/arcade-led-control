@@ -1,5 +1,5 @@
-#ifndef player1_h
-#define player1_h
+#ifndef player2_h
+#define player2_h
 #endif
 
 #include "zone.h"

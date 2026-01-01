@@ -26,7 +26,7 @@ unsigned long lastActivityMs = 0;
 
 bool systemActive = true;
 
-AnimationController* animController = new AnimationController(LED_PINS, IDLE_TIMEOUT_MS, FADE_STEP_MS);
+AnimationController* animController = new AnimationController(IDLE_TIMEOUT_MS);
 
 
 // local function declarations
@@ -57,7 +57,7 @@ void loop() {
   handleActivity();
   animController->handleIdleState(systemActive);
   handleMacroEvent();
-  animController->processAnimation();
+  animController->processAnimations();
 }
 
 /**
@@ -101,7 +101,7 @@ void handleMacroEvent() {
   PinStatus currentMacro4 = digitalRead(MACRO_4_PIN);
     
   if (currentMacro1 == HIGH && lastMacro1PinState == LOW) {
-    animController->cycleAnimationZone();
+    animController->cycleZone();
   }
   else if (currentMacro2 == HIGH && lastMacro2PinState == LOW) {
     animController->cycleAnimationType();
