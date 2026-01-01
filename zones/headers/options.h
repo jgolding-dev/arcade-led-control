@@ -1,4 +1,4 @@
-#ifndef options_hc:\Users\goldi\code\arcade-led-control\zones\src\options.cpp
+#ifndef options_h
 #define options_h
 #endif
 
@@ -19,10 +19,18 @@ const ANIMATION_TYPE ANIMATION_TYPES[] = {
     OFF
 };
 
+const unsigned long FADE_STEP_MS = 25;
+
 class Options : public Zone {
   public:
     Options::Options() {
-      leds* = LEDS;
+      ledPins* = LEDS;
       animationTypes = ANIMATION_TYPES;
     }
+  private:
+    _lastAnimStepMs;
+    _fadeStepMs;
+    _fadeColorIndex;
+    _fadePercent;
+    _fadeDir;
 };

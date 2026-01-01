@@ -8,7 +8,6 @@ void Options::setup() {
   currentAnimation = STATIC;
   previousAnimation = IDLE;
   _staticColorIndex = 0;
-  reset();
 }
 
 /**
@@ -25,26 +24,9 @@ void Options::process() {
   }
 }
 
-/**
-* Updates the currently selected animation, and tracks the previous set animation.
-* @param animType The animation type to set.
-*/
-void Options::setAnimationType(int animType) {
-    previousAnimationType = currentAnimationType;
-    currentAnimationType = animType;
-    reset();
-    switch (animType) {
-        case STATIC:
-            _setColor(STATIC_COLORS[_staticColorIndex]);
-            break;
-        default:
-            break;
-    }
-}
-
-void Options::cycleAnimationType() {
+void Zone::cycleAnimationType() {
     ANIMATION_TYPE nextType = ANIMATION_TYPES[(_currentAnimation + 1) % (sizeof(ANIMATION_TYPES) / sizeof(ANIMATION_TYPES)[0])];
-    setAnimationType(nextType);
+    updateAnimationType(nextType);
 }
 
 /**
@@ -53,8 +35,8 @@ void Options::cycleAnimationType() {
 void Options::cycleAnimationModifier() {
   switch (currentAnimation) {
     case STATIC:
-      _staticColorIndex = (_staticColorIndex + 1) % (sizeof(STATIC_COLORS) / sizeof(STATIC_COLORS[0]));
-      _setColor(STATIC_COLORS[_staticColorIndex]);
+      _staticColorIndex = (_staticColorIndex + 1) % (sizeof(STATIC_COLOR_LIST) / sizeof(STATIC_COLOR_LIST[0]));
+      _setColor(STATIC_COLOR_LIST[_staticColorIndex]);
         break;
     default:
       // No modifier
@@ -106,17 +88,6 @@ void Options::_animateFadeRGB() {
 }
 
 /**
- * Sets LEDs to the specified hex color value
- * @param color the hex color value to set the LEDs to
- */
-void Options::_setColor(uint32_t color) {
-    int r = (color >> 16) & 0xFF;
-    int g = (color >> 8) & 0xFF;
-    int b = color & 0xFF;
-    setAllLEDs(r, g, b);
-}
-
-/**
 * Sets the brightness value of single LED pin to the specified percentage value
 * @param ledPin The pin number of the LED to set the brightness of
 * @param percent The brightness percentage value (0-100)
@@ -130,16 +101,4 @@ void Options::_setBrightness(int ledPin, int percent) {
     float normalized = percent / 100.0;
     int brightness = pow(normalized, gamma) * 255;
     analogWrite(ledPin, brightness);
-}
-
-/**
- * Resets all animations to their initial state
- */
-void Options::reset() {
-    _lastAnimStepMs = 0;
-    _fadePercent = 0;
-    _fadeDir = 1;
-    _fadeColorIndex = 0;
-    _cycleAnimationActive = false;
-    setAllLEDs(0, 0, 0);
 }
