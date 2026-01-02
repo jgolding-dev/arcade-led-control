@@ -1,4 +1,4 @@
-#include "../headers/options.h"
+#include "../headers/zone.h"
 
 const std::string NAME = "OPTIONS";
 
@@ -26,6 +26,10 @@ void Options::process() {
       // No animation
       break;
   }
+}
+
+void Full:setMasterBrightness(int value) {
+  _currentBrightness = value;
 }
 
 /**
