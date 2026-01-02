@@ -1,4 +1,4 @@
-#include "../headers/player2.h"
+#include "../headers/zone.h"
 
 const std::string NAME = "PLAYER2";
 
