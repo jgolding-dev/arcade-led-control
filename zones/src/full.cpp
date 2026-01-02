@@ -1,19 +1,26 @@
-#include "../headers/options.h"
-#include "../../common/leds.h"
+#include "../headers/full.h"
 
-const std::string NAME = "OPTIONS";
+const std::string NAME = "FULL";
 
-void Options::setup() {
+Full:Full(int brightness) : Zone(brightness) {}
+
+void Full::setup() {
+  animationTypes = FULL_ANIMATION_TYPES;
   name = NAME;
   currentAnimation = STATIC;
   previousAnimation = IDLE;
   _staticColorIndex = 0;
+  _optionsLedPins = OPTIONS_LEDS;
+  FastLED.addLeds<PLAYER1_LED_TYPE, PLAYER1_LED_PIN, COLOR_ORDER>(_player1Leds, PLAYER1_LED_COUNT);
+  FastLED.addLeds<PLAYER2_LED_TYPE, PLAYER2_LED_PIN, COLOR_ORDER>(_player2Leds, PLAYER2_LED_COUNT);
+  FastLED.addLeds<BACKLIGHT_LED_TYPE, BACKLIGHT_LED_PIN, COLOR_ORDER>(_backlightLeds, BACKLIGHT_LED_COUNT);
+  FastLED.setBrightness(_currentBrightness);
 }
 
 /**
  * Advances to the next frame of the current animation
  */
-void Options::process() {
+void Full::process() {
   switch (currentAnimation) {
     case FADE:
       _animateFadeRGB();
@@ -24,19 +31,19 @@ void Options::process() {
   }
 }
 
-void Zone::cycleAnimationType() {
-    ANIMATION_TYPE nextType = ANIMATION_TYPES[(_currentAnimation + 1) % (sizeof(ANIMATION_TYPES) / sizeof(ANIMATION_TYPES)[0])];
-    updateAnimationType(nextType);
+void Full:setMasterBrightness(int value) {
+  _currentBrightness = value;
+  FastLED.setBrightness(_currentBrightness);
 }
 
 /**
  * Cycles the currently selected animation to the the next modifier
  */
-void Options::cycleAnimationModifier() {
+void Full::cycleAnimationModifier() {
   switch (currentAnimation) {
     case STATIC:
-      _staticColorIndex = (_staticColorIndex + 1) % (sizeof(STATIC_COLOR_LIST) / sizeof(STATIC_COLOR_LIST[0]));
-      _setColor(STATIC_COLOR_LIST[_staticColorIndex]);
+      _staticColorIndex = (_staticColorIndex + 1) % (sizeof(STATIC_COLORS) / sizeof(STATIC_COLORS[0]));
+      _setColor(STATIC_COLORS[_staticColorIndex]);
         break;
     default:
       // No modifier
@@ -50,55 +57,24 @@ void Options::cycleAnimationModifier() {
 * @param gValue the brightness value of the green channel
 * @param bValue the brightness value of the blue channel
 */
-void Options::setAllLEDs(int rValue, int gValue, int bValue) {
-  _setBrightness(OPTIONS_LED_R, rValue);
-  _setBrightness(OPTIONS_LED_G, gValue);
-  _setBrightness(OPTIONS_LED_B, bValue);
-}
+void Zone::setAllLEDs(int rValue, int gValue, int bValue) {
+  _setLEDPinBrightness(OPTIONS_PIN_R, rValue);
+  _setLEDPinBrightness(OPTIONS_PIN_G, gValue);
+  _setLEDPinBrightness(OPTIONS_PIN_B, bValue);
 
-/**
-* Fades each color (R/G/B) in and out, sequentially
-*/
-void Options::_animateFadeRGB() {
-    unsigned long now = millis();
-    if (now - _lastAnimStepMs < _fadeStepMs) {
-        return;
-    }
-    _lastAnimStepMs = now;
-    // Turn off all LEDs first
-    setAllLEDs(0, 0, 0);
-
-    int pin = ledPins[_fadeColorIndex];
-
-    // Calculate brightness as a percentage of the current brightness setting
-    // float normalized = _fadePercent / 100.0;
-    // int brightness = normalized * ANIMATION_BRIGHTNESS_LIST[_currentBrightness];
-    // _setBrightness(pin, brightness);
-    _setBrightness(pin, _fadePercent);
-
-    _fadePercent += _fadeDir;
-
-    if (_fadePercent >= 100) {
-        _fadeDir = -1;
-    }
-    else if (_fadePercent <= 0) {
-        _fadeDir = 1;
-        _fadeColorIndex = (_fadeColorIndex + 1) % (sizeof(ledPins) / sizeof(ledPins)[0]);
-    }
-}
-
-/**
-* Sets the brightness value of single LED pin to the specified percentage value
-* @param ledPin The pin number of the LED to set the brightness of
-* @param percent The brightness percentage value (0-100)
-*/
-void Options::_setBrightness(int ledPin, int percent) {
-    // Constrain percentage to 0-100
-    percent = constrain(percent, 0, 100);
-
-    // set brightness level using gamma correction
-    float gamma = 2.2;
-    float normalized = percent / 100.0;
-    int brightness = pow(normalized, gamma) * 255;
-    analogWrite(ledPin, brightness);
+  for (int i = 0; i < (sizeof(_player1Leds) / sizeof(_player1Leds[0]); i++) {
+    _player1Leds[i].r = rValue;
+    _player1Leds[i].g = gValue;
+    _player1Leds[i].b = bValue;
+  }
+  for (int i = 0; i < (sizeof(_player2Leds) / sizeof(_player2Leds[0]); i++) {
+    _player2Leds[i].r = rValue;
+    _player2Leds[i].g = gValue;
+    _player2Leds[i].b = bValue;
+  }
+    for (int i = 0; i < (sizeof(_backlightLeds) / sizeof(_backlightLeds[0]); i++) {
+    _backlightLeds[i].r = rValue;
+    _backlightLeds[i].g = gValue;
+    _backlightLeds[i].b = bValue;
+  }
 }

@@ -1,8 +1,6 @@
 #include "animation_controller.h"
 #include "common/leds.h"
 
-const int LED_PINS[] = { LED_R, LED_G, LED_B };
-
 const int ACTIVITY_PIN = 8; // GPIO connected to ActivityPulse
 const int MACRO_1_PIN = 4; // GPIO connected to Macro1 (Cycle Animation Zone)
 const int MACRO_2_PIN = 6; // GPIO connected to Macro2 (Cycle Animation Type)
@@ -13,7 +11,6 @@ const int MACRO_4_PIN = 10; // GPIO connected to Macro4 (Cycle Brightness Level)
 
 // ---- Timing ----
 const unsigned long IDLE_TIMEOUT_MS = 10UL * 60UL * 1000UL; // 10 Minutes
-const unsigned long FADE_STEP_MS = 25;
 
 // ---- Pin States ----
 PinStatus lastActPinState = LOW;
@@ -35,12 +32,10 @@ void handleMacroEvent();
 void updateIdleState();
 
 void setup() {
-  // Outputs
-  pinMode(LED_R, OUTPUT);
-  pinMode(LED_G, OUTPUT);
-  pinMode(LED_B, OUTPUT);
+  // Initialize LED output pins
+  Leds::initPins();
 
-  // Inputs
+  // Initialize activity input pins
   pinMode(ACTIVITY_PIN, INPUT_PULLDOWN);
   pinMode(MACRO_1_PIN, INPUT_PULLDOWN);
   pinMode(MACRO_2_PIN, INPUT_PULLDOWN);
