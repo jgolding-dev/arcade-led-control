@@ -1,9 +1,10 @@
 #ifndef zone_h
 #define zone_h
-#endif
 
 #include <string>
 #include "Arduino.h"
+#include "../../common/leds.h"
+#include "../../common/brightness_levels.h"
 
 enum ANIMATION_TYPE {
     STATIC,
@@ -26,9 +27,11 @@ const uint32_t STATIC_COLORS[] = {
 
 class Zone {
   public:
+    // Constructor
+    Zone(int brightness);
+
     const std::string name;
-    const int* ledPins;
-    const ANIMATION_TYPE _animationTypes;
+    const ANIMATION_TYPE* animationTypes;
     ANIMATION_TYPE currentAnimation;
     ANIMATION_TYPE previousAnimation;
 
@@ -39,23 +42,18 @@ class Zone {
     void cycleAnimationType();
     void cycleAnimationModifier();
     void setAllLEDs(int r, int g, int b);
-    void setBrightness(int ledPin, int percent);
-    void startCycleAnimation() {
-      _cycleAnimationActive = true;
-    }
-    void idle() {
-      previousAnimation = currentAnimation;
-      currentAnimation = IDLE;
-      reset();
-    }
-    void wake() {
-      if (currentAnimation == IDLE) {
-        currentAnimation = previousAnimation;
-        previousAnimation = IDLE;
-      }
-    }
+    void setMasterBrightness(int value);
   private:
     bool _cycleAnimationActive;
     int _staticColorIndex;
+    int _currentBrightness;
+    int _lastAnimStepMs;
+    int _fadeStepMs;
+    int _fadeColorIndex;
+    int _fadePercent;
+    int _fadeDir;
+    void setLEDPinBrightness(int ledPin, int percent);
     void _setColor();
 };
+
+#endif

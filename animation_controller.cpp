@@ -1,18 +1,5 @@
 #include "animation_controller.h"
 
-#include <map>
-#include <string>
-
-#include "zones/headers/zone.h"
-#include "zones/headers/full.h"
-#include "zones/headers/player1.h"
-#include "zones/headers/player2.h"
-#include "zones/headers/options.h"
-#include "zones/headers/backlight.h"
-
-#include "common/leds.h"
-#include "common/brightness_levels.h"
-
 // ---- Enums ---- //
 enum LED_ZONE {
     FULL,
@@ -24,29 +11,35 @@ enum LED_ZONE {
 
 // ---- Lists ---- //
 
-const int ANIMATION_BRIGHTNESS_LIST[] = {
+const int MASTER_BRIGHTNESS_LIST[] = {
     BRIGHTNESS_OFF,
     BRIGHTNESS_LOW,
     BRIGHTNESS_MEDIUM,
     BRIGHTNESS_MAX
 };
 
-AnimationController::AnimationController(unsigned long idleTimeoutMs):_idleTimeoutMs(idleTimeoutMs){};
-
-void AnimationController::setup() {
-    _initZones();
+AnimationController::AnimationController(unsigned long idleTimeoutMs) : _idleTimeoutMs(idleTimeoutMs) {
     _currentZone = OPTIONS,
     // _currentZone = FULL,
-    _currentBrightness = BRIGHTNESS_MAX,
+    _currentBrightness = BRIGHTNESS_MAX;
     _idleStatus = false;
+    _initZones();
 }
 
+// void AnimationController::setup() {
+//     _currentZone = OPTIONS,
+//     // _currentZone = FULL,
+//     _currentBrightness = BRIGHTNESS_MAX;
+//     _idleStatus = false;
+//     _initZones();
+// }
+
 void AnimationController::_initZones() {
-    Zone* full = new Full();
-    Zone* player1 = new Player1();
-    Zone* player2 = new Player2();
-    Zone* options = new Options();
-    Zone* backlight = new Backlight();
+    Zone full = new Full(_currentBrightness);
+    Zone player1 = new Player1(_currentBrightness);
+    Zone player2 = new Player2(_currentBrightness);
+    Zone options = new Options(_currentBrightness);
+    Zone backlight = new Backlight(_currentBrightness);
     _ledZones = {
         full,
         player1,
@@ -56,15 +49,15 @@ void AnimationController::_initZones() {
     };
 
     for (int i=0; i < (sizeof(_ledZones) / sizeof(_ledZones[0])); i++) {
-        *Zone zone = _ledZones[i];
-        zone->setup();
+        Zone zone = _ledZones[i];
+        zone.setup();
     }
 }
 
 void AnimationController::cycleZone() {
-    int nextZoneIndex = (_currentZone + 1) % (sizeof(ledZones) / sizeof(ledZones[0])];
-    Zone* nextZone = _ledZones[nextZoneIndex];
-    nextZone->startCycleAnimation();
+    int nextZoneIndex = (_currentZone + 1) % (sizeof(_ledZones) / sizeof(_ledZones[0]))];
+    Zone nextZone = _ledZones[nextZoneIndex];
+    nextZone.startCycleAnimation();
     currentZone = nextZoneIndex;
 }
 
@@ -77,19 +70,19 @@ void AnimationController::cycleAnimationType() {
  * Cycles the currently selected animation to the the next modifier
  */
 void AnimationController::cycleAnimationModifier() {
-    Zone* zone = _ledZones[_currentZone];
-    zone->cycleAnimationModifier();
+    Zone zone = _ledZones[_currentZone];
+    zone.cycleAnimationModifier();
 }
 
 // void AnimationController::cycleAnimationBrightness() {
-//     int nextBrightnessIndex = (_currentBrightness + 1) % ((sizeof(ANIMATION_BRIGHTNESS_LIST) / sizeof(ANIMATION_BRIGHTNESS_LIST)[0]));
+//     int nextBrightnessIndex = (_currentBrightness + 1) % ((sizeof(MASTER_BRIGHTNESS_LIST) / sizeof(MASTER_BRIGHTNESS_LIST)[0]));
 //     _currentBrightness = nextBrightnessIndex;
 // }
 
 void AnimationController::handleIdleState(bool systemActive) {
-    if (!systemActive && _currentType != IDLE) {
+    if (!systemActive && !_idleStatus) {
         setIdle(true);
-    } else if (systemActive && _currentType == IDLE) {
+    } else if (systemActive && _idleStatus) {
         setIdle(false);
     }
 }
@@ -97,12 +90,12 @@ void AnimationController::handleIdleState(bool systemActive) {
 void AnimationController::setIdle(bool isIdle) {
     if (isIdle) {
         for (int i=0; i < (sizeof(_ledZones) / sizeof(_ledZones[0])); i++) {
-            _ledZones[i]->idle();
+            _ledZones[i].idle();
         }
     }
     else {
         for (int i=0; i < (sizeof(_ledZones) / sizeof(_ledZones[0])); i++) {
-            _ledZones[i]->wake();
+            _ledZones[i].wake();
         }
     }
     _idleStatus = isIdle;
@@ -113,7 +106,7 @@ void AnimationController::setIdle(bool isIdle) {
  */
 void AnimationController::processAnimations() {
     for (int i=0; i < (sizeof(_ledZones) / sizeof(_ledZones[0])); i++) {
-        _ledZones[i]->process();
+        _ledZones[i].process();
     }
 }
 
@@ -122,6 +115,6 @@ void AnimationController::processAnimations() {
  */
 void AnimationController::_reset() {
     for (int i=0; i < (sizeof(_ledZones) / sizeof(_ledZones[0])); i++) {
-        _ledZone[i]->reset();
+        _ledZones[i].reset();
     }
 }
