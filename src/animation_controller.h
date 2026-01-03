@@ -2,10 +2,7 @@
 #define animation_controller_h
 
 #include "Arduino.h"
-
-#include "zones/headers/zone.h"
-
-#include "common/leds.h"
+#include "zones/zone.h"
 #include "common/brightness_levels.h"
 
 class AnimationController {

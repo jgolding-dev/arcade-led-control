@@ -36,8 +36,7 @@ void AnimationController::setup() {
 
     // Initialize zones
     for (int i=0; i < (sizeof(LED_ZONES) / sizeof(LED_ZONES[0])); i++) {
-        Zone* zone = LED_ZONES[i];
-        zone->setup();
+        LED_ZONES[i]->setup();
     }
 }
 

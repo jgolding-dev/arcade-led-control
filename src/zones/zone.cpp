@@ -1,4 +1,4 @@
-#include "../headers/zone.h"
+#include "zone.h"
 
 Zone::Zone(int brightness) : _currentBrightness(brightness) {}
 
@@ -6,6 +6,7 @@ void Zone::setup() {
   currentAnimation = STATIC;
   previousAnimation = IDLE;
   _staticColorIndex = 0;
+  _fadeColorIndex = 0;
   reset();
 }
 
@@ -53,9 +54,9 @@ void Zone::wake() {
 * Updates the currently selected animation, and tracks the previous set animation.
 * @param animType The animation type to set.
 */
-void Zone::setAnimationType(int animType) {
-    previousAnimationType = currentAnimationType;
-    currentAnimationType = animType;
+void Zone::setAnimationType(ANIMATION_TYPE animType) {
+    previousAnimation = currentAnimation;
+    currentAnimation = animType;
     reset();
     switch (animType) {
         case STATIC:
@@ -67,7 +68,7 @@ void Zone::setAnimationType(int animType) {
 }
 
 void Options::cycleAnimationType() {
-    ANIMATION_TYPE nextType = _animationTypes[(currentAnimation + 1) % (sizeof(_animationTypes) / sizeof(_animationTypes[0]))];
+    ANIMATION_TYPE nextType = animationTypes[(currentAnimation + 1) % (sizeof(animationTypes) / sizeof(animationTypes[0]))];
     setAnimationType(nextType);
 }
 
@@ -98,22 +99,32 @@ void Zone::_animateFadeRGB() {
     // Turn off all LEDs first
     setAllLEDs(0, 0, 0);
 
-    int pin = _ledPins[_fadeColorIndex];
-
     // Calculate brightness as a percentage of the current brightness setting
-    // float normalized = _fadePercent / 100.0;
-    // int brightness = normalized * ANIMATION_BRIGHTNESS_LIST[_currentBrightness];
-    // _setLEDPinBrightness(pin, brightness);
-    _setLEDPinBrightness(pin, _fadePercent);
+    float normalized = _fadePercent / 100.0;
+    int brightness = normalized * _currentBrightness;
+
+    switch (_fadeColorIndex) {
+      case 0: // red
+        setAllLEDs(brightness, 0, 0);
+        break;
+      case 1: // green
+        setAllLEDs(0, brightness, 0);
+        break;
+      case 2: // blue
+        setAllLEDs(0, 0, brightness);
+        break;
+      default:
+        // no color
+        break;
+    }
 
     _fadePercent += _fadeDir;
-
     if (_fadePercent >= 100) {
         _fadeDir = -1;
     }
     else if (_fadePercent <= 0) {
         _fadeDir = 1;
-        _fadeColorIndex = (_fadeColorIndex + 1) % (sizeof(_ledPins) / sizeof(_ledPins)[0]);
+        _fadeColorIndex = (_fadeColorIndex + 1) % 3;
     }
 }
 
