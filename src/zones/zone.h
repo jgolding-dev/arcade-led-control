@@ -1,10 +1,10 @@
 #ifndef zone_h
 #define zone_h
 
-#include <string>
-#include "Arduino.h"
-#include "../../common/leds.h"
-#include "../../common/brightness_levels.h"
+#include <Arduino.h>
+#include "../common/leds.h"
+#include "../common/brightness_levels.h"
+#define FASTLED_RP2040_CLOCKLESS_M0_FALLBACK 0
 #include <FastLED.h>
 
 // -------- Animation Data Structures -------- //
@@ -75,7 +75,6 @@ class Zone {
     // Constructor
     Zone(int brightness);
 
-    const std::string name;
     const ANIMATION_TYPE* animationTypes;
     ANIMATION_TYPE currentAnimation;
     ANIMATION_TYPE previousAnimation;
@@ -86,12 +85,12 @@ class Zone {
     void wake();
     void startCycleAnimation();
     void reset();
-    void setAnimationType();
+    void setAnimationType(ANIMATION_TYPE animType);
     void cycleAnimationType();
     void cycleAnimationModifier();
     void setAllLEDs(int r, int g, int b);
     void setMasterBrightness(int value);
-  private:
+  protected:
     bool _cycleAnimationActive;
     int _staticColorIndex;
     int _currentBrightness;
@@ -100,8 +99,9 @@ class Zone {
     int _fadeColorIndex;
     int _fadePercent;
     int _fadeDir;
+    void _animateFadeRGB();
     void _setLEDPinBrightness(int ledPin, int percent);
-    void _setColor();
+    void _setColor(uint32_t color);
 };
 
 // -------- Child Classes -------- //
@@ -110,6 +110,14 @@ class Full : public Zone {
   public:
     // Constructor
     Full(int brightness);
+
+    // Override Functions
+    void setup();
+    void process();
+    void cycleAnimationType();
+    void cycleAnimationModifier();
+    void setMasterBrightness(int value);
+    void setAllLEDs(int r, int g, int b);
   private:
     const int* _optionsLedPins;
 
@@ -123,13 +131,31 @@ class Options : public Zone {
   public:
     // Constructor
     Options(int brightness);
+
+    // Override Functions
+    void setup();
+    void process();
+    void cycleAnimationType();
+    void cycleAnimationModifier();
+    void setMasterBrightness(int value);
+    void setAllLEDs(int r, int g, int b);
   private:
     const int* _ledPins;
+    void _animateFadeRGB();
 };
 
 class Player1 : public Zone {
   public:
+    // Constructor
     Player1(int brightness);
+
+    // Override Functions
+    void setup();
+    void process();
+    void cycleAnimationType();
+    void cycleAnimationModifier();
+    void setMasterBrightness(int value);
+    void setAllLEDs(int r, int g, int b);
   private:
     // Array to hold LED color data
     CRGB _leds[PLAYER1_LED_COUNT];
@@ -137,7 +163,16 @@ class Player1 : public Zone {
 
 class Player2 : public Zone {
   public:
+    // Constructor
     Player2(int brightness);
+
+    // Override Functions
+    void setup();
+    void process();
+    void cycleAnimationType();
+    void cycleAnimationModifier();
+    void setMasterBrightness(int value);
+    void setAllLEDs(int r, int g, int b);
   private:
     // Array to hold LED color data
     CRGB _leds[PLAYER2_LED_COUNT];
@@ -145,7 +180,16 @@ class Player2 : public Zone {
 
 class Backlight : public Zone {
   public:
+    // Constructor
     Backlight(int brightness);
+
+    // Override Functions
+    void setup();
+    void process();
+    void cycleAnimationType();
+    void cycleAnimationModifier();
+    void setMasterBrightness(int value);
+    void setAllLEDs(int r, int g, int b);
   private:
     // Array to hold LED color data
     CRGB* _leds;

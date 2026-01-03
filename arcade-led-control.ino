@@ -1,5 +1,5 @@
-#include "animation_controller.h"
-#include "common/leds.h"
+#include "src/animation_controller.h"
+#include "src/common/leds.h"
 
 const int ACTIVITY_PIN = 8; // GPIO connected to ActivityPulse
 const int MACRO_1_PIN = 4; // GPIO connected to Macro1 (Cycle Animation Zone)

@@ -1,6 +1,9 @@
 #ifndef leds_h
   #define leds_h
 
+  // Make FastLED library compatible
+  // #define FASTLED_RP2040_CLOCKLESS_M0_FALLBACK 0
+
   // -------- Physical Pins -------- //
   
   #define OPTIONS_PIN_R 16
