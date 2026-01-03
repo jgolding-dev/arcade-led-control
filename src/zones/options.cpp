@@ -6,13 +6,12 @@ Options::Options(int brightness): Zone(brightness) {}
 
 void Options::setup() {
   animationTypes = OPTIONS_ANIMATION_TYPES;
-  // name = NAME;
-  currentAnimation = STATIC;
-  previousAnimation = IDLE;
+  // // name = NAME;
+  currentAnimation = IDLE;
   _staticColorIndex = 0;
   _ledPins = OPTIONS_LEDS;
   _fadeColorIndex = 0;
-  reset();
+  setAnimationType(STATIC);
 }
 
 /**

@@ -76,21 +76,26 @@ class Zone {
     // Constructor
     Zone(int brightness);
 
+    // Virtual Destructor
+    virtual ~Zone() = default;
+
     const ANIMATION_TYPE* animationTypes;
     ANIMATION_TYPE currentAnimation;
     ANIMATION_TYPE previousAnimation;
 
-    void setup();
-    void process();
     void idle();
     void wake();
     void startCycleAnimation();
-    void reset();
     void setAnimationType(ANIMATION_TYPE animType);
     void cycleAnimationType();
-    void cycleAnimationModifier();
-    void setMasterBrightness(int value);
-    void setAllLEDs(int r, int g, int b);
+
+    // Virtual functions to be overridden by children
+    virtual void reset();
+    virtual void setup();
+    virtual void process();
+    virtual void cycleAnimationModifier();
+    virtual void setMasterBrightness(int value);
+    virtual void setAllLEDs(int r, int g, int b);
   protected:
     bool _cycleAnimationActive;
     int _staticColorIndex;
@@ -100,7 +105,7 @@ class Zone {
     int _fadeColorIndex;
     int _fadePercent;
     int _fadeDir;
-    void _animateFadeRGB();
+    virtual void _animateFadeRGB();
     void _setLEDPinBrightness(int ledPin, int percent);
     void _setColor(uint32_t color);
 };
@@ -115,7 +120,6 @@ class Full : public Zone {
     // Override Functions
     void setup();
     void process();
-    void cycleAnimationType();
     void cycleAnimationModifier();
     void setAllLEDs(int r, int g, int b);
   private:
@@ -135,7 +139,6 @@ class Options : public Zone {
     // Override Functions
     void setup();
     void process();
-    void cycleAnimationType();
     void cycleAnimationModifier();
     void setMasterBrightness(int value);
     void setAllLEDs(int r, int g, int b);
@@ -152,7 +155,6 @@ class Player1 : public Zone {
     // Override Functions
     void setup();
     void process();
-    void cycleAnimationType();
     void cycleAnimationModifier();
     void setAllLEDs(int r, int g, int b);
   private:
@@ -168,7 +170,6 @@ class Player2 : public Zone {
     // Override Functions
     void setup();
     void process();
-    void cycleAnimationType();
     void cycleAnimationModifier();
     void setAllLEDs(int r, int g, int b);
   private:
@@ -184,7 +185,6 @@ class Backlight : public Zone {
     // Override Functions
     void setup();
     void process();
-    void cycleAnimationType();
     void cycleAnimationModifier();
     void setAllLEDs(int r, int g, int b);
   private:
