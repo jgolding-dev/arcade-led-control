@@ -3,11 +3,10 @@
 Zone::Zone(int brightness) : _currentBrightness(brightness) {}
 
 void Zone::setup() {
-  currentAnimation = STATIC;
-  previousAnimation = IDLE;
+  currentAnimation = IDLE;
   _staticColorIndex = 0;
   _fadeColorIndex = 0;
-  reset();
+  setAnimationType(STATIC);
 }
 
 /**
@@ -167,6 +166,9 @@ void Zone::_setLEDPinBrightness(int ledPin, int percent) {
 * @param bValue the brightness value of the blue channel
 */
 void Zone::setAllLEDs(int rValue, int gValue, int bValue) {
+  // _setLEDPinBrightness(OPTIONS_PIN_R, rValue);
+  // _setLEDPinBrightness(OPTIONS_PIN_G, gValue);
+  // _setLEDPinBrightness(OPTIONS_PIN_B, bValue);
   // Should be overridden
 }
 
