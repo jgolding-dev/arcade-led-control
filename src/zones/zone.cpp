@@ -24,6 +24,11 @@ void Zone::process() {
   }
 }
 
+void Zone::setMasterBrightness(int value) {
+  _currentBrightness = value;
+  FastLED.setBrightness(_currentBrightness);
+}
+
 /**
 * Set the cycle animation to run at the next frame
 */
@@ -67,7 +72,7 @@ void Zone::setAnimationType(ANIMATION_TYPE animType) {
     }
 }
 
-void Options::cycleAnimationType() {
+void Zone::cycleAnimationType() {
     ANIMATION_TYPE nextType = animationTypes[(currentAnimation + 1) % (sizeof(animationTypes) / sizeof(animationTypes[0]))];
     setAnimationType(nextType);
 }
@@ -153,6 +158,16 @@ void Zone::_setLEDPinBrightness(int ledPin, int percent) {
     float normalized = percent / 100.0;
     int brightness = pow(normalized, gamma) * 255;
     analogWrite(ledPin, brightness);
+}
+
+/**
+* Sets the brightness level (%) of all LED channels (R/G/B)
+* @param rValue the brightness value of the red channel
+* @param gValue the brightness value of the green channel
+* @param bValue the brightness value of the blue channel
+*/
+void Zone::setAllLEDs(int rValue, int gValue, int bValue) {
+  // Should be overridden
 }
 
 /**

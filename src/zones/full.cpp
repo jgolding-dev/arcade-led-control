@@ -12,9 +12,9 @@ void Full::setup() {
   _staticColorIndex = 0;
   _fadeColorIndex = 0;
   _optionsLedPins = OPTIONS_LEDS;
-  FastLED.addLeds<PLAYER1_LED_TYPE, KAIMANA_PIN, COLOR_ORDER>(_player1Leds, PLAYER1_LED_COUNT);
-  FastLED.addLeds<PLAYER2_LED_TYPE, KAIMANA_PIN, COLOR_ORDER>(_player2Leds, PLAYER2_LED_COUNT);
-  FastLED.addLeds<BACKLIGHT_LED_TYPE, BACKLIGHT_PIN, COLOR_ORDER>(_backlightLeds, BACKLIGHT_LED_COUNT);
+  FastLED.addLeds<PLAYER1_LED_TYPE, KAIMANA_DATA_PIN, COLOR_ORDER>(_player1Leds, PLAYER1_LED_COUNT);
+  FastLED.addLeds<PLAYER2_LED_TYPE, KAIMANA_DATA_PIN, COLOR_ORDER>(_player2Leds, PLAYER2_LED_COUNT);
+  FastLED.addLeds<BACKLIGHT_LED_TYPE, BACKLIGHT_DATA_PIN, COLOR_ORDER>(_backlightLeds, BACKLIGHT_LED_COUNT);
   FastLED.setBrightness(_currentBrightness);
 }
 
@@ -30,11 +30,6 @@ void Full::process() {
       // No animation
       break;
   }
-}
-
-void Full::setMasterBrightness(int value) {
-  _currentBrightness = value;
-  FastLED.setBrightness(_currentBrightness);
 }
 
 /**
@@ -63,19 +58,20 @@ void Full::setAllLEDs(int rValue, int gValue, int bValue) {
   _setLEDPinBrightness(OPTIONS_PIN_G, gValue);
   _setLEDPinBrightness(OPTIONS_PIN_B, bValue);
 
-  for (int i = 0; i < (sizeof(_player1Leds) / sizeof(_player1Leds[0])); i++) {
+  for (int i = 0; i < PLAYER1_LED_COUNT; i++) {
     _player1Leds[i].r = rValue;
     _player1Leds[i].g = gValue;
     _player1Leds[i].b = bValue;
   }
-  for (int i = 0; i < (sizeof(_player2Leds) / sizeof(_player2Leds[0])); i++) {
+  for (int i = 0; i < PLAYER2_LED_COUNT; i++) {
     _player2Leds[i].r = rValue;
     _player2Leds[i].g = gValue;
     _player2Leds[i].b = bValue;
   }
-    for (int i = 0; i < (sizeof(_backlightLeds) / sizeof(_backlightLeds[0])); i++) {
+    for (int i = 0; i < BACKLIGHT_LED_COUNT; i++) {
     _backlightLeds[i].r = rValue;
     _backlightLeds[i].g = gValue;
     _backlightLeds[i].b = bValue;
   }
+  FastLED.show();
 }

@@ -9,8 +9,8 @@
   #define OPTIONS_PIN_R 16
   #define OPTIONS_PIN_G 18
   #define OPTIONS_PIN_B 20
-  #define KAIMANA_PIN   22 // Player1 & Player2 buttons
-  #define BACKLIGHT_PIN 24
+  #define KAIMANA_DATA_PIN 3 // Player1 & Player2 buttons
+  #define BACKLIGHT_DATA_PIN 7
 
   // -------- Digital Pins -------- //
 
@@ -40,11 +40,11 @@
 
   // -------- Digital LED Chip Types -------- //
 
-  #define PLAYER1_LED_TYPE   WS2811
-  #define PLAYER2_LED_TYPE   WS2811
+  #define PLAYER1_LED_TYPE   WS2812B
+  #define PLAYER2_LED_TYPE   WS2812B
   #define BACKLIGHT_LED_TYPE WS2811
 
-  #define COLOR_ORDER RGB // Color order (RGB, GRB, etc.)
+  #define COLOR_ORDER GRB // Color order (RGB, GRB, etc.)
 
   // -------- Digital LED Counts -------- //
 
@@ -100,8 +100,8 @@
         pinMode(OPTIONS_PIN_R, OUTPUT);
         pinMode(OPTIONS_PIN_G, OUTPUT);
         pinMode(OPTIONS_PIN_B, OUTPUT);
-        pinMode(KAIMANA_PIN, OUTPUT);
-        pinMode(BACKLIGHT_PIN, OUTPUT);
+        pinMode(KAIMANA_DATA_PIN, OUTPUT);
+        pinMode(BACKLIGHT_DATA_PIN, OUTPUT);
       }
   };
 

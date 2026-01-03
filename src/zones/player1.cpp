@@ -11,7 +11,7 @@ void Player1::setup() {
   previousAnimation = IDLE;
   _staticColorIndex = 0;
   _fadeColorIndex = 0;
-  FastLED.addLeds<PLAYER1_LED_TYPE, KAIMANA_PIN, COLOR_ORDER>(_leds, PLAYER1_LED_COUNT);
+  FastLED.addLeds<PLAYER1_LED_TYPE, KAIMANA_DATA_PIN, COLOR_ORDER>(_leds, PLAYER1_LED_COUNT);
   FastLED.setBrightness(_currentBrightness);
 }
 
@@ -27,11 +27,6 @@ void Player1::process() {
       // No animation
       break;
   }
-}
-
-void Player1::setMasterBrightness(int value) {
-  _currentBrightness = value;
-  FastLED.setBrightness(_currentBrightness);
 }
 
 /**
@@ -56,9 +51,10 @@ void Player1::cycleAnimationModifier() {
 * @param bValue the brightness value of the blue channel
 */
 void Player1::setAllLEDs(int rValue, int gValue, int bValue) {
-  for (int i = 0; i < (sizeof(_leds) / sizeof(_leds[0])); i++) {
+  for (int i = 0; i < PLAYER1_LED_COUNT; i++) {
     _leds[i].r = rValue;
     _leds[i].g = gValue;
     _leds[i].b = bValue;
   }
+  FastLED.show();
 }
