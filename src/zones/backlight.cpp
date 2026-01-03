@@ -11,7 +11,7 @@ void Backlight::setup() {
   previousAnimation = IDLE;
   _staticColorIndex = 0;
   _fadeColorIndex = 0;
-  FastLED.addLeds<BACKLIGHT_LED_TYPE, BACKLIGHT_PIN, COLOR_ORDER>(_leds, BACKLIGHT_LED_COUNT);
+  FastLED.addLeds<BACKLIGHT_LED_TYPE, BACKLIGHT_DATA_PIN, COLOR_ORDER>(_leds, BACKLIGHT_LED_COUNT);
   FastLED.setBrightness(_currentBrightness);
 }
 
@@ -27,11 +27,6 @@ void Backlight::process() {
       // No animation
       break;
   }
-}
-
-void Backlight::setMasterBrightness(int value) {
-  _currentBrightness = value;
-  FastLED.setBrightness(_currentBrightness);
 }
 
 /**
@@ -56,9 +51,10 @@ void Backlight::cycleAnimationModifier() {
 * @param bValue the brightness value of the blue channel
 */
 void Backlight::setAllLEDs(int rValue, int gValue, int bValue) {
-  for (int i = 0; i < (sizeof(_leds) / sizeof(_leds[0])); i++) {
+  for (int i = 0; i < BACKLIGHT_LED_COUNT; i++) {
     _leds[i].r = rValue;
     _leds[i].g = gValue;
     _leds[i].b = bValue;
   }
+  FastLED.show();
 }

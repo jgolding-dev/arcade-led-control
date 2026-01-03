@@ -5,6 +5,7 @@
 #include "../common/leds.h"
 #include "../common/brightness_levels.h"
 #define FASTLED_RP2040_CLOCKLESS_M0_FALLBACK 0
+#define FASTLED_RP2040_CLOCKLESS_PIO 1
 #include <FastLED.h>
 
 // -------- Animation Data Structures -------- //
@@ -88,8 +89,8 @@ class Zone {
     void setAnimationType(ANIMATION_TYPE animType);
     void cycleAnimationType();
     void cycleAnimationModifier();
-    void setAllLEDs(int r, int g, int b);
     void setMasterBrightness(int value);
+    void setAllLEDs(int r, int g, int b);
   protected:
     bool _cycleAnimationActive;
     int _staticColorIndex;
@@ -116,7 +117,6 @@ class Full : public Zone {
     void process();
     void cycleAnimationType();
     void cycleAnimationModifier();
-    void setMasterBrightness(int value);
     void setAllLEDs(int r, int g, int b);
   private:
     const int* _optionsLedPins;
@@ -154,7 +154,6 @@ class Player1 : public Zone {
     void process();
     void cycleAnimationType();
     void cycleAnimationModifier();
-    void setMasterBrightness(int value);
     void setAllLEDs(int r, int g, int b);
   private:
     // Array to hold LED color data
@@ -171,7 +170,6 @@ class Player2 : public Zone {
     void process();
     void cycleAnimationType();
     void cycleAnimationModifier();
-    void setMasterBrightness(int value);
     void setAllLEDs(int r, int g, int b);
   private:
     // Array to hold LED color data
@@ -188,11 +186,10 @@ class Backlight : public Zone {
     void process();
     void cycleAnimationType();
     void cycleAnimationModifier();
-    void setMasterBrightness(int value);
     void setAllLEDs(int r, int g, int b);
   private:
     // Array to hold LED color data
-    CRGB* _leds;
+    CRGB _leds[BACKLIGHT_LED_COUNT];
 };
 
 #endif
