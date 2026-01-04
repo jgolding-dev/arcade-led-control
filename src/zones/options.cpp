@@ -8,9 +8,8 @@ void Options::setup() {
   animationTypes = OPTIONS_ANIMATION_TYPES;
   // // name = NAME;
   currentAnimation = IDLE;
-  _staticColorIndex = 0;
   _ledPins = OPTIONS_LEDS;
-  _fadeColorIndex = 0;
+  _fadeStepIndex = 1; // FADE_STEP_NORMAL
   setAnimationType(STATIC);
 }
 
@@ -50,7 +49,7 @@ void Options::setMasterBrightness(int value) {
 // }
 
 /**
- * Cycles the currently selected animation to the the next modifier
+ * Cycles the current animation to the the next modifier
  */
 void Options::cycleAnimationModifier() {
   switch (currentAnimation) {
@@ -58,6 +57,10 @@ void Options::cycleAnimationModifier() {
       _staticColorIndex = (_staticColorIndex + 1) % (sizeof(STATIC_COLORS) / sizeof(STATIC_COLORS[0]));
       _setColor(STATIC_COLORS[_staticColorIndex]);
         break;
+    case FADE:
+      _fadeStepIndex = (_fadeStepIndex + 1) % (sizeof(FADE_STEP_MS) / sizeof(FADE_STEP_MS[0]));
+      _lastAnimStepMs = 0;
+      break;
     default:
       // No modifier
       break;
@@ -81,7 +84,7 @@ void Options::setAllLEDs(int rValue, int gValue, int bValue) {
 */
 void Options::_animateFadeRGB() {
     unsigned long now = millis();
-    if (now - _lastAnimStepMs < _fadeStepMs) {
+    if (now - _lastAnimStepMs < FADE_STEP_MS[_fadeStepIndex]) {
         return;
     }
     _lastAnimStepMs = now;
@@ -103,6 +106,6 @@ void Options::_animateFadeRGB() {
     }
     else if (_fadePercent <= 0) {
         _fadeDir = 1;
-        _fadeColorIndex = (_fadeColorIndex + 1) % (sizeof(_ledPins) / sizeof(_ledPins)[0]);
+        _fadeColorIndex = (_fadeColorIndex + 1) % OPTIONS_LED_COUNT;
     }
 }
