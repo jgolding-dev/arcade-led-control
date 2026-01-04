@@ -2,17 +2,19 @@
 
 // const std::string NAME = "PLAYER2";
 
-Player2::Player2(int brightness) : Zone(brightness) {}
+Player2::Player2(int brightness)
+  : Zone(brightness) {}
 
 void Player2::setup() {
   animationTypes = PLAYER2_ANIMATION_TYPES;
   // name = NAME;
-  currentAnimation = STATIC;
-  previousAnimation = IDLE;
+  currentAnimation = IDLE;
   _staticColorIndex = 0;
+  _fadeStepIndex = 1;  // FADE_STEP_NORMAL
   _fadeColorIndex = 0;
-  FastLED.addLeds<PLAYER2_LED_TYPE, KAIMANA_DATA_PIN, COLOR_ORDER>(_leds, PLAYER2_LED_COUNT);
+  FastLED.addLeds<PLAYER2_LED_TYPE, PLAYER2_DATA_PIN, COLOR_ORDER>(_leds, PLAYER2_LED_COUNT);
   FastLED.setBrightness(_currentBrightness);
+  setAnimationType(STATIC);
 }
 
 /**
@@ -37,7 +39,11 @@ void Player2::cycleAnimationModifier() {
     case STATIC:
       _staticColorIndex = (_staticColorIndex + 1) % (sizeof(STATIC_COLORS) / sizeof(STATIC_COLORS[0]));
       _setColor(STATIC_COLORS[_staticColorIndex]);
-        break;
+      break;
+    case FADE:
+      _fadeStepIndex = (_fadeStepIndex + 1) % (sizeof(FADE_STEP_MS) / sizeof(FADE_STEP_MS[0]));
+      _lastAnimStepMs = 0;
+      break;
     default:
       // No modifier
       break;
