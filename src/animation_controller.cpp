@@ -1,6 +1,6 @@
-#include "animation_controller.h"
+#include <animation_controller.h>
+#include <zone.h>
 #include <vector>
-#include <memory>  // Required for smart pointers
 
 // ---- Enums ---- //
 enum LED_ZONE {

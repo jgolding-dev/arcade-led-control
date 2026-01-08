@@ -1,4 +1,4 @@
-#include "zone.h"
+#include <zone.h>
 
 Zone::Zone(int brightness)
   : _currentBrightness(brightness) {}
