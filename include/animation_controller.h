@@ -1,9 +1,8 @@
 #ifndef animation_controller_h
 #define animation_controller_h
 
-#include "Arduino.h"
-#include "zones/zone.h"
-#include "common/brightness_levels.h"
+#include <Arduino.h>
+#include <brightness_levels.h>
 
 class AnimationController {
     public:

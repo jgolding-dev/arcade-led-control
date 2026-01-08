@@ -1,18 +1,22 @@
-#include "zone.h"
+#include <zone.h>
 
-// const std::string NAME = "BACKLIGHT";
+// const std::string NAME = "FULL";
 
-Backlight::Backlight(int brightness)
+Full::Full(int brightness)
   : Zone(brightness) {}
 
-void Backlight::setup() {
-  animationTypes = BACKLIGHT_ANIMATION_TYPES;
+void Full::setup() {
+  animationTypes = FULL_ANIMATION_TYPES;
   // name = NAME;
   currentAnimation = IDLE;
+  // previousAnimation = IDLE;
   _staticColorIndex = 0;
   _fadeStepIndex = 1;  // FADE_STEP_NORMAL
   _fadeColorIndex = 0;
-  FastLED.addLeds<BACKLIGHT_LED_TYPE, BACKLIGHT_DATA_PIN, COLOR_ORDER>(_leds, BACKLIGHT_LED_COUNT);
+  _optionsLedPins = OPTIONS_LEDS;
+  FastLED.addLeds<PLAYER1_LED_TYPE, PLAYER1_DATA_PIN, COLOR_ORDER>(_player1Leds, PLAYER1_LED_COUNT);
+  FastLED.addLeds<PLAYER2_LED_TYPE, PLAYER2_DATA_PIN, COLOR_ORDER>(_player2Leds, PLAYER2_LED_COUNT);
+  FastLED.addLeds<BACKLIGHT_LED_TYPE, BACKLIGHT_DATA_PIN, COLOR_ORDER>(_backlightLeds, BACKLIGHT_LED_COUNT);
   FastLED.setBrightness(_currentBrightness);
   setAnimationType(STATIC);
 }
@@ -20,7 +24,7 @@ void Backlight::setup() {
 /**
  * Advances to the next frame of the current animation
  */
-void Backlight::process() {
+void Full::process() {
   switch (currentAnimation) {
     case FADE:
       _animateFadeRGB();
@@ -34,7 +38,7 @@ void Backlight::process() {
 /**
  * Cycles the currently selected animation to the the next modifier
  */
-void Backlight::cycleAnimationModifier() {
+void Full::cycleAnimationModifier() {
   switch (currentAnimation) {
     case STATIC:
       _staticColorIndex = (_staticColorIndex + 1) % (sizeof(STATIC_COLORS) / sizeof(STATIC_COLORS[0]));
@@ -56,12 +60,25 @@ void Backlight::cycleAnimationModifier() {
 * @param gValue the brightness value of the green channel
 * @param bValue the brightness value of the blue channel
 */
-void Backlight::setAllLEDs(int rValue, int gValue, int bValue) {
-  Serial.println("Setting BACKLIGHT LEDs");
+void Full::setAllLEDs(int rValue, int gValue, int bValue) {
+  _setLEDPinBrightness(OPTIONS_PIN_R, rValue);
+  _setLEDPinBrightness(OPTIONS_PIN_G, gValue);
+  _setLEDPinBrightness(OPTIONS_PIN_B, bValue);
+
+  for (int i = 0; i < PLAYER1_LED_COUNT; i++) {
+    _player1Leds[i].r = rValue;
+    _player1Leds[i].g = gValue;
+    _player1Leds[i].b = bValue;
+  }
+  for (int i = 0; i < PLAYER2_LED_COUNT; i++) {
+    _player2Leds[i].r = rValue;
+    _player2Leds[i].g = gValue;
+    _player2Leds[i].b = bValue;
+  }
   for (int i = 0; i < BACKLIGHT_LED_COUNT; i++) {
-    _leds[i].r = rValue;
-    _leds[i].g = gValue;
-    _leds[i].b = bValue;
+    _backlightLeds[i].r = rValue;
+    _backlightLeds[i].g = gValue;
+    _backlightLeds[i].b = bValue;
   }
   FastLED.show();
 }

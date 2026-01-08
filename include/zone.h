@@ -2,8 +2,8 @@
 #define zone_h
 
 #include <Arduino.h>
-#include "../common/leds.h"
-#include "../common/brightness_levels.h"
+#include <leds.h>
+#include <brightness_levels.h>
 #define FASTLED_RP2040_CLOCKLESS_M0_FALLBACK 0
 #define FASTLED_RP2040_CLOCKLESS_PIO 1
 #include <FastLED.h>
