@@ -1,19 +1,12 @@
 #include <Arduino.h>
+#include <pins.h>
+#include <led_layout.h>
 #include <animation_controller.h>
-#include <leds.h>
 
 const bool DEBUG_MODE = true;
 
-const int ACTIVITY_PIN = 4;  // GPIO connected to ActivityPulse
-const int MACRO_1_PIN  = 5;   // GPIO connected to Macro1 (Cycle Animation Zone)
-const int MACRO_2_PIN  = 6;   // GPIO connected to Macro2 (Cycle Animation Type)
-const int MACRO_3_PIN  = 7;   // GPIO connected to Macro3 (Cycle Animation Modifier)
-const int MACRO_4_PIN  = 8;  // GPIO connected to Macro4 (Cycle Brightness Level)
-
-// const int INPUT_PINS = { ACTIVITY_PIN, MACRO_1_PIN, MACRO_2_PIN, MACRO_3_PIN, MACRO_4_PIN };
-
 // ---- Timing ----
-const unsigned long IDLE_TIMEOUT_MS = 10UL * 60UL * 1000UL;  // 10 Minutes
+const unsigned long IDLE_TIMEOUT_MS = 15UL * 60UL * 1000UL;  // 15 Minutes
 
 // For Testing
 const unsigned long CYCLE_MOD_MS = 5UL * 1000UL;    // 5 Seconds
@@ -36,55 +29,53 @@ unsigned long lastZoneSwitch = 0;
 
 bool systemActive = true;
 
-AnimationController* animController = new AnimationController(IDLE_TIMEOUT_MS);
+AnimationController animController(IDLE_TIMEOUT_MS);
 
 
 // local function declarations
 void handleActivity();
 void handleMacroEvent();
-void updateIdleState();
+void updateActivityState(bool active);
 
 void setup() {
+  delay(100); // allow USB stack to settle
+
   if (DEBUG_MODE) {
     Serial.begin(9600);
   }
-  // Initialize LED output pins
-  Leds::initPins();
-
-  // Initialize activity input pins
-  pinMode(ACTIVITY_PIN, INPUT_PULLDOWN);
-  pinMode(MACRO_1_PIN, INPUT_PULLDOWN);
-  pinMode(MACRO_2_PIN, INPUT_PULLDOWN);
-  pinMode(MACRO_3_PIN, INPUT_PULLDOWN);
-  pinMode(MACRO_4_PIN, INPUT_PULLDOWN);
-
+  // Initialize I/O
+  Pins::initPins();
 
   // Set last activity time and update state
-  lastActivityMs = millis();
+  lastActivityMs = 0;
+  lastTypeSwitch = 0;
+  lastModSwitch  = 0;
+  lastZoneSwitch = 0;
   systemActive = true;
-  animController->setup();
+
+  animController.setup();
 }
 
 void loop() {
   handleActivity();
-  animController->handleIdleState(systemActive);
+  animController.handleIdleState(systemActive);
   handleMacroEvent();
   if (DEBUG_MODE) {
     if ((millis() - lastZoneSwitch) > CYCLE_ZONE_MS) {
       Serial.println("Cycling Zone...");
       delay(50);
-      animController->cycleZone();
+      animController.cycleZone();
       lastZoneSwitch = millis();
       lastModSwitch = millis();
     }
     else if ((millis() - lastModSwitch) > CYCLE_MOD_MS) {
       Serial.println("Cycling Modifier...");
       delay(50);
-      animController->cycleAnimationModifier();
+      animController.cycleAnimationModifier();
       lastModSwitch = millis();
     }
   }
-  animController->processAnimations();
+  animController.processAnimations();
 }
 
 /**
@@ -126,19 +117,17 @@ void handleMacroEvent() {
   PinStatus currentMacro4 = digitalRead(MACRO_4_PIN);
 
   if (currentMacro1 == HIGH && lastMacro1PinState == LOW) {
-    animController->cycleZone();
+    animController.cycleZone();
   } else if (currentMacro2 == HIGH && lastMacro2PinState == LOW) {
-    animController->cycleAnimationType();
+    animController.cycleAnimationType();
   } else if (currentMacro3 == HIGH && lastMacro3PinState == LOW) {
-    animController->cycleAnimationModifier();
+    animController.cycleAnimationModifier();
   } else if (currentMacro4 == HIGH && lastMacro4PinState == LOW) {
-    animController->cycleAnimationBrightness();
+    animController.cycleMasterBrightness();
   }
   lastMacro1PinState = currentMacro1;
   lastMacro2PinState = currentMacro2;
   lastMacro3PinState = currentMacro3;
   lastMacro4PinState = currentMacro4;
-
-  // Example macro
-  // updateAnimationState(ANIM_SOLID_WHITE);
+  
 }

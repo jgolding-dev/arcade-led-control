@@ -1,8 +1,8 @@
 #ifndef animation_controller_h
 #define animation_controller_h
 
-#include <Arduino.h>
 #include <brightness_levels.h>
+#include <zone.h>
 
 class AnimationController {
     public:
@@ -14,7 +14,7 @@ class AnimationController {
         void handleIdleState(bool systemActive);
         void cycleZone();
         void cycleAnimationType();
-        void cycleAnimationBrightness();
+        void cycleMasterBrightness();
         void cycleAnimationModifier();
         void processAnimations();
         void setIdle(bool isIdle);
@@ -24,9 +24,22 @@ class AnimationController {
         void _setColor(uint32_t color);
         void _animateFadeRGB();
         void _reset();
-        const unsigned long _idleTimeoutMs;
-        int _currentZone;
-        int _currentBrightness;
+
+        unsigned long _idleTimeoutMs;
+
+        // Zones
+        Player1 _player1;
+        Player2 _player2;
+        Options _options;
+        Accent _accent;
+
+        // Pointer table for iteration
+        static constexpr uint8_t ZONE_COUNT = 4;
+        Zone* _zones[ZONE_COUNT];
+
+
+        uint8_t _currentZone;
+        uint8_t _currentBrightness;
         bool _idleStatus;
 };
 

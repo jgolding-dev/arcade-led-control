@@ -2,10 +2,10 @@
 #define zone_h
 
 #include <Arduino.h>
-#include <leds.h>
+#include <pins.h>
+#include <led_layout.h>
 #include <brightness_levels.h>
-#define FASTLED_RP2040_CLOCKLESS_M0_FALLBACK 0
-#define FASTLED_RP2040_CLOCKLESS_PIO 1
+#include <fastled_config.h>
 #include <FastLED.h>
 
 // -------- Animation Data Structures -------- //
@@ -53,7 +53,7 @@ const ANIMATION_TYPE PLAYER2_ANIMATION_TYPES[] = {
   // OFF
 };
 
-const ANIMATION_TYPE BACKLIGHT_ANIMATION_TYPES[] = {
+const ANIMATION_TYPE ACCENT_ANIMATION_TYPES[] = {
   STATIC,
   // COLOR_SHIFT,
   FADE,
@@ -96,7 +96,7 @@ public:
 
   void idle();
   void wake();
-  void startCycleAnimation();
+  void startZoneSwitchAnimation();
   void setAnimationType(ANIMATION_TYPE animType);
   void cycleAnimationType();
 
@@ -108,7 +108,7 @@ public:
   virtual void setMasterBrightness(int value);
   virtual void setAllLEDs(int r, int g, int b);
 protected:
-  bool _cycleAnimationActive;
+  bool _switchAnimationActive;
   int _staticColorIndex;
   int _currentBrightness;
   int _lastAnimStepMs;
@@ -139,7 +139,7 @@ private:
   // Arrays to hold LED color data
   CRGB _player1Leds[PLAYER1_LED_COUNT];
   CRGB _player2Leds[PLAYER2_LED_COUNT];
-  CRGB _backlightLeds[BACKLIGHT_LED_COUNT];
+  CRGB _accentLeds[ACCENT_LED_COUNT];
 };
 
 class Options : public Zone {
@@ -188,10 +188,10 @@ private:
   CRGB _leds[PLAYER2_LED_COUNT];
 };
 
-class Backlight : public Zone {
+class Accent : public Zone {
 public:
   // Constructor
-  Backlight(int brightness);
+  Accent(int brightness);
 
   // Override Functions
   void setup();
@@ -200,7 +200,7 @@ public:
   void setAllLEDs(int r, int g, int b);
 private:
   // Array to hold LED color data
-  CRGB _leds[BACKLIGHT_LED_COUNT];
+  CRGB _leds[ACCENT_LED_COUNT];
 };
 
 #endif

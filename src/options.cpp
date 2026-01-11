@@ -8,7 +8,7 @@ void Options::setup() {
   animationTypes = OPTIONS_ANIMATION_TYPES;
   // // name = NAME;
   currentAnimation = IDLE;
-  _ledPins = OPTIONS_LEDS;
+  _ledPins = OPTIONS_LED_PINS;
   _fadeStepIndex = 1; // FADE_STEP_NORMAL
   setAnimationType(STATIC);
 }
@@ -30,23 +30,6 @@ void Options::process() {
 void Options::setMasterBrightness(int value) {
   _currentBrightness = value;
 }
-
-// /**
-// * Updates the currently selected animation, and tracks the previous set animation.
-// * @param animType The animation type to set.
-// */
-// void Options::setAnimationType(int animType) {
-//     previousAnimationType = currentAnimationType;
-//     currentAnimationType = animType;
-//     reset();
-//     switch (animType) {
-//         case STATIC:
-//             _setColor(STATIC_COLORS[_staticColorIndex]);
-//             break;
-//         default:
-//             break;
-//     }
-// }
 
 /**
  * Cycles the current animation to the the next modifier

@@ -29,10 +29,10 @@ void Zone::setMasterBrightness(int value) {
 }
 
 /**
-* Set the cycle animation to run at the next frame
+* Set the zone switch animation to run at the next frame
 */
-void Zone::startCycleAnimation() {
-  _cycleAnimationActive = true;
+void Zone::startZoneSwitchAnimation() {
+  _switchAnimationActive = true;
 }
 
 /**
@@ -185,6 +185,6 @@ void Zone::reset() {
   _fadePercent = 0;
   _fadeDir = 1;
   _fadeColorIndex = 0;
-  _cycleAnimationActive = false;
+  _switchAnimationActive = false;
   setAllLEDs(0, 0, 0);
 }
