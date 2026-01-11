@@ -12,8 +12,8 @@ void Player2::setup() {
   _staticColorIndex = 0;
   _fadeStepIndex = 1;  // FADE_STEP_NORMAL
   _fadeColorIndex = 0;
-  FastLED.addLeds<PLAYER2_LED_TYPE, PLAYER2_DATA_PIN, COLOR_ORDER>(_leds, PLAYER2_LED_COUNT);
-  FastLED.setBrightness(_currentBrightness);
+  // FastLED.addLeds<PLAYER2_LED_TYPE, PLAYER2_DATA_PIN, COLOR_ORDER>(_leds, PLAYER2_LED_COUNT);
+  // FastLED.setBrightness(_currentBrightness);
   setAnimationType(STATIC);
 }
 
@@ -57,10 +57,10 @@ void Player2::cycleAnimationModifier() {
 * @param bValue the brightness value of the blue channel
 */
 void Player2::setAllLEDs(int rValue, int gValue, int bValue) {
-  for (int i = 0; i < PLAYER2_LED_COUNT; i++) {
-    _leds[i].r = rValue;
-    _leds[i].g = gValue;
-    _leds[i].b = bValue;
-  }
-  FastLED.show();
+  // for (int i = 0; i < PLAYER2_LED_COUNT; i++) {
+  //   _leds[i].r = rValue;
+  //   _leds[i].g = gValue;
+  //   _leds[i].b = bValue;
+  // }
+  // FastLED.show();
 }

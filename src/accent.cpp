@@ -1,26 +1,26 @@
 #include <zone.h>
 
-// const std::string NAME = "BACKLIGHT";
+// const std::string NAME = "ACCENT";
 
-Backlight::Backlight(int brightness)
+Accent::Accent(int brightness)
   : Zone(brightness) {}
 
-void Backlight::setup() {
-  animationTypes = BACKLIGHT_ANIMATION_TYPES;
+void Accent::setup() {
+  animationTypes = ACCENT_ANIMATION_TYPES;
   // name = NAME;
   currentAnimation = IDLE;
   _staticColorIndex = 0;
   _fadeStepIndex = 1;  // FADE_STEP_NORMAL
   _fadeColorIndex = 0;
-  FastLED.addLeds<BACKLIGHT_LED_TYPE, BACKLIGHT_DATA_PIN, COLOR_ORDER>(_leds, BACKLIGHT_LED_COUNT);
-  FastLED.setBrightness(_currentBrightness);
+  // FastLED.addLeds<ACCENT_LED_TYPE, ACCENT_DATA_PIN, COLOR_ORDER>(_leds, ACCENT_LED_COUNT);
+  // FastLED.setBrightness(_currentBrightness);
   setAnimationType(STATIC);
 }
 
 /**
  * Advances to the next frame of the current animation
  */
-void Backlight::process() {
+void Accent::process() {
   switch (currentAnimation) {
     case FADE:
       _animateFadeRGB();
@@ -34,7 +34,7 @@ void Backlight::process() {
 /**
  * Cycles the currently selected animation to the the next modifier
  */
-void Backlight::cycleAnimationModifier() {
+void Accent::cycleAnimationModifier() {
   switch (currentAnimation) {
     case STATIC:
       _staticColorIndex = (_staticColorIndex + 1) % (sizeof(STATIC_COLORS) / sizeof(STATIC_COLORS[0]));
@@ -56,12 +56,12 @@ void Backlight::cycleAnimationModifier() {
 * @param gValue the brightness value of the green channel
 * @param bValue the brightness value of the blue channel
 */
-void Backlight::setAllLEDs(int rValue, int gValue, int bValue) {
-  Serial.println("Setting BACKLIGHT LEDs");
-  for (int i = 0; i < BACKLIGHT_LED_COUNT; i++) {
-    _leds[i].r = rValue;
-    _leds[i].g = gValue;
-    _leds[i].b = bValue;
-  }
-  FastLED.show();
+void Accent::setAllLEDs(int rValue, int gValue, int bValue) {
+  // Serial.println("Setting ACCENT LEDs");
+  // for (int i = 0; i < ACCENT_LED_COUNT; i++) {
+  //   _leds[i].r = rValue;
+  //   _leds[i].g = gValue;
+  //   _leds[i].b = bValue;
+  // }
+  // FastLED.show();
 }

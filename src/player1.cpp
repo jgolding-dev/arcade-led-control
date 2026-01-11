@@ -57,6 +57,8 @@ void Player1::cycleAnimationModifier() {
 * @param bValue the brightness value of the blue channel
 */
 void Player1::setAllLEDs(int rValue, int gValue, int bValue) {
+  Serial.println("Setting P1 LEDs");
+  delay(50);
   for (int i = 0; i < PLAYER1_LED_COUNT; i++) {
     _leds[i].r = rValue;
     _leds[i].g = gValue;

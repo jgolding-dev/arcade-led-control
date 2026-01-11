@@ -1,6 +1,5 @@
 #ifndef animation_h
 #define animation_h
-#endif
 
 class Animation {
     public:
@@ -9,3 +8,4 @@ class Animation {
         void cycleModifier();
         void reset();
 };
+#endif

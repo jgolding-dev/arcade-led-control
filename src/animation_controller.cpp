@@ -1,14 +1,11 @@
 #include <animation_controller.h>
-#include <zone.h>
-#include <vector>
 
 // ---- Enums ---- //
 enum LED_ZONE {
-  // FULL,
   PLAYER_1,
   PLAYER_2,
   OPTIONS,
-  BACKLIGHT
+  ACCENT
 };
 
 // ---- Lists ---- //
@@ -20,54 +17,53 @@ const int MASTER_BRIGHTNESS_LIST[] = {
   BRIGHTNESS_MAX
 };
 
-std::vector<Zone*> LED_ZONES;
-
 AnimationController::AnimationController(unsigned long idleTimeoutMs)
-  : _idleTimeoutMs(idleTimeoutMs) {}
+  : _idleTimeoutMs(idleTimeoutMs),
+    _player1(BRIGHTNESS_MAX),
+    _player2(BRIGHTNESS_MAX),
+    _options(BRIGHTNESS_MAX),
+    _accent(BRIGHTNESS_MAX) {
+  
+  _zones[PLAYER_1] = &_player1;
+  _zones[PLAYER_2] = &_player2;
+  _zones[OPTIONS] = &_options;
+  _zones[ACCENT] = &_accent;
+
+}
+
 
 void AnimationController::setup() {
   _currentZone = PLAYER_1;
-  // _currentZone = FULL,
   _currentBrightness = BRIGHTNESS_MAX;
   _idleStatus = false;
-
-  // Initialize zones
-  LED_ZONES = {
-    // new Full(BRIGHTNESS_MAX),
-    new Player1(BRIGHTNESS_MAX),
-    new Player2(BRIGHTNESS_MAX),
-    new Options(BRIGHTNESS_MAX),
-    new Backlight(BRIGHTNESS_MAX)
-  };
-  for (const auto& zone : LED_ZONES) {
-    zone->setup();
+  for (uint8_t i = 0; i < ZONE_COUNT; i++) {
+    _zones[i]->setup();
   }
 }
 
 void AnimationController::cycleZone() {
-  int nextZoneIndex = (_currentZone + 1) % LED_ZONES.size();
-  LED_ZONES[nextZoneIndex]->cycleAnimationType();
-  _currentZone = nextZoneIndex;
+  _currentZone = (_currentZone + 1) % ZONE_COUNT;
+  _zones[_currentZone]->startZoneSwitchAnimation();
 }
 
 void AnimationController::cycleAnimationType() {
-  LED_ZONES[_currentZone]->cycleAnimationType();
+  _zones[_currentZone]->cycleAnimationType();
 }
 
 /**
  * Cycles the currently selected animation to the the next modifier
  */
 void AnimationController::cycleAnimationModifier() {
-  LED_ZONES[_currentZone]->cycleAnimationModifier();
+  _zones[_currentZone]->cycleAnimationModifier();
 }
 
-void AnimationController::cycleAnimationBrightness() {
+void AnimationController::cycleMasterBrightness() {
   int size = sizeof(MASTER_BRIGHTNESS_LIST) / sizeof(MASTER_BRIGHTNESS_LIST)[0];
   int nextBrightnessIndex = (_currentBrightness + 1) % size;
   int nextBrightness = MASTER_BRIGHTNESS_LIST[nextBrightnessIndex];
 
-  for (const auto& zone : LED_ZONES) {
-    zone->setMasterBrightness(nextBrightness);
+  for (uint8_t i = 0; i < ZONE_COUNT; i++) {
+    _zones[i]->setMasterBrightness(nextBrightness);
   }
   _currentBrightness = nextBrightness;
 }
@@ -82,12 +78,12 @@ void AnimationController::handleIdleState(bool systemActive) {
 
 void AnimationController::setIdle(bool isIdle) {
   if (isIdle) {
-    for (const auto& zone : LED_ZONES) {
-      zone->idle();
+    for (uint8_t i = 0; i < ZONE_COUNT; i++) {
+      _zones[i]->idle();
     }
   } else {
-    for (const auto& zone : LED_ZONES) {
-      zone->wake();
+    for (uint8_t i = 0; i < ZONE_COUNT; i++) {
+      _zones[i]->wake();
     }
   }
   _idleStatus = isIdle;
@@ -97,8 +93,8 @@ void AnimationController::setIdle(bool isIdle) {
  * Advances to the next frame of the currently selected animation for each zone
  */
 void AnimationController::processAnimations() {
-  for (const auto& zone : LED_ZONES) {
-    zone->process();
+  for (uint8_t i = 0; i < ZONE_COUNT; i++) {
+    _zones[i]->process();
   }
 }
 
@@ -106,7 +102,7 @@ void AnimationController::processAnimations() {
  * Resets all animations across all zones to their initial state
  */
 void AnimationController::_reset() {
-  for (const auto& zone : LED_ZONES) {
-    zone->reset();
+  for (uint8_t i = 0; i < ZONE_COUNT; i++) {
+    _zones[i]->reset();
   }
 }
