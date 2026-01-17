@@ -1,37 +1,61 @@
 #include <zone.h>
 
-// const std::string NAME = "FULL";
+Full::Full(int brightness, Player1* p1Zone, Player2* p2Zone, Options* opZone, Accent* accZone)
+  : Zone(brightness) {
+    _player1Zone = p1Zone;
+    _player2Zone = p2Zone;
+    _optionsZone = opZone;
+    _accentZone = accZone;
 
-Full::Full(int brightness)
-  : Zone(brightness) {}
+    _subZones[0] = _player1Zone;
+    _subZones[1] = _player2Zone;
+    _subZones[2] = _optionsZone;
+    _subZones[3] = _accentZone;
+  }
 
 void Full::setup() {
   animationTypes = FULL_ANIMATION_TYPES;
-  // name = NAME;
+  previousAnimation = STATIC;
   currentAnimation = IDLE;
-  // previousAnimation = IDLE;
   _staticColorIndex = 0;
   _fadeStepIndex = 1;  // FADE_STEP_NORMAL
   _fadeColorIndex = 0;
-  // _optionsLedPins = OPTIONS_LEDS;
-  // FastLED.addLeds<PLAYER1_LED_TYPE, PLAYER1_DATA_PIN, COLOR_ORDER>(_player1Leds, PLAYER1_LED_COUNT);
-  // FastLED.addLeds<PLAYER2_LED_TYPE, PLAYER2_DATA_PIN, COLOR_ORDER>(_player2Leds, PLAYER2_LED_COUNT);
-  // FastLED.addLeds<BACKLIGHT_LED_TYPE, BACKLIGHT_DATA_PIN, COLOR_ORDER>(_backlightLeds, BACKLIGHT_LED_COUNT);
-  // FastLED.setBrightness(_currentBrightness);
-  setAnimationType(STATIC);
+}
+
+void Full::setAnimationType(ANIMATION_TYPE animType) {
+  previousAnimation = currentAnimation;
+  currentAnimation = animType;
+  reset();
+  for (uint8_t i = 0; i < ZONE_COUNT; i++) {
+    _subZones[i]->reset();
+  }
+  setAllLEDs(0, 0, 0);
+
+  int animationModifier = -1;
+  switch (currentAnimation) {
+    case STATIC:
+      animationModifier = _staticColorIndex;
+    case FADE:
+      animationModifier = _fadeStepIndex;
+    default:
+      // No modifier for the currently selected animation
+      break;
+  }
+
+  for(uint8_t i = 0; i < ZONE_COUNT; i++) {
+    _subZones[i]->setAnimationType(animType);
+    if (animationModifier >= 0) {
+      _subZones[i]->setAnimationModifier(animationModifier);
+    }
+  }
 }
 
 /**
  * Advances to the next frame of the current animation
  */
 void Full::process() {
-  switch (currentAnimation) {
-    case FADE:
-      _animateFadeRGB();
-      break;
-    default:
-      // No animation
-      break;
+  for (uint8_t i = 0; i < ZONE_COUNT; i++) {
+    _subZones[i]->process();
   }
 }
 
@@ -39,18 +63,23 @@ void Full::process() {
  * Cycles the currently selected animation to the the next modifier
  */
 void Full::cycleAnimationModifier() {
+  int animationModifier = -1;
   switch (currentAnimation) {
     case STATIC:
       _staticColorIndex = (_staticColorIndex + 1) % (sizeof(STATIC_COLORS) / sizeof(STATIC_COLORS[0]));
-      _setColor(STATIC_COLORS[_staticColorIndex]);
-      break;
+      animationModifier = _staticColorIndex;
     case FADE:
       _fadeStepIndex = (_fadeStepIndex + 1) % (sizeof(FADE_STEP_MS) / sizeof(FADE_STEP_MS[0]));
-      _lastAnimStepMs = 0;
-      break;
+      animationModifier = _fadeStepIndex;
     default:
-      // No modifier
+      // No modifier for the currently selected animation
       break;
+  }
+
+  if (animationModifier >= 0) {
+    for(uint8_t i = 0; i < ZONE_COUNT; i++) {
+      _subZones[i]->setAnimationModifier(animationModifier);
+    }
   }
 }
 
@@ -61,24 +90,7 @@ void Full::cycleAnimationModifier() {
 * @param bValue the brightness value of the blue channel
 */
 void Full::setAllLEDs(int rValue, int gValue, int bValue) {
-  // _setLEDPinBrightness(OPTIONS_PIN_R, rValue);
-  // _setLEDPinBrightness(OPTIONS_PIN_G, gValue);
-  // _setLEDPinBrightness(OPTIONS_PIN_B, bValue);
-
-  // for (int i = 0; i < PLAYER1_LED_COUNT; i++) {
-  //   _player1Leds[i].r = rValue;
-  //   _player1Leds[i].g = gValue;
-  //   _player1Leds[i].b = bValue;
-  // }
-  // for (int i = 0; i < PLAYER2_LED_COUNT; i++) {
-  //   _player2Leds[i].r = rValue;
-  //   _player2Leds[i].g = gValue;
-  //   _player2Leds[i].b = bValue;
-  // }
-  // for (int i = 0; i < BACKLIGHT_LED_COUNT; i++) {
-  //   _backlightLeds[i].r = rValue;
-  //   _backlightLeds[i].g = gValue;
-  //   _backlightLeds[i].b = bValue;
-  // }
-  // FastLED.show();
+  for(uint8_t i = 0; i < ZONE_COUNT; i++) {
+    _subZones[i]->setAllLEDs(rValue, gValue, bValue);
+  }
 }

@@ -1,20 +1,19 @@
 #include <zone.h>
 
-// const std::string NAME = "PLAYER2";
-
 Player2::Player2(int brightness)
   : Zone(brightness) {}
 
 void Player2::setup() {
   animationTypes = PLAYER2_ANIMATION_TYPES;
-  // name = NAME;
+  previousAnimation = STATIC;
   currentAnimation = IDLE;
   _staticColorIndex = 0;
   _fadeStepIndex = 1;  // FADE_STEP_NORMAL
   _fadeColorIndex = 0;
-  // FastLED.addLeds<PLAYER2_LED_TYPE, PLAYER2_DATA_PIN, COLOR_ORDER>(_leds, PLAYER2_LED_COUNT);
-  // FastLED.setBrightness(_currentBrightness);
-  setAnimationType(STATIC);
+  FastLED.addLeds<PLAYER2_BUTTONS_LED_TYPE, PLAYER2_BUTTONS_DATA_PIN, COLOR_ORDER>(_buttonLeds, PLAYER2_BUTTONS_LED_COUNT);
+  FastLED.addLeds<PLAYER2_JOYSTICK_LED_TYPE, PLAYER2_JOYSTICK_DATA_PIN, COLOR_ORDER>(_joystickLeds, PLAYER2_JOYSTICK_LED_COUNT);
+  FastLED.addLeds<PLAYER2_BALLTOP_LED_TYPE, PLAYER2_BALLTOP_DATA_PIN, COLOR_ORDER>(_balltopLeds, PLAYER2_BALLTOP_LED_COUNT);
+  FastLED.setBrightness(_currentBrightness);
 }
 
 /**
@@ -57,10 +56,22 @@ void Player2::cycleAnimationModifier() {
 * @param bValue the brightness value of the blue channel
 */
 void Player2::setAllLEDs(int rValue, int gValue, int bValue) {
-  // for (int i = 0; i < PLAYER2_LED_COUNT; i++) {
-  //   _leds[i].r = rValue;
-  //   _leds[i].g = gValue;
-  //   _leds[i].b = bValue;
-  // }
-  // FastLED.show();
+  Serial.println("Setting P2 LEDs");
+  delay(50);
+  for (int i = 0; i < PLAYER2_BUTTONS_LED_COUNT; i++) {
+    _buttonLeds[i].r = rValue;
+    _buttonLeds[i].g = gValue;
+    _buttonLeds[i].b = bValue;
+  }
+  for (int i = 0; i < PLAYER2_JOYSTICK_LED_COUNT; i++) {
+    _joystickLeds[i].r = rValue;
+    _joystickLeds[i].g = gValue;
+    _joystickLeds[i].b = bValue;
+  }
+  for (int i = 0; i < PLAYER2_BALLTOP_LED_COUNT; i++) {
+    _balltopLeds[i].r = rValue;
+    _balltopLeds[i].g = gValue;
+    _balltopLeds[i].b = bValue;
+  }
+  FastLED.show();
 }

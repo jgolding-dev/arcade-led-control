@@ -4,9 +4,9 @@ Zone::Zone(int brightness)
   : _currentBrightness(brightness) {}
 
 void Zone::setup() {
+  previousAnimation = STATIC;
   currentAnimation = IDLE;
   _fadeStepIndex = 1;  // FADE_STEP_NORMAL
-  setAnimationType(STATIC);
 }
 
 /**
@@ -39,9 +39,9 @@ void Zone::startZoneSwitchAnimation() {
 * Puts the zone in an idle state
 */
 void Zone::idle() {
-  previousAnimation = currentAnimation;
-  currentAnimation = IDLE;
-  reset();
+  if (currentAnimation != IDLE) {
+    setAnimationType(IDLE);
+  }
 }
 
 /**
@@ -49,8 +49,7 @@ void Zone::idle() {
 */
 void Zone::wake() {
   if (currentAnimation == IDLE) {
-    currentAnimation = previousAnimation;
-    previousAnimation = IDLE;
+    setAnimationType(previousAnimation);
   }
 }
 
@@ -62,11 +61,31 @@ void Zone::setAnimationType(ANIMATION_TYPE animType) {
   previousAnimation = currentAnimation;
   currentAnimation = animType;
   reset();
+  setAllLEDs(0, 0, 0);
   switch (animType) {
     case STATIC:
       _setColor(STATIC_COLORS[_staticColorIndex]);
       break;
     default:
+      break;
+  }
+}
+
+/**
+* Sets the modifier value of the currently elected animation
+* @param modifierIndex The index of the modifier value
+*/
+void Zone::setAnimationModifier(int modifierIndex) {
+  switch(currentAnimation) {
+    case STATIC:
+      _staticColorIndex = modifierIndex;
+      _setColor(STATIC_COLORS[_staticColorIndex]);
+      break;
+    case FADE:
+      _fadeStepIndex = modifierIndex;
+      break;
+    default:
+      // No modifier for the currently selected animation
       break;
   }
 }
@@ -87,8 +106,9 @@ void Zone::cycleAnimationModifier() {
       break;
     case FADE:
       _fadeStepIndex = (_fadeStepIndex + 1) % (sizeof(FADE_STEP_MS) / sizeof(FADE_STEP_MS[0]));
+      break;
     default:
-      // No modifier
+      // No modifier for the currently selected animation
       break;
   }
 }
@@ -169,11 +189,6 @@ void Zone::_setLEDPinBrightness(int ledPin, int percent) {
 * @param bValue the brightness value of the blue channel
 */
 void Zone::setAllLEDs(int rValue, int gValue, int bValue) {
-  Serial.println("In Parent setAllLEDs");
-  delay(50);
-  // _setLEDPinBrightness(OPTIONS_PIN_R, rValue);
-  // _setLEDPinBrightness(OPTIONS_PIN_G, gValue);
-  // _setLEDPinBrightness(OPTIONS_PIN_B, bValue);
   // Should be overridden
 }
 
@@ -186,5 +201,4 @@ void Zone::reset() {
   _fadeDir = 1;
   _fadeColorIndex = 0;
   _switchAnimationActive = false;
-  setAllLEDs(0, 0, 0);
 }

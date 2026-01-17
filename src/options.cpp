@@ -1,16 +1,13 @@
 #include <zone.h>
 
-// const std::string NAME = "OPTIONS";
-
 Options::Options(int brightness): Zone(brightness) {}
 
 void Options::setup() {
   animationTypes = OPTIONS_ANIMATION_TYPES;
-  // // name = NAME;
+  previousAnimation = STATIC;
   currentAnimation = IDLE;
   _ledPins = OPTIONS_LED_PINS;
   _fadeStepIndex = 1; // FADE_STEP_NORMAL
-  setAnimationType(STATIC);
 }
 
 /**
@@ -39,7 +36,7 @@ void Options::cycleAnimationModifier() {
     case STATIC:
       _staticColorIndex = (_staticColorIndex + 1) % (sizeof(STATIC_COLORS) / sizeof(STATIC_COLORS[0]));
       _setColor(STATIC_COLORS[_staticColorIndex]);
-        break;
+      break;
     case FADE:
       _fadeStepIndex = (_fadeStepIndex + 1) % (sizeof(FADE_STEP_MS) / sizeof(FADE_STEP_MS[0]));
       _lastAnimStepMs = 0;
