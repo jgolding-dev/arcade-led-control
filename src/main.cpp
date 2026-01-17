@@ -13,8 +13,6 @@ const unsigned long CYCLE_MOD_MS = 5UL * 1000UL;    // 5 Seconds
 const unsigned long CYCLE_TYPE_MS = 35UL * 1000UL;  // 35 Seconds
 const unsigned long CYCLE_ZONE_MS = 35UL * 1000UL;  // 35 Seconds
 
-//
-
 // ---- Pin States ----
 PinStatus lastActPinState    = LOW;
 PinStatus lastMacro1PinState = LOW;
@@ -129,5 +127,4 @@ void handleMacroEvent() {
   lastMacro2PinState = currentMacro2;
   lastMacro3PinState = currentMacro3;
   lastMacro4PinState = currentMacro4;
-  
 }

@@ -22,7 +22,8 @@ enum Player1LedJoystickIndex : uint8_t {
   P1_DOWN       = 4,
   P1_DOWN_LEFT  = 5,
   P1_LEFT       = 6,
-  P1_UP_LEFT    = 7
+  P1_UP_LEFT    = 7,
+  P1_BALLTOP    = 8
 };
 
 enum Player2LedButtonIndex : uint8_t {
@@ -44,7 +45,8 @@ enum Player2LedJoystickIndex : uint8_t {
   P2_DOWN       = 4,
   P2_DOWN_LEFT  = 5,
   P2_LEFT       = 6,
-  P2_UP_LEFT    = 7
+  P2_UP_LEFT    = 7,
+  P2_BALLTOP    = 8
 };
 
 #define PLAYER2_BTN1 0
@@ -58,18 +60,18 @@ enum Player2LedJoystickIndex : uint8_t {
 
 // -------- LED Chip Types -------- //
 #define ACCENT_LED_TYPE                   WS2811
-#define PLAYER1_LED_TYPE                  WS2811
-#define PLAYER2_LED_TYPE                  WS2811
-#define PLAYER1_JOYSTICK_BASE_LED_TYPE    WS2812B
-#define PLAYER2_JOYSTICK_BASE_LED_TYPE    WS2812B
+#define PLAYER1_BUTTONS_LED_TYPE          WS2812B
+#define PLAYER1_JOYSTICK_LED_TYPE         WS2812B
+#define PLAYER2_BUTTONS_LED_TYPE          WS2812B
+#define PLAYER2_JOYSTICK_LED_TYPE         WS2812B
 
 // -------- Counts -------- //
 
 #define OPTIONS_LED_COUNT                 3
-#define PLAYER1_LED_COUNT                 16
-#define PLAYER1_JOYSTICK_BASE_LED_COUNT   8
-#define PLAYER2_LED_COUNT                 16
-#define PLAYER2_JOYSTICK_BASE_LED_COUNT   8
+#define PLAYER1_BUTTONS_LED_COUNT         16
+#define PLAYER1_JOYSTICK_LED_COUNT        9
+#define PLAYER2_BUTTONS_LED_COUNT         16
+#define PLAYER2_JOYSTICK_LED_COUNT        S9
 #define ACCENT_LED_COUNT                  100  // We actually have 300 backlight LEDs, but they're
 //                                              split into 1 IC per 3 LEDs. So, as far as our
 //                                              program is concerned, we have 100.
