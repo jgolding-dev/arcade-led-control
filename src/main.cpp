@@ -3,7 +3,7 @@
 #include <led_layout.h>
 #include <animation_controller.h>
 
-const bool DEBUG_MODE = true;
+const bool DEBUG_MODE = false;
 
 // ---- Timing ----
 const unsigned long IDLE_TIMEOUT_MS = 15UL * 60UL * 1000UL;  // 15 Minutes

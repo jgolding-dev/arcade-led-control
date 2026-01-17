@@ -28,6 +28,7 @@ class AnimationController {
         unsigned long _idleTimeoutMs;
 
         // Zones
+        Full _full;
         Player1 _player1;
         Player2 _player2;
         Options _options;
@@ -36,7 +37,6 @@ class AnimationController {
         // Pointer table for iteration
         static constexpr uint8_t ZONE_COUNT = 4;
         Zone* _zones[ZONE_COUNT];
-
 
         uint8_t _currentZone;
         uint8_t _currentBrightness;

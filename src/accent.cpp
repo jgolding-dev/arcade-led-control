@@ -1,20 +1,17 @@
 #include <zone.h>
 
-// const std::string NAME = "ACCENT";
-
 Accent::Accent(int brightness)
   : Zone(brightness) {}
 
 void Accent::setup() {
   animationTypes = ACCENT_ANIMATION_TYPES;
-  // name = NAME;
+  previousAnimation = STATIC;
   currentAnimation = IDLE;
   _staticColorIndex = 0;
   _fadeStepIndex = 1;  // FADE_STEP_NORMAL
   _fadeColorIndex = 0;
-  // FastLED.addLeds<ACCENT_LED_TYPE, ACCENT_DATA_PIN, COLOR_ORDER>(_leds, ACCENT_LED_COUNT);
-  // FastLED.setBrightness(_currentBrightness);
-  setAnimationType(STATIC);
+  FastLED.addLeds<ACCENT_LED_TYPE, ACCENT_DATA_PIN, COLOR_ORDER>(_leds, ACCENT_LED_COUNT);
+  FastLED.setBrightness(_currentBrightness);
 }
 
 /**
@@ -57,11 +54,11 @@ void Accent::cycleAnimationModifier() {
 * @param bValue the brightness value of the blue channel
 */
 void Accent::setAllLEDs(int rValue, int gValue, int bValue) {
-  // Serial.println("Setting ACCENT LEDs");
-  // for (int i = 0; i < ACCENT_LED_COUNT; i++) {
-  //   _leds[i].r = rValue;
-  //   _leds[i].g = gValue;
-  //   _leds[i].b = bValue;
-  // }
-  // FastLED.show();
+  Serial.println("Setting Accent LEDs");
+  for (int i = 0; i < ACCENT_LED_COUNT; i++) {
+    _leds[i].r = rValue;
+    _leds[i].g = gValue;
+    _leds[i].b = bValue;
+  }
+  FastLED.show();
 }

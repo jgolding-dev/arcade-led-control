@@ -94,16 +94,17 @@ public:
   ANIMATION_TYPE currentAnimation;
   ANIMATION_TYPE previousAnimation;
 
+  void reset();
   void idle();
   void wake();
   void startZoneSwitchAnimation();
-  void setAnimationType(ANIMATION_TYPE animType);
   void cycleAnimationType();
+  void setAnimationModifier(int modifierIndex);
 
   // Virtual functions to be overridden by children
-  virtual void reset();
   virtual void setup();
   virtual void process();
+  virtual void setAnimationType(ANIMATION_TYPE animType);
   virtual void cycleAnimationModifier();
   virtual void setMasterBrightness(int value);
   virtual void setAllLEDs(int r, int g, int b);
@@ -123,39 +124,20 @@ protected:
 
 // -------- Child Classes -------- //
 
-class Full : public Zone {
-public:
-  // Constructor
-  Full(int brightness);
-
-  // Override Functions
-  void setup();
-  void process();
-  void cycleAnimationModifier();
-  void setAllLEDs(int r, int g, int b);
-private:
-  const int* _optionsLedPins;
-
-  // Arrays to hold LED color data
-  CRGB _player1Leds[PLAYER1_LED_COUNT];
-  CRGB _player2Leds[PLAYER2_LED_COUNT];
-  CRGB _accentLeds[ACCENT_LED_COUNT];
-};
-
 class Options : public Zone {
-public:
-  // Constructor
-  Options(int brightness);
+  public:
+    // Constructor
+    Options(int brightness);
 
-  // Override Functions
-  void setup();
-  void process();
-  void cycleAnimationModifier();
-  void setMasterBrightness(int value);
-  void setAllLEDs(int r, int g, int b);
-private:
-  const int* _ledPins;
-  void _animateFadeRGB();
+    // Override Functions
+    void setup();
+    void process();
+    void cycleAnimationModifier();
+    void setMasterBrightness(int value);
+    void setAllLEDs(int r, int g, int b);
+  private:
+    const int* _ledPins;
+    void _animateFadeRGB();
 };
 
 class Player1 : public Zone {
@@ -170,7 +152,9 @@ public:
   void setAllLEDs(int r, int g, int b);
 private:
   // Array to hold LED color data
-  CRGB _leds[PLAYER1_LED_COUNT];
+  CRGB _buttonLeds[PLAYER1_BUTTONS_LED_COUNT];
+  CRGB _joystickLeds[PLAYER1_JOYSTICK_LED_COUNT];
+  CRGB _balltopLeds[PLAYER1_BALLTOP_LED_COUNT];
 };
 
 class Player2 : public Zone {
@@ -185,7 +169,9 @@ public:
   void setAllLEDs(int r, int g, int b);
 private:
   // Array to hold LED color data
-  CRGB _leds[PLAYER2_LED_COUNT];
+  CRGB _buttonLeds[PLAYER2_BUTTONS_LED_COUNT];
+  CRGB _joystickLeds[PLAYER2_JOYSTICK_LED_COUNT];
+  CRGB _balltopLeds[PLAYER2_BALLTOP_LED_COUNT];
 };
 
 class Accent : public Zone {
@@ -201,6 +187,46 @@ public:
 private:
   // Array to hold LED color data
   CRGB _leds[ACCENT_LED_COUNT];
+};
+
+class Full : public Zone {
+public:
+  // Constructor
+  Full(int brightness, Player1* p1Zone, Player2* p2Zone, Options* opZone, Accent* accZone);
+
+  // Override Functions
+  void setup();
+  void process();
+  void cycleAnimationModifier();
+  void setAnimationType(ANIMATION_TYPE animType);
+  void setAllLEDs(int r, int g, int b);
+private:
+  // sub-zones
+  Player1* _player1Zone;
+  Player2* _player2Zone;
+  Options* _optionsZone;
+  Accent* _accentZone;
+
+  // Pointer table for iteration
+  static constexpr uint8_t ZONE_COUNT = 4;
+  Zone* _subZones[ZONE_COUNT];
+};
+
+class ControlPanel : public Zone {
+  public:
+    // Constructor
+    ControlPanel(int brightness);
+
+    // Override Functions
+    void setup(Player1* p1Zone, Player2* p2Zone, Options* opZone);
+    void process();
+    void cycleAnimationModifier();
+    void setAllLEDs(int r, int g, int b);
+  private:
+    // sub-zones
+    Player1* _player1Zone;
+    Player2* _player2Zone;
+    Options* _optionsZone;
 };
 
 #endif
