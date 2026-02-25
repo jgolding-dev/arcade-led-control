@@ -35,7 +35,7 @@ AnimationController::AnimationController(unsigned long idleTimeoutMs)
 
 
 void AnimationController::setup() {
-  _currentZone = FULL;
+  _currentZone = PLAYER_1;
   _currentBrightness = BRIGHTNESS_MAX;
   _idleStatus = false;
   for (uint8_t i = 0; i < ZONE_COUNT; i++) {

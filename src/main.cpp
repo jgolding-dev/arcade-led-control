@@ -39,7 +39,7 @@ void setup() {
   delay(100); // allow USB stack to settle
 
   if (DEBUG_MODE) {
-    Serial.begin(9600);
+    Serial.begin(115200);
   }
   // Initialize I/O
   Pins::initPins();
@@ -59,14 +59,14 @@ void loop() {
   animController.handleIdleState(systemActive);
   handleMacroEvent();
   if (DEBUG_MODE) {
-    if ((millis() - lastZoneSwitch) > CYCLE_ZONE_MS) {
-      Serial.println("Cycling Zone...");
-      delay(50);
-      animController.cycleZone();
-      lastZoneSwitch = millis();
-      lastModSwitch = millis();
-    }
-    else if ((millis() - lastModSwitch) > CYCLE_MOD_MS) {
+    // if ((millis() - lastZoneSwitch) > CYCLE_ZONE_MS) {
+    //   Serial.println("Cycling Zone...");
+    //   delay(50);
+    //   animController.cycleZone();
+    //   lastZoneSwitch = millis();
+    //   lastModSwitch = millis();
+    // }
+    if ((millis() - lastModSwitch) > CYCLE_MOD_MS) {
       Serial.println("Cycling Modifier...");
       delay(50);
       animController.cycleAnimationModifier();

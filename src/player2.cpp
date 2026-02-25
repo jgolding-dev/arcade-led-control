@@ -67,10 +67,5 @@ void Player2::setAllLEDs(int rValue, int gValue, int bValue) {
     _joystickLeds[i].g = gValue;
     _joystickLeds[i].b = bValue;
   }
-  for (int i = 0; i < PLAYER2_BALLTOP_LED_COUNT; i++) {
-    _balltopLeds[i].r = rValue;
-    _balltopLeds[i].g = gValue;
-    _balltopLeds[i].b = bValue;
-  }
   FastLED.show();
 }
