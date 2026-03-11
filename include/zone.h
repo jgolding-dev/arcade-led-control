@@ -11,7 +11,7 @@
 // -------- Animation Data Structures -------- //
 
 enum ANIMATION_TYPE {
-  // PRESET,
+  CUSTOM,
   STATIC,
   // COLOR_SHIFT,
   FADE,
@@ -21,7 +21,7 @@ enum ANIMATION_TYPE {
 };
 
 const ANIMATION_TYPE FULL_ANIMATION_TYPES[] = {
-  // PRESET,
+  CUSTOM,
   STATIC,
   // COLOR_SHIFT,
   FADE,
@@ -30,6 +30,7 @@ const ANIMATION_TYPE FULL_ANIMATION_TYPES[] = {
 };
 
 const ANIMATION_TYPE OPTIONS_ANIMATION_TYPES[] = {
+  CUSTOM,
   STATIC,
   // COLOR_SHIFT,
   FADE,
@@ -38,6 +39,7 @@ const ANIMATION_TYPE OPTIONS_ANIMATION_TYPES[] = {
 };
 
 const ANIMATION_TYPE PLAYER1_ANIMATION_TYPES[] = {
+  CUSTOM,
   STATIC,
   // COLOR_SHIFT,
   FADE,
@@ -46,6 +48,7 @@ const ANIMATION_TYPE PLAYER1_ANIMATION_TYPES[] = {
 };
 
 const ANIMATION_TYPE PLAYER2_ANIMATION_TYPES[] = {
+  CUSTOM,
   STATIC,
   // COLOR_SHIFT,
   FADE,
@@ -54,6 +57,7 @@ const ANIMATION_TYPE PLAYER2_ANIMATION_TYPES[] = {
 };
 
 const ANIMATION_TYPE ACCENT_ANIMATION_TYPES[] = {
+  CUSTOM,
   STATIC,
   // COLOR_SHIFT,
   FADE,
@@ -61,14 +65,12 @@ const ANIMATION_TYPE ACCENT_ANIMATION_TYPES[] = {
   // OFF
 };
 
-const uint32_t STATIC_COLORS[] = {
-  0x0000FF,  // Blue
-  0xFF0000,  // Red
-  0x00FF00,  // Green
-  0xFFFFFF,  // White
-  0xFFFF00,  // Yellow
-  0xFF00FF,  // Magenta
-  0x00FFFF   // Cyan
+enum CustomType : uint8_t {
+  SF_TURBO = 0
+};
+
+CustomType CUSTOM_TYPES[] = {
+  SF_TURBO
 };
 
 const unsigned long FADE_STEP_FAST = 15;
@@ -107,10 +109,12 @@ public:
   virtual void setAnimationType(ANIMATION_TYPE animType);
   virtual void cycleAnimationModifier();
   virtual void setMasterBrightness(int value);
-  virtual void setAllLEDs(int r, int g, int b);
+  virtual void setAllLEDs(uint8_t r, uint8_t g, uint8_t b);
+  virtual void setAllLEDs(RGB_t &color);
 protected:
   bool _switchAnimationActive;
   int _staticColorIndex;
+  int _customTypeIndex;
   int _currentBrightness;
   int _lastAnimStepMs;
   int _fadeStepIndex;
@@ -118,8 +122,12 @@ protected:
   int _fadePercent;
   int _fadeDir;
   virtual void _animateFadeRGB();
+  virtual void _animateCustom();
+  virtual void _setCustom(CustomType &type);
+  virtual void _setSFTurbo();
   void _setLEDPinBrightness(int ledPin, int percent);
-  void _setColor(uint32_t color);
+  void _setARGB(CRGB* &led, RGB_t &color, int index);
+  void _setARGB(CRGB* &led, RGB_t &color, int* indexes, int size);
 };
 
 // -------- Child Classes -------- //
@@ -134,7 +142,8 @@ class Options : public Zone {
     void process();
     void cycleAnimationModifier();
     void setMasterBrightness(int value);
-    void setAllLEDs(int r, int g, int b);
+    void setAllLEDs(uint8_t r, uint8_t g, uint8_t b);
+    void setAllLEDs(RGB_t color);
   private:
     const int* _ledPins;
     void _animateFadeRGB();
@@ -149,11 +158,13 @@ public:
   void setup();
   void process();
   void cycleAnimationModifier();
-  void setAllLEDs(int r, int g, int b);
+  void setAllLEDs(uint8_t r, uint8_t g, uint8_t b);
+  void setAllLEDs(RGB_t color);
 private:
   // Array to hold LED color data
   CRGB _buttonLeds[PLAYER1_BUTTONS_LED_COUNT];
   CRGB _joystickLeds[PLAYER1_JOYSTICK_LED_COUNT];
+  void _setSFTurbo();
 };
 
 class Player2 : public Zone {
@@ -165,7 +176,8 @@ public:
   void setup();
   void process();
   void cycleAnimationModifier();
-  void setAllLEDs(int r, int g, int b);
+  void setAllLEDs(uint8_t r, uint8_t g, uint8_t b);
+  void setAllLEDs(RGB_t color);
 private:
   // Array to hold LED color data
   CRGB _buttonLeds[PLAYER2_BUTTONS_LED_COUNT];
@@ -181,7 +193,8 @@ public:
   void setup();
   void process();
   void cycleAnimationModifier();
-  void setAllLEDs(int r, int g, int b);
+  void setAllLEDs(uint8_t r, uint8_t g, uint8_t b);
+  void setAllLEDs(RGB_t color);
 private:
   // Array to hold LED color data
   CRGB _leds[ACCENT_LED_COUNT];
@@ -197,7 +210,8 @@ public:
   void process();
   void cycleAnimationModifier();
   void setAnimationType(ANIMATION_TYPE animType);
-  void setAllLEDs(int r, int g, int b);
+  void setAllLEDs(uint8_t r, uint8_t g, uint8_t b);
+  void setAllLEDs(RGB_t color);
 private:
   // sub-zones
   Player1* _player1Zone;
@@ -219,7 +233,8 @@ class ControlPanel : public Zone {
     void setup(Player1* p1Zone, Player2* p2Zone, Options* opZone);
     void process();
     void cycleAnimationModifier();
-    void setAllLEDs(int r, int g, int b);
+    void setAllLEDs(uint8_t r, uint8_t g, uint8_t b);
+    void setAllLEDs(RGB_t color);
   private:
     // sub-zones
     Player1* _player1Zone;

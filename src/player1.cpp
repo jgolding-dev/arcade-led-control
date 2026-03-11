@@ -36,7 +36,7 @@ void Player1::cycleAnimationModifier() {
   switch (currentAnimation) {
     case STATIC:
       _staticColorIndex = (_staticColorIndex + 1) % (sizeof(STATIC_COLORS) / sizeof(STATIC_COLORS[0]));
-      _setColor(STATIC_COLORS[_staticColorIndex]);
+      setAllLEDs(STATIC_COLORS[_staticColorIndex]);
       break;
     case FADE:
       _fadeStepIndex = (_fadeStepIndex + 1) % (sizeof(FADE_STEP_MS) / sizeof(FADE_STEP_MS[0]));
@@ -54,7 +54,7 @@ void Player1::cycleAnimationModifier() {
 * @param gValue the brightness value of the green channel
 * @param bValue the brightness value of the blue channel
 */
-void Player1::setAllLEDs(int rValue, int gValue, int bValue) {
+void Player1::setAllLEDs(uint8_t rValue, uint8_t gValue, uint8_t bValue) {
   Serial.println("Setting P1 LEDs");
   delay(50);
   for (int i = 0; i < PLAYER1_BUTTONS_LED_COUNT; i++) {
@@ -67,5 +67,33 @@ void Player1::setAllLEDs(int rValue, int gValue, int bValue) {
     _joystickLeds[i].g = gValue;
     _joystickLeds[i].b = bValue;
   }
+  FastLED.show();
+}
+
+/**
+* Sets the brightness level (%) of all LED channels (R/G/B)
+*/
+void Player1::_setSFTurbo() {
+  Serial.println("Setting Player 1 SF_Turbo");
+  delay(50);
+
+  setAllLEDs(BLACK);
+
+  // joystick
+  for (int i = 0; i < PLAYER1_JOYSTICK_LED_COUNT; i++) {
+    _joystickLeds[i].setRGB(BLUE.r, BLUE.g, BLUE.b);
+  }
+
+  // buttons
+  int light[] = {P1_BTN1, (P1_BTN1 + 1), P1_BTN3, (P1_BTN3 + 1) };
+  int medium[] = { P1_BTN2, (P1_BTN2 + 1), P1_BTN4, (P1_BTN4 + 1) };
+  int heavy[] = { P1_L1, (P1_L1 + 1), P1_R1, (P1_R1 + 1) };
+  int special[] = { P1_L2, (P1_L2 + 1), P1_R2, (P1_R2 + 1) };
+
+  _setARGB(_buttonLeds, RED, light, 4);
+  _setARGB(_buttonLeds, BLUE, medium, 4);
+  _setARGB(_buttonLeds, GREEN, heavy, 4);
+  _setARGB(_buttonLeds, YELLOW, special, 4);
+
   FastLED.show();
 }

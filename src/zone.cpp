@@ -17,6 +17,8 @@ void Zone::process() {
     case FADE:
       _animateFadeRGB();
       break;
+    case CUSTOM:
+      _animateCustom();
     default:
       // No animation
       break;
@@ -61,11 +63,13 @@ void Zone::setAnimationType(ANIMATION_TYPE animType) {
   previousAnimation = currentAnimation;
   currentAnimation = animType;
   reset();
-  setAllLEDs(0, 0, 0);
+  setAllLEDs(BLACK);
   switch (animType) {
     case STATIC:
-      _setColor(STATIC_COLORS[_staticColorIndex]);
+      setAllLEDs(STATIC_COLORS[_staticColorIndex]);
       break;
+    case CUSTOM:
+      _setCustom(CUSTOM_TYPES[_customTypeIndex]);
     default:
       break;
   }
@@ -79,7 +83,7 @@ void Zone::setAnimationModifier(int modifierIndex) {
   switch(currentAnimation) {
     case STATIC:
       _staticColorIndex = modifierIndex;
-      _setColor(STATIC_COLORS[_staticColorIndex]);
+      setAllLEDs(STATIC_COLORS[_staticColorIndex]);
       break;
     case FADE:
       _fadeStepIndex = modifierIndex;
@@ -102,7 +106,11 @@ void Zone::cycleAnimationModifier() {
   switch (currentAnimation) {
     case STATIC:
       _staticColorIndex = (_staticColorIndex + 1) % (sizeof(STATIC_COLORS) / sizeof(STATIC_COLORS[0]));
-      _setColor(STATIC_COLORS[_staticColorIndex]);
+      setAllLEDs(STATIC_COLORS[_staticColorIndex]);
+      break;
+    case CUSTOM:
+      _customTypeIndex = (_customTypeIndex + 1) % (sizeof(STATIC_COLORS) / sizeof(STATIC_COLORS[0]));
+      _setCustom(CUSTOM_TYPES[_customTypeIndex]);
       break;
     case FADE:
       _fadeStepIndex = (_fadeStepIndex + 1) % (sizeof(FADE_STEP_MS) / sizeof(FADE_STEP_MS[0]));
@@ -154,19 +162,6 @@ void Zone::_animateFadeRGB() {
 }
 
 /**
- * Sets all LEDs to the specified hex color value
- * @param color the hex color value to set the LEDs to
- */
-void Zone::_setColor(uint32_t color) {
-  // Serial.println("In Parent _setColor");
-  // delay(50);
-  int r = (color >> 16) & 0xFF;
-  int g = (color >> 8) & 0xFF;
-  int b = color & 0xFF;
-  setAllLEDs(r, g, b);
-}
-
-/**
 * Sets the brightness value of single LED pin to the specified percentage value
 * @param ledPin The pin number of the LED to set the brightness of
 * @param percent The brightness percentage value (0-100)
@@ -188,7 +183,73 @@ void Zone::_setLEDPinBrightness(int ledPin, int percent) {
 * @param gValue the brightness value of the green channel
 * @param bValue the brightness value of the blue channel
 */
-void Zone::setAllLEDs(int rValue, int gValue, int bValue) {
+void Zone::setAllLEDs(uint8_t rValue, uint8_t gValue, uint8_t bValue) {
+  // Should be overridden
+}
+
+/**
+* Sets the brightness level (%) of all LED channels (R/G/B)
+* @param color the color to set for all LEDs
+*/
+void Zone::setAllLEDs(RGB_t &color) {
+  setAllLEDs(color.r, color.g, color.b);
+}
+
+/**
+ * Set the color of an addressable RGB LED
+ * @param led the FastLED CRGB array
+ * @param color the color to set for the LED
+ * @param index the index of the CRGB array corresponding to the LED
+ */
+void Zone::_setARGB(CRGB* &led, RGB_t &color, int index) {
+  led[index].setRGB(color.r, color.g, color.b);
+}
+
+// void _setAllARGB(CRGB* &led, RGB_t color, int count) {
+//   for (int i = 0; i < count; i++) {
+//     setARGB(led, color, i);
+//   }
+//   led.show();
+// }
+
+/**
+ * Set the color for the specefied addressable RGB LEDs
+ * @param led the FastLED CRGB array
+ * @param color the color to set for the LEDs
+ * @param indexes the indexes of the CRGB array corresponding to the LEDs
+ * @param size the size of the CRGB array
+ */
+void Zone::_setARGB(CRGB* &led, RGB_t &color, int* indexes, int size) {
+  for (int i = 0; i < size; i++) {
+    led[i].setRGB(color.r, color.g, color.b);
+  }
+}
+
+/**
+ * Sets the zone to the specified custom lighting pattern
+ * @param type the custom type
+ */
+void Zone::_setCustom(CustomType &type) {
+  switch (type) {
+    case SF_TURBO:
+      _setSFTurbo();
+      break;
+    default:
+      // No custom type
+  }
+}
+
+/**
+ * Sets the SF Turbo custom lighting pattern
+ */
+void Zone::_setSFTurbo() {
+  // Should be overridden
+}
+
+/**
+ * Processes the custom lighting animation
+ */
+void Zone::_animateCustom() {
   // Should be overridden
 }
 

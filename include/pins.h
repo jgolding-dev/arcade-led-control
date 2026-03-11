@@ -5,19 +5,17 @@
 
 // ---------------- Output ---------------- //
 
-#define ACCENT_DATA_PIN                 28
+#define ACCENT_DATA_PIN                 18
 
-#define PLAYER1_BUTTONS_DATA_PIN        22
-#define PLAYER1_JOYSTICK_DATA_PIN       26
-#define PLAYER1_BALLTOP_DATA_PIN        27
+#define PLAYER1_BUTTONS_DATA_PIN        16
+#define PLAYER1_JOYSTICK_DATA_PIN       17
 
-#define OPTIONS_PIN_R                   19
-#define OPTIONS_PIN_G                   20
-#define OPTIONS_PIN_B                   21
+#define OPTIONS_PIN_R                   20
+#define OPTIONS_PIN_G                   22
+#define OPTIONS_PIN_B                   26
 
-#define PLAYER2_BUTTONS_DATA_PIN        16
-#define PLAYER2_JOYSTICK_DATA_PIN       17       
-#define PLAYER2_BALLTOP_DATA_PIN        18
+#define PLAYER2_BUTTONS_DATA_PIN        28
+#define PLAYER2_JOYSTICK_DATA_PIN       27     
 
 // ---------------- Input ---------------- //
 
@@ -61,12 +59,10 @@ public:
     // Player 1
     pinMode(PLAYER1_BUTTONS_DATA_PIN, OUTPUT);
     pinMode(PLAYER1_JOYSTICK_DATA_PIN, OUTPUT);
-    pinMode(PLAYER1_BALLTOP_DATA_PIN, OUTPUT);
 
     // Player 2
     pinMode(PLAYER2_BUTTONS_DATA_PIN, OUTPUT);
     pinMode(PLAYER2_JOYSTICK_DATA_PIN, OUTPUT);
-    pinMode(PLAYER2_BALLTOP_DATA_PIN, OUTPUT);
 
     // Accent Lighting
     pinMode(ACCENT_DATA_PIN, OUTPUT);

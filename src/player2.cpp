@@ -36,7 +36,7 @@ void Player2::cycleAnimationModifier() {
   switch (currentAnimation) {
     case STATIC:
       _staticColorIndex = (_staticColorIndex + 1) % (sizeof(STATIC_COLORS) / sizeof(STATIC_COLORS[0]));
-      _setColor(STATIC_COLORS[_staticColorIndex]);
+      setAllLEDs(STATIC_COLORS[_staticColorIndex]);
       break;
     case FADE:
       _fadeStepIndex = (_fadeStepIndex + 1) % (sizeof(FADE_STEP_MS) / sizeof(FADE_STEP_MS[0]));
@@ -54,7 +54,7 @@ void Player2::cycleAnimationModifier() {
 * @param gValue the brightness value of the green channel
 * @param bValue the brightness value of the blue channel
 */
-void Player2::setAllLEDs(int rValue, int gValue, int bValue) {
+void Player2::setAllLEDs(uint8_t rValue, uint8_t gValue, uint8_t bValue) {
   Serial.println("Setting P2 LEDs");
   delay(50);
   for (int i = 0; i < PLAYER2_BUTTONS_LED_COUNT; i++) {

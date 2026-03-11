@@ -89,7 +89,7 @@ void Full::cycleAnimationModifier() {
 * @param gValue the brightness value of the green channel
 * @param bValue the brightness value of the blue channel
 */
-void Full::setAllLEDs(int rValue, int gValue, int bValue) {
+void Full::setAllLEDs(uint8_t rValue, uint8_t gValue, uint8_t bValue) {
   for(uint8_t i = 0; i < ZONE_COUNT; i++) {
     _subZones[i]->setAllLEDs(rValue, gValue, bValue);
   }
