@@ -18,24 +18,25 @@
 #define PLAYER2_BUTTONS_DATA_PIN          28
 #define PLAYER2_JOYSTICK_DATA_PIN         27     
 
-#define REC_BUTTON_LED_PIN                6
-#define P2_LS_MODE_PIN                    7
+#define REC_BUTTON_LED_PIN                5
+#define P2_LS_MODE_PIN                    6
 #define P2_DP_MODE_PIN                    8
-#define P2_RS_MODE_PIN                    9
+#define P2_RS_MODE_PIN                    10
 
 // ---------------- Input ---------------- //
 
-#define P1_ACTIVITY_PIN                   0
-#define DISPLAY_CLK_PIN                   1
-#define DISPLAY_MOSI_PIN                  2
-#define DISPLAY_X_PIN                     3
+#define P2_ACTIVITY_PIN                   1
+#define DISPLAY_SCK_PIN                   2
+#define DISPLAY_MOSI_PIN                  3
+#define DISPLAY_CS_PIN                    0
+#define DISPLAY_DC_PIN                    4
 
-#define ROTARY_XX_PIN                     11
-#define ROTARY_X_PIN                      12
-#define ROTARY_CLK_PIN                    13
-#define DISPLAY_X_PIN                     14
+#define ROTARY_SW_PIN                     11
+#define ROTARY_DT_PIN                     12
+#define ROTARY_CLK_PIN                    14
+#define DISPLAY_RST_PIN                   15
 
-#define P2_ACTIVITY_PIN                   15
+#define P1_ACTIVITY_PIN                   13
 
 // ---------------- Groups ---------------- //
 
@@ -44,6 +45,7 @@ public:
   static void initPins() {
     // Options
     pinMode(OPTIONS_BUTTONS_DATA_PIN, OUTPUT);
+    pinMode(REC_BUTTON_LED_PIN, OUTPUT);
 
 
     // Player 1
@@ -68,14 +70,15 @@ public:
     // Inputs
     pinMode(P1_ACTIVITY_PIN, INPUT_PULLDOWN);
     pinMode(P2_ACTIVITY_PIN, INPUT_PULLDOWN);
-    pinMode(DISPLAY_CLK_PIN, INPUT_PULLDOWN);
+    pinMode(DISPLAY_SCK_PIN, INPUT_PULLDOWN);
     pinMode(DISPLAY_MOSI_PIN, INPUT_PULLDOWN);
-    pinMode(DISPLAY_X_PIN, INPUT_PULLDOWN);
+    pinMode(DISPLAY_CS_PIN, INPUT_PULLDOWN);
+    pinMode(DISPLAY_DC_PIN, INPUT_PULLDOWN);
 
-    pinMode(ROTARY_XX_PIN, INPUT_PULLDOWN);
-    pinMode(ROTARY_X_PIN, INPUT_PULLDOWN);
+    pinMode(ROTARY_SW_PIN, INPUT_PULLDOWN);
+    pinMode(ROTARY_DT_PIN, INPUT_PULLDOWN);
     pinMode(ROTARY_CLK_PIN, INPUT_PULLDOWN);
-    pinMode(DISPLAY_X_PIN, INPUT_PULLDOWN);
+    pinMode(DISPLAY_RST_PIN, INPUT_PULLDOWN);
   }
 };
 
