@@ -1,13 +1,17 @@
 #include <zone.h>
 
-Options::Options(int brightness): Zone(brightness) {}
+Options::Options(int brightness)
+  : Zone(brightness) {}
 
 void Options::setup() {
   animationTypes = OPTIONS_ANIMATION_TYPES;
   previousAnimation = STATIC;
   currentAnimation = IDLE;
-  _ledPins = OPTIONS_LED_PINS;
-  _fadeStepIndex = 1; // FADE_STEP_NORMAL
+  _staticColorIndex = 0;
+  _fadeStepIndex = 1;  // FADE_STEP_NORMAL
+  _fadeColorIndex = 0;
+  FastLED.addLeds<OPTIONS_BUTTONS_LED_TYPE, OPTIONS_BUTTONS_DATA_PIN, COLOR_ORDER>(_leds, OPTIONS_BUTTONS_LED_COUNT);
+  FastLED.setBrightness(_currentBrightness);
 }
 
 /**
@@ -24,12 +28,8 @@ void Options::process() {
   }
 }
 
-void Options::setMasterBrightness(int value) {
-  _currentBrightness = value;
-}
-
 /**
- * Cycles the current animation to the the next modifier
+ * Cycles the currently selected animation to the the next modifier
  */
 void Options::cycleAnimationModifier() {
   switch (currentAnimation) {
@@ -54,38 +54,25 @@ void Options::cycleAnimationModifier() {
 * @param bValue the brightness value of the blue channel
 */
 void Options::setAllLEDs(uint8_t rValue, uint8_t gValue, uint8_t bValue) {
-  _setLEDPinBrightness(OPTIONS_PIN_R, rValue);
-  _setLEDPinBrightness(OPTIONS_PIN_G, gValue);
-  _setLEDPinBrightness(OPTIONS_PIN_B, bValue);
+  Serial.println("Setting P1 LEDs");
+  delay(50);
+  for (int i = 0; i < OPTIONS_BUTTONS_LED_COUNT; i++) {
+    _leds[i].r = rValue;
+    _leds[i].g = gValue;
+    _leds[i].b = bValue;
+  }
+  FastLED.show();
 }
 
 /**
-* Fades each color (R/G/B) in and out, sequentially
+* Sets the brightness level (%) of all LED channels (R/G/B)
 */
-void Options::_animateFadeRGB() {
-    unsigned long now = millis();
-    if (now - _lastAnimStepMs < FADE_STEP_MS[_fadeStepIndex]) {
-        return;
-    }
-    _lastAnimStepMs = now;
-    // Turn off all LEDs first
-    setAllLEDs(0, 0, 0);
+void Options::_setSFTurbo() {
+  Serial.println("Setting Options SF_Turbo");
+  delay(50);
 
-    int pin = _ledPins[_fadeColorIndex];
+  setAllLEDs(BLACK);
+  setAllLEDs(WHITE);
 
-    // Calculate brightness as a percentage of the current brightness setting
-    // float normalized = _fadePercent / 100.0;
-    // int brightness = normalized * ANIMATION_BRIGHTNESS_LIST[_currentBrightness];
-    // _setLEDPinBrightness(pin, brightness);
-    _setLEDPinBrightness(pin, _fadePercent);
-
-    _fadePercent += _fadeDir;
-
-    if (_fadePercent >= 100) {
-        _fadeDir = -1;
-    }
-    else if (_fadePercent <= 0) {
-        _fadeDir = 1;
-        _fadeColorIndex = (_fadeColorIndex + 1) % OPTIONS_LED_COUNT;
-    }
+  FastLED.show();
 }

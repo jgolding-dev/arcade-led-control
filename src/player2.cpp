@@ -69,3 +69,31 @@ void Player2::setAllLEDs(uint8_t rValue, uint8_t gValue, uint8_t bValue) {
   }
   FastLED.show();
 }
+
+/**
+* Sets the brightness level (%) of all LED channels (R/G/B)
+*/
+void Player2::_setSFTurbo() {
+  Serial.println("Setting Player 1 SF_Turbo");
+  delay(50);
+
+  setAllLEDs(BLACK);
+
+  // joystick
+  for (int i = 0; i < PLAYER1_JOYSTICK_LED_COUNT; i++) {
+    _setColor(_joystickLeds, BLUE, i);
+  }
+
+  // buttons
+  int light[] = {P2_BTN1, (P2_BTN1 + 1), P2_BTN3, (P2_BTN3 + 1) };
+  int medium[] = { P2_BTN2, (P2_BTN2 + 1), P2_BTN4, (P2_BTN4 + 1) };
+  int heavy[] = { P2_L1, (P2_L1 + 1), P2_R1, (P2_R1 + 1) };
+  int special[] = { P2_L2, (P2_L2 + 1), P2_R2, (P2_R2 + 1) };
+
+  _setColor(_buttonLeds, RED, light, 4);
+  _setColor(_buttonLeds, BLUE, medium, 4);
+  _setColor(_buttonLeds, GREEN, heavy, 4);
+  _setColor(_buttonLeds, YELLOW, special, 4);
+
+  FastLED.show();
+}

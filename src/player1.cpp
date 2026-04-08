@@ -81,7 +81,7 @@ void Player1::_setSFTurbo() {
 
   // joystick
   for (int i = 0; i < PLAYER1_JOYSTICK_LED_COUNT; i++) {
-    _joystickLeds[i].setRGB(BLUE.r, BLUE.g, BLUE.b);
+    _setColor(_joystickLeds, &BLUE, i);
   }
 
   // buttons
@@ -90,10 +90,10 @@ void Player1::_setSFTurbo() {
   int heavy[] = { P1_L1, (P1_L1 + 1), P1_R1, (P1_R1 + 1) };
   int special[] = { P1_L2, (P1_L2 + 1), P1_R2, (P1_R2 + 1) };
 
-  _setARGB(_buttonLeds, RED, light, 4);
-  _setARGB(_buttonLeds, BLUE, medium, 4);
-  _setARGB(_buttonLeds, GREEN, heavy, 4);
-  _setARGB(_buttonLeds, YELLOW, special, 4);
+  _setColor(_buttonLeds, RED, light, 4);
+  _setColor(_buttonLeds, BLUE, medium, 4);
+  _setColor(_buttonLeds, GREEN, heavy, 4);
+  _setColor(_buttonLeds, YELLOW, special, 4);
 
   FastLED.show();
 }

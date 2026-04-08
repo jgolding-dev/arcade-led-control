@@ -121,13 +121,13 @@ protected:
   int _fadeColorIndex;
   int _fadePercent;
   int _fadeDir;
-  virtual void _animateFadeRGB();
   virtual void _animateCustom();
   virtual void _setCustom(CustomType &type);
   virtual void _setSFTurbo();
+  void _animateFadeRGB();
   void _setLEDPinBrightness(int ledPin, int percent);
-  void _setARGB(CRGB* &led, RGB_t &color, int index);
-  void _setARGB(CRGB* &led, RGB_t &color, int* indexes, int size);
+  void _setColor(CRGB* &led, RGB_t &color, int index);
+  void _setColor(CRGB* &led, RGB_t &color, int* indexes, int size);
 };
 
 // -------- Child Classes -------- //
@@ -145,8 +145,8 @@ class Options : public Zone {
     void setAllLEDs(uint8_t r, uint8_t g, uint8_t b);
     void setAllLEDs(RGB_t color);
   private:
-    const int* _ledPins;
-    void _animateFadeRGB();
+    CRGB _leds[OPTIONS_BUTTONS_LED_COUNT];
+    void _setSFTurbo();
 };
 
 class Player1 : public Zone {
@@ -182,6 +182,7 @@ private:
   // Array to hold LED color data
   CRGB _buttonLeds[PLAYER2_BUTTONS_LED_COUNT];
   CRGB _joystickLeds[PLAYER2_JOYSTICK_LED_COUNT];
+  void _setSFTurbo();
 };
 
 class Accent : public Zone {

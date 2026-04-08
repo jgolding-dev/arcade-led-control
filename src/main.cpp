@@ -94,37 +94,38 @@ void updateActivityState(bool active) {
 * Updates the system activity state based on the recorded activity input state
 */
 void handleActivity() {
-  PinStatus current = digitalRead(ACTIVITY_PIN);
+  PinStatus currentP1 = digitalRead(P1_ACTIVITY_PIN);
+  PinStatus currentP2 = digitalRead(P2_ACTIVITY_PIN);
 
-  if (current == HIGH && lastActPinState == LOW) {
+  if ((currentP1 == HIGH || currentP2 == HIGH) && lastActPinState == LOW) {
     updateActivityState(true);
   } else if (systemActive && (millis() - lastActivityMs) > IDLE_TIMEOUT_MS) {
     updateActivityState(false);
   }
 
-  lastActPinState = current;
+  lastActPinState = currentP1 == HIGH || currentP2 == HIGH ? HIGH : LOW;
 }
 
-/**
-* Sets the animation state based on the triggered activity event
-*/
-void handleMacroEvent() {
-  PinStatus currentMacro1 = digitalRead(MACRO_1_PIN);
-  PinStatus currentMacro2 = digitalRead(MACRO_2_PIN);
-  PinStatus currentMacro3 = digitalRead(MACRO_3_PIN);
-  PinStatus currentMacro4 = digitalRead(MACRO_4_PIN);
+// /**
+// * Sets the animation state based on the triggered activity event
+// */
+// void handleMacroEvent() {
+//   PinStatus currentMacro1 = digitalRead(MACRO_1_PIN);
+//   PinStatus currentMacro2 = digitalRead(MACRO_2_PIN);
+//   PinStatus currentMacro3 = digitalRead(MACRO_3_PIN);
+//   PinStatus currentMacro4 = digitalRead(MACRO_4_PIN);
 
-  if (currentMacro1 == HIGH && lastMacro1PinState == LOW) {
-    animController.cycleZone();
-  } else if (currentMacro2 == HIGH && lastMacro2PinState == LOW) {
-    animController.cycleAnimationType();
-  } else if (currentMacro3 == HIGH && lastMacro3PinState == LOW) {
-    animController.cycleAnimationModifier();
-  } else if (currentMacro4 == HIGH && lastMacro4PinState == LOW) {
-    animController.cycleMasterBrightness();
-  }
-  lastMacro1PinState = currentMacro1;
-  lastMacro2PinState = currentMacro2;
-  lastMacro3PinState = currentMacro3;
-  lastMacro4PinState = currentMacro4;
-}
+//   if (currentMacro1 == HIGH && lastMacro1PinState == LOW) {
+//     animController.cycleZone();
+//   } else if (currentMacro2 == HIGH && lastMacro2PinState == LOW) {
+//     animController.cycleAnimationType();
+//   } else if (currentMacro3 == HIGH && lastMacro3PinState == LOW) {
+//     animController.cycleAnimationModifier();
+//   } else if (currentMacro4 == HIGH && lastMacro4PinState == LOW) {
+//     animController.cycleMasterBrightness();
+//   }
+//   lastMacro1PinState = currentMacro1;
+//   lastMacro2PinState = currentMacro2;
+//   lastMacro3PinState = currentMacro3;
+//   lastMacro4PinState = currentMacro4;
+// }

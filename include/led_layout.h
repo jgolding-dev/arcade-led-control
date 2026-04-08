@@ -55,10 +55,11 @@ enum Player2LedJoystickIndex : uint8_t {
 #define PLAYER1_JOYSTICK_LED_TYPE         WS2812B
 #define PLAYER2_BUTTONS_LED_TYPE          WS2812B
 #define PLAYER2_JOYSTICK_LED_TYPE         WS2812B
+#define OPTIONS_BUTTONS_LED_TYPE          WS2812B
 
 // -------- Counts -------- //
 
-#define OPTIONS_LED_COUNT                 3
+#define OPTIONS_BUTTONS_LED_COUNT         5
 #define PLAYER1_BUTTONS_LED_COUNT         16
 #define PLAYER1_JOYSTICK_LED_COUNT        9
 #define PLAYER2_BUTTONS_LED_COUNT         16

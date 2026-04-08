@@ -161,21 +161,21 @@ void Zone::_animateFadeRGB() {
   }
 }
 
-/**
-* Sets the brightness value of single LED pin to the specified percentage value
-* @param ledPin The pin number of the LED to set the brightness of
-* @param percent The brightness percentage value (0-100)
-*/
-void Zone::_setLEDPinBrightness(int ledPin, int percent) {
-  // Constrain percentage to 0-100
-  percent = constrain(percent, 0, 100);
+// /**
+// * Sets the brightness value of single LED pin to the specified percentage value
+// * @param ledPin The pin number of the LED to set the brightness of
+// * @param percent The brightness percentage value (0-100)
+// */
+// void Zone::_setLEDPinBrightness(int ledPin, int percent) {
+//   // Constrain percentage to 0-100
+//   percent = constrain(percent, 0, 100);
 
-  // set brightness level using gamma correction
-  float gamma = 2.2;
-  float normalized = percent / 100.0;
-  int brightness = pow(normalized, gamma) * 255;
-  analogWrite(ledPin, brightness);
-}
+//   // set brightness level using gamma correction
+//   float gamma = 2.2;
+//   float normalized = percent / 100.0;
+//   int brightness = pow(normalized, gamma) * 255;
+//   analogWrite(ledPin, brightness);
+// }
 
 /**
 * Sets the brightness level (%) of all LED channels (R/G/B)
@@ -201,13 +201,13 @@ void Zone::setAllLEDs(RGB_t &color) {
  * @param color the color to set for the LED
  * @param index the index of the CRGB array corresponding to the LED
  */
-void Zone::_setARGB(CRGB* &led, RGB_t &color, int index) {
+void Zone::_setColor(CRGB* &led, RGB_t &color, int index) {
   led[index].setRGB(color.r, color.g, color.b);
 }
 
 // void _setAllARGB(CRGB* &led, RGB_t color, int count) {
 //   for (int i = 0; i < count; i++) {
-//     setARGB(led, color, i);
+//     setColor(led, color, i);
 //   }
 //   led.show();
 // }
@@ -219,7 +219,7 @@ void Zone::_setARGB(CRGB* &led, RGB_t &color, int index) {
  * @param indexes the indexes of the CRGB array corresponding to the LEDs
  * @param size the size of the CRGB array
  */
-void Zone::_setARGB(CRGB* &led, RGB_t &color, int* indexes, int size) {
+void Zone::_setColor(CRGB* &led, RGB_t &color, int* indexes, int size) {
   for (int i = 0; i < size; i++) {
     led[i].setRGB(color.r, color.g, color.b);
   }
