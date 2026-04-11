@@ -36,7 +36,7 @@ void Player2::cycleAnimationModifier() {
   switch (currentAnimation) {
     case STATIC:
       _staticColorIndex = (_staticColorIndex + 1) % (sizeof(STATIC_COLORS) / sizeof(STATIC_COLORS[0]));
-      setAllLEDs(STATIC_COLORS[_staticColorIndex]);
+      Zone::setAllLEDs(STATIC_COLORS[_staticColorIndex]);
       break;
     case FADE:
       _fadeStepIndex = (_fadeStepIndex + 1) % (sizeof(FADE_STEP_MS) / sizeof(FADE_STEP_MS[0]));
@@ -77,11 +77,11 @@ void Player2::_setSFTurbo() {
   Serial.println("Setting Player 1 SF_Turbo");
   delay(50);
 
-  setAllLEDs(BLACK);
+  Zone::setAllLEDs(BLACK);
 
   // joystick
-  for (int i = 0; i < PLAYER1_JOYSTICK_LED_COUNT; i++) {
-    _setColor(_joystickLeds, BLUE, i);
+  for (int i = 0; i < PLAYER2_JOYSTICK_LED_COUNT; i++) {
+    Zone::_setColor(_joystickLeds, BLUE, i);
   }
 
   // buttons

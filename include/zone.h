@@ -102,6 +102,8 @@ public:
   void startZoneSwitchAnimation();
   void cycleAnimationType();
   void setAnimationModifier(int modifierIndex);
+  void setAllLEDs(RGB_t &color);
+
 
   // Virtual functions to be overridden by children
   virtual void setup();
@@ -110,7 +112,6 @@ public:
   virtual void cycleAnimationModifier();
   virtual void setMasterBrightness(int value);
   virtual void setAllLEDs(uint8_t r, uint8_t g, uint8_t b);
-  virtual void setAllLEDs(RGB_t &color);
 protected:
   bool _switchAnimationActive;
   int _staticColorIndex;
@@ -126,8 +127,9 @@ protected:
   virtual void _setSFTurbo();
   void _animateFadeRGB();
   void _setLEDPinBrightness(int ledPin, int percent);
-  void _setColor(CRGB* &led, RGB_t &color, int index);
-  void _setColor(CRGB* &led, RGB_t &color, int* indexes, int size);
+  void _setColor(CRGB* leds, RGB_t &color, int index);
+  void _setColor(CRGB* leds, RGB_t &color, int* indexes, int size);
+  void _setAllCRGB(CRGB* leds, RGB_t &color, int count);
 };
 
 // -------- Child Classes -------- //
@@ -143,7 +145,6 @@ class Options : public Zone {
     void cycleAnimationModifier();
     void setMasterBrightness(int value);
     void setAllLEDs(uint8_t r, uint8_t g, uint8_t b);
-    void setAllLEDs(RGB_t color);
   private:
     CRGB _leds[OPTIONS_BUTTONS_LED_COUNT];
     void _setSFTurbo();
@@ -159,7 +160,6 @@ public:
   void process();
   void cycleAnimationModifier();
   void setAllLEDs(uint8_t r, uint8_t g, uint8_t b);
-  void setAllLEDs(RGB_t color);
 private:
   // Array to hold LED color data
   CRGB _buttonLeds[PLAYER1_BUTTONS_LED_COUNT];
@@ -177,7 +177,6 @@ public:
   void process();
   void cycleAnimationModifier();
   void setAllLEDs(uint8_t r, uint8_t g, uint8_t b);
-  void setAllLEDs(RGB_t color);
 private:
   // Array to hold LED color data
   CRGB _buttonLeds[PLAYER2_BUTTONS_LED_COUNT];
@@ -195,7 +194,6 @@ public:
   void process();
   void cycleAnimationModifier();
   void setAllLEDs(uint8_t r, uint8_t g, uint8_t b);
-  void setAllLEDs(RGB_t color);
 private:
   // Array to hold LED color data
   CRGB _leds[ACCENT_LED_COUNT];
@@ -212,7 +210,6 @@ public:
   void cycleAnimationModifier();
   void setAnimationType(ANIMATION_TYPE animType);
   void setAllLEDs(uint8_t r, uint8_t g, uint8_t b);
-  void setAllLEDs(RGB_t color);
 private:
   // sub-zones
   Player1* _player1Zone;
@@ -235,7 +232,6 @@ class ControlPanel : public Zone {
     void process();
     void cycleAnimationModifier();
     void setAllLEDs(uint8_t r, uint8_t g, uint8_t b);
-    void setAllLEDs(RGB_t color);
   private:
     // sub-zones
     Player1* _player1Zone;

@@ -49,8 +49,17 @@ void AnimationController::cycleZone() {
   _zones[_currentZone]->startZoneSwitchAnimation();
 }
 
+void AnimationController::setZone(int zoneIndex) {
+  _currentZone = zoneIndex;
+  _zones[_currentZone]->startZoneSwitchAnimation();
+}
+
 void AnimationController::cycleAnimationType() {
   _zones[_currentZone]->cycleAnimationType();
+}
+
+void AnimationController::setAnimationType(ANIMATION_TYPE animType) {
+  _zones[_currentZone]->setAnimationType(animType);
 }
 
 /**

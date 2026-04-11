@@ -29,7 +29,7 @@ void Full::setAnimationType(ANIMATION_TYPE animType) {
   for (uint8_t i = 0; i < ZONE_COUNT; i++) {
     _subZones[i]->reset();
   }
-  setAllLEDs(0, 0, 0);
+  Zone::setAllLEDs(BLACK);
 
   int animationModifier = -1;
   switch (currentAnimation) {

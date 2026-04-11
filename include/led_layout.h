@@ -49,6 +49,14 @@ enum Player2LedJoystickIndex : uint8_t {
   P2_BALLTOP    = 8
 };
 
+enum OptionsLedIndex: uint8_t {
+  OP_P1_HOME = 0,
+  OP_P1_SELECT = 1,
+  OP_P1_START = 2,
+  OP_P2_START = 3,
+  OP_P2_SELECT = 4
+};
+
 // -------- LED Chip Types -------- //
 #define ACCENT_LED_TYPE                   WS2811
 #define PLAYER1_BUTTONS_LED_TYPE          WS2812B

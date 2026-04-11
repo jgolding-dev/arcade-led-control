@@ -16,10 +16,12 @@ class AnimationController {
         void cycleAnimationType();
         void cycleMasterBrightness();
         void cycleAnimationModifier();
+        void setZone(int zoneIndex);
+        void setAnimationType(ANIMATION_TYPE animType);
+        void setAnimationModifier(int modifierIndex);
         void processAnimations();
         void setIdle(bool isIdle);
     private:
-        void _setLEDPinBrightness(int ledPin, int percent);
         void _setAllLEDs(int rValue, int gValue, int bValue);
         void _setColor(uint32_t color);
         void _animateFadeRGB();

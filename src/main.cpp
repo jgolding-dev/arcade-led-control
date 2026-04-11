@@ -3,7 +3,7 @@
 #include <led_layout.h>
 #include <animation_controller.h>
 
-const bool DEBUG_MODE = true;
+const bool DEBUG_MODE = false;
 
 // ---- Timing ----
 const unsigned long IDLE_TIMEOUT_MS = 15UL * 60UL * 1000UL;  // 15 Minutes
@@ -32,7 +32,7 @@ AnimationController animController(IDLE_TIMEOUT_MS);
 
 // local function declarations
 void handleActivity();
-void handleMacroEvent();
+// void handleMacroEvent();
 void updateActivityState(bool active);
 
 void setup() {
@@ -57,7 +57,7 @@ void setup() {
 void loop() {
   handleActivity();
   animController.handleIdleState(systemActive);
-  handleMacroEvent();
+  // handleMacroEvent();
   if (DEBUG_MODE) {
     // if ((millis() - lastZoneSwitch) > CYCLE_ZONE_MS) {
     //   Serial.println("Cycling Zone...");

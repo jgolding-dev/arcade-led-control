@@ -201,16 +201,21 @@ void Zone::setAllLEDs(RGB_t &color) {
  * @param color the color to set for the LED
  * @param index the index of the CRGB array corresponding to the LED
  */
-void Zone::_setColor(CRGB* &led, RGB_t &color, int index) {
-  led[index].setRGB(color.r, color.g, color.b);
+void Zone::_setColor(CRGB* leds, RGB_t &color, int index) {
+  leds[index].setRGB(color.r, color.g, color.b);
 }
 
-// void _setAllARGB(CRGB* &led, RGB_t color, int count) {
-//   for (int i = 0; i < count; i++) {
-//     setColor(led, color, i);
-//   }
-//   led.show();
-// }
+/**
+ * Set the color for all the LEDs in the CRGB array
+ * @param led the FastLED CRGB array
+ * @param color the color to set for the LEDs
+ * @param index the number of LEDs in the CRGB array
+ */
+void Zone::_setAllCRGB(CRGB* leds, RGB_t &color, int count) {
+  for (int i = 0; i < count; i++) {
+    _setColor(leds, color, i);
+  }
+}
 
 /**
  * Set the color for the specefied addressable RGB LEDs
@@ -219,9 +224,10 @@ void Zone::_setColor(CRGB* &led, RGB_t &color, int index) {
  * @param indexes the indexes of the CRGB array corresponding to the LEDs
  * @param size the size of the CRGB array
  */
-void Zone::_setColor(CRGB* &led, RGB_t &color, int* indexes, int size) {
+void Zone::_setColor(CRGB* leds, RGB_t &color, int* indexes, int size) {
   for (int i = 0; i < size; i++) {
-    led[i].setRGB(color.r, color.g, color.b);
+    int index = indexes[i];
+    leds[index].setRGB(color.r, color.g, color.b);
   }
 }
 
