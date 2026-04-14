@@ -3,7 +3,14 @@
 #include <led_layout.h>
 #include <animation_controller.h>
 
-const bool DEBUG_MODE = false;
+// UART Communication
+#include "hardware/uart.h"
+#include "hardware/gpio.h"
+
+#define UART_ID uart0
+#define BAUD_RATE 115200
+
+const bool DEBUG_MODE = true;
 
 // ---- Timing ----
 const unsigned long IDLE_TIMEOUT_MS = 15UL * 60UL * 1000UL;  // 15 Minutes
@@ -31,15 +38,21 @@ AnimationController animController(IDLE_TIMEOUT_MS);
 
 
 // local function declarations
+void handleUARTActivity();
 void handleActivity();
 // void handleMacroEvent();
 void updateActivityState(bool active);
 
 void setup() {
+  // UART Initialization
+  uart_init(UART_ID, BAUD_RATE);
   delay(100); // allow USB stack to settle
 
+  gpio_set_function(P2_UART_RX_PIN, GPIO_FUNC_UART); // RX
+  // gpio_set_function(P2_UART_RX_PIN, GPIO_FUNC_UART); // RX
+
   if (DEBUG_MODE) {
-    Serial.begin(115200);
+    Serial.begin(BAUD_RATE);
   }
   // Initialize I/O
   Pins::initPins();
@@ -55,7 +68,8 @@ void setup() {
 }
 
 void loop() {
-  handleActivity();
+  handleUARTActivity();
+  // handleActivity();
   animController.handleIdleState(systemActive);
   // handleMacroEvent();
   if (DEBUG_MODE) {
@@ -91,20 +105,31 @@ void updateActivityState(bool active) {
 }
 
 /**
-* Updates the system activity state based on the recorded activity input state
-*/
-void handleActivity() {
-  PinStatus currentP1 = digitalRead(P1_ACTIVITY_PIN);
-  PinStatus currentP2 = digitalRead(P2_ACTIVITY_PIN);
-
-  if ((currentP1 == HIGH || currentP2 == HIGH) && lastActPinState == LOW) {
-    updateActivityState(true);
-  } else if (systemActive && (millis() - lastActivityMs) > IDLE_TIMEOUT_MS) {
-    updateActivityState(false);
+ * Process UART data received
+ */
+void handleUARTActivity() {
+  // Read and discard incoming data to clear the buffer
+  while (uart_is_readable(UART_ID)) {
+    uint8_t byte = uart_getc(UART_ID);
+    Serial.println(byte, HEX); // Debug: Print received byte in hex
   }
-
-  lastActPinState = currentP1 == HIGH || currentP2 == HIGH ? HIGH : LOW;
 }
+
+// /**
+// * Updates the system activity state based on the recorded activity input state
+// */
+// void handleActivity() {
+//   PinStatus currentP1 = digitalRead(P1_UART_RX_PIN);
+//   PinStatus currentP2 = digitalRead(P2_UART_RX_PIN);
+
+//   if ((currentP1 == HIGH || currentP2 == HIGH) && lastActPinState == LOW) {
+//     updateActivityState(true);
+//   } else if (systemActive && (millis() - lastActivityMs) > IDLE_TIMEOUT_MS) {
+//     updateActivityState(false);
+//   }
+
+//   lastActPinState = currentP1 == HIGH || currentP2 == HIGH ? HIGH : LOW;
+// }
 
 // /**
 // * Sets the animation state based on the triggered activity event

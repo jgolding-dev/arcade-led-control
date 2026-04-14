@@ -191,7 +191,7 @@ void Zone::setAllLEDs(uint8_t rValue, uint8_t gValue, uint8_t bValue) {
 * Sets the brightness level (%) of all LED channels (R/G/B)
 * @param color the color to set for all LEDs
 */
-void Zone::setAllLEDs(RGB_t &color) {
+void Zone::setAllLEDs(const RGB_t &color) {
   setAllLEDs(color.r, color.g, color.b);
 }
 
@@ -201,7 +201,7 @@ void Zone::setAllLEDs(RGB_t &color) {
  * @param color the color to set for the LED
  * @param index the index of the CRGB array corresponding to the LED
  */
-void Zone::_setColor(CRGB* leds, RGB_t &color, int index) {
+void Zone::_setColor(CRGB* leds, const RGB_t &color, int index) {
   leds[index].setRGB(color.r, color.g, color.b);
 }
 
@@ -211,7 +211,7 @@ void Zone::_setColor(CRGB* leds, RGB_t &color, int index) {
  * @param color the color to set for the LEDs
  * @param index the number of LEDs in the CRGB array
  */
-void Zone::_setAllCRGB(CRGB* leds, RGB_t &color, int count) {
+void Zone::_setAllCRGB(CRGB* leds, const RGB_t &color, int count) {
   for (int i = 0; i < count; i++) {
     _setColor(leds, color, i);
   }
@@ -224,7 +224,7 @@ void Zone::_setAllCRGB(CRGB* leds, RGB_t &color, int count) {
  * @param indexes the indexes of the CRGB array corresponding to the LEDs
  * @param size the size of the CRGB array
  */
-void Zone::_setColor(CRGB* leds, RGB_t &color, int* indexes, int size) {
+void Zone::_setColor(CRGB* leds, const RGB_t &color, int* indexes, int size) {
   for (int i = 0; i < size; i++) {
     int index = indexes[i];
     leds[index].setRGB(color.r, color.g, color.b);
@@ -235,13 +235,14 @@ void Zone::_setColor(CRGB* leds, RGB_t &color, int* indexes, int size) {
  * Sets the zone to the specified custom lighting pattern
  * @param type the custom type
  */
-void Zone::_setCustom(CustomType &type) {
+void Zone::_setCustom(const CustomType &type) {
   switch (type) {
     case SF_TURBO:
       _setSFTurbo();
       break;
     default:
       // No custom type
+      break;
   }
 }
 

@@ -69,7 +69,7 @@ enum CustomType : uint8_t {
   SF_TURBO = 0
 };
 
-CustomType CUSTOM_TYPES[] = {
+const CustomType CUSTOM_TYPES[] = {
   SF_TURBO
 };
 
@@ -102,7 +102,8 @@ public:
   void startZoneSwitchAnimation();
   void cycleAnimationType();
   void setAnimationModifier(int modifierIndex);
-  void setAllLEDs(RGB_t &color);
+  void setAllLEDs(const RGB_t &color);
+  void setMasterBrightness(int value);
 
 
   // Virtual functions to be overridden by children
@@ -110,7 +111,6 @@ public:
   virtual void process();
   virtual void setAnimationType(ANIMATION_TYPE animType);
   virtual void cycleAnimationModifier();
-  virtual void setMasterBrightness(int value);
   virtual void setAllLEDs(uint8_t r, uint8_t g, uint8_t b);
 protected:
   bool _switchAnimationActive;
@@ -123,13 +123,13 @@ protected:
   int _fadePercent;
   int _fadeDir;
   virtual void _animateCustom();
-  virtual void _setCustom(CustomType &type);
+  virtual void _setCustom(const CustomType &type);
   virtual void _setSFTurbo();
   void _animateFadeRGB();
   void _setLEDPinBrightness(int ledPin, int percent);
-  void _setColor(CRGB* leds, RGB_t &color, int index);
-  void _setColor(CRGB* leds, RGB_t &color, int* indexes, int size);
-  void _setAllCRGB(CRGB* leds, RGB_t &color, int count);
+  void _setColor(CRGB* leds, const RGB_t &color, int index);
+  void _setColor(CRGB* leds, const RGB_t &color, int* indexes, int size);
+  void _setAllCRGB(CRGB* leds, const RGB_t &color, int count);
 };
 
 // -------- Child Classes -------- //
@@ -143,7 +143,6 @@ class Options : public Zone {
     void setup();
     void process();
     void cycleAnimationModifier();
-    void setMasterBrightness(int value);
     void setAllLEDs(uint8_t r, uint8_t g, uint8_t b);
   private:
     CRGB _leds[OPTIONS_BUTTONS_LED_COUNT];

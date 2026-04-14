@@ -25,7 +25,7 @@
 
 // ---------------- Input ---------------- //
 
-#define P2_ACTIVITY_PIN                   1
+#define P2_UART_RX_PIN                    1
 #define DISPLAY_SCK_PIN                   2
 #define DISPLAY_MOSI_PIN                  3
 #define DISPLAY_CS_PIN                    0
@@ -36,7 +36,7 @@
 #define ROTARY_CLK_PIN                    14
 #define DISPLAY_RST_PIN                   15
 
-#define P1_ACTIVITY_PIN                   13
+#define P1_UART_RX_PIN                    13
 
 // ---------------- Groups ---------------- //
 
@@ -68,8 +68,8 @@ public:
     pinMode(ACCENT_DATA_PIN, OUTPUT);
 
     // Inputs
-    pinMode(P1_ACTIVITY_PIN, INPUT_PULLDOWN);
-    pinMode(P2_ACTIVITY_PIN, INPUT_PULLDOWN);
+    pinMode(P1_UART_RX_PIN, INPUT_PULLDOWN);
+    pinMode(P2_UART_RX_PIN, INPUT_PULLDOWN);
     pinMode(DISPLAY_SCK_PIN, INPUT_PULLDOWN);
     pinMode(DISPLAY_MOSI_PIN, INPUT_PULLDOWN);
     pinMode(DISPLAY_CS_PIN, INPUT_PULLDOWN);
