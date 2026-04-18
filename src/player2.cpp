@@ -56,7 +56,6 @@ void Player2::cycleAnimationModifier() {
 */
 void Player2::setAllLEDs(uint8_t rValue, uint8_t gValue, uint8_t bValue) {
   Serial.println("Setting P2 LEDs");
-  delay(50);
   for (int i = 0; i < PLAYER2_BUTTONS_LED_COUNT; i++) {
     _buttonLeds[i].r = rValue;
     _buttonLeds[i].g = gValue;
@@ -75,7 +74,6 @@ void Player2::setAllLEDs(uint8_t rValue, uint8_t gValue, uint8_t bValue) {
 */
 void Player2::_setSFTurbo() {
   Serial.println("Setting Player 1 SF_Turbo");
-  delay(50);
 
   Zone::setAllLEDs(BLACK);
 

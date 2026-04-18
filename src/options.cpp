@@ -55,7 +55,6 @@ void Options::cycleAnimationModifier() {
 */
 void Options::setAllLEDs(uint8_t rValue, uint8_t gValue, uint8_t bValue) {
   Serial.println("Setting Options LEDs");
-  delay(50);
   for (int i = 0; i < OPTIONS_BUTTONS_LED_COUNT; i++) {
     _leds[i].r = rValue;
     _leds[i].g = gValue;
@@ -69,7 +68,6 @@ void Options::setAllLEDs(uint8_t rValue, uint8_t gValue, uint8_t bValue) {
 */
 void Options::_setSFTurbo() {
   Serial.println("Setting Options SF_Turbo");
-  delay(50);
 
   // Zone::setAllLEDs(BLACK);
   Zone::setAllLEDs(WHITE);

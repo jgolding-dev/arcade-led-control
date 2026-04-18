@@ -39,20 +39,20 @@ AnimationController animController(IDLE_TIMEOUT_MS);
 
 // local function declarations
 void handleUARTActivity();
-void handleActivity();
+// void handleActivity();
 // void handleMacroEvent();
 void updateActivityState(bool active);
 
 void setup() {
-  // UART Initialization
-  uart_init(UART_ID, BAUD_RATE);
   delay(100); // allow USB stack to settle
 
-  gpio_set_function(P2_UART_RX_PIN, GPIO_FUNC_UART); // RX
-  // gpio_set_function(P2_UART_RX_PIN, GPIO_FUNC_UART); // RX
-
   if (DEBUG_MODE) {
+    // UART Initialization
     Serial.begin(BAUD_RATE);
+
+    Serial1.setRX(P2_UART_RX_PIN);        // match your wiring
+    Serial1.setTX(0);        // (TX not strictly needed for RX test)
+    Serial1.begin(BAUD_RATE);    // UART from GP2040
   }
   // Initialize I/O
   Pins::initPins();
@@ -81,10 +81,9 @@ void loop() {
     //   lastModSwitch = millis();
     // }
     if ((millis() - lastModSwitch) > CYCLE_MOD_MS) {
-      Serial.println("Cycling Modifier...");
-      delay(50);
-      animController.cycleAnimationModifier();
-      lastModSwitch = millis();
+      // Serial.println("Cycling Modifier...");
+      // animController.cycleAnimationModifier();
+      // lastModSwitch = millis();
     }
   }
   animController.processAnimations();
@@ -108,11 +107,24 @@ void updateActivityState(bool active) {
  * Process UART data received
  */
 void handleUARTActivity() {
-  // Read and discard incoming data to clear the buffer
-  while (uart_is_readable(UART_ID)) {
-    uint8_t byte = uart_getc(UART_ID);
+  int index = 0;
+  while (Serial1.available()) {
+    uint8_t byte = Serial1.read();
+    if (byte == 0xAA) {
+      index = 0;
+    }
+
+    buffer[index++] = byte;
+
+    if (index == 6) {
+      // validate checksum
+      // process packet
+      index = 0;
+    }
+    Serial.print("RX: ");
     Serial.println(byte, HEX); // Debug: Print received byte in hex
   }
+  // printf("RX: %02X\n", uart_getc(uart0));
 }
 
 // /**
