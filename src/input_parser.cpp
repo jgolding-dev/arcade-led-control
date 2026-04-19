@@ -7,8 +7,25 @@ bool InputParser::parse(Stream &serial, InputPacket &outPacket) {
         uint8_t byte = serial.read();
 
         // --- SYNC ---
-        if (index == 0 && byte != HEADER) {
-            continue; // wait for header byte
+        if (index == 0) {
+            if (byte != HEADER)
+                continue; // wait for header byte
+            buffer[index++] = byte;
+            continue;
+        }
+
+        if (index == 1) {
+            if (byte == HEADER2) {
+                // valid so far, move to next byte
+                buffer[index++] = byte;
+                continue;
+            } else if (byte == HEADER) {
+                // stay in sync if this byte could be a header
+                buffer[0] = HEADER;
+                continue;
+            }
+            index = 0; // reset if second header byte doesn't match
+            continue;
         }
 
         buffer[index++] = byte;
@@ -20,12 +37,11 @@ bool InputParser::parse(Stream &serial, InputPacket &outPacket) {
             memcpy(&outPacket, buffer, sizeof(InputPacket));
 
             if (validate(outPacket)) {
-                return true; // valid packet parsed
+                return true;  // OK to return, but ONLY if caller loops properly
             } else {
                 // stay synced: if this byte could be a header, reuse it
                 if (byte == HEADER) {
-                    buffer[0] = HEADER;
-                    index = 1;
+                    buffer[index++] = byte;
                 }
                 return false;
             }
@@ -35,13 +51,13 @@ bool InputParser::parse(Stream &serial, InputPacket &outPacket) {
 }
 
 bool InputParser::validate(const InputPacket &packet) {
-    int8_t calc =
+    uint8_t calc =
         packet.header ^
+        packet.header2 ^
         packet.buttons_l ^
         packet.buttons_h ^
         packet.joystick ^
-        packet.joystick_mode ^
-        packet.aux;
+        packet.joystick_mode;
         
     return calc == packet.checksum;
 }

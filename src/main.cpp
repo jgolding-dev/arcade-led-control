@@ -2,6 +2,8 @@
 #include <pins.h>
 #include <led_layout.h>
 #include <animation_controller.h>
+#include <input_parser.h>
+#include <input_byte_config.h>
 
 // UART Communication
 #include "hardware/uart.h"
@@ -35,6 +37,7 @@ unsigned long lastZoneSwitch = 0;
 bool systemActive = true;
 
 AnimationController animController(IDLE_TIMEOUT_MS);
+InputParser parser;
 
 
 // local function declarations
@@ -42,18 +45,16 @@ void handleUARTActivity();
 // void handleActivity();
 // void handleMacroEvent();
 void updateActivityState(bool active);
+void printHex8Label(const char* label, uint8_t value);
 
 void setup() {
   delay(100); // allow USB stack to settle
 
-  if (DEBUG_MODE) {
-    // UART Initialization
-    Serial.begin(BAUD_RATE);
+  // UART Initialization
+  Serial.begin(BAUD_RATE);
+  Serial1.setRX(P2_UART_RX_PIN);        // match your wiring
+  Serial1.begin(BAUD_RATE);    // UART from GP2040
 
-    Serial1.setRX(P2_UART_RX_PIN);        // match your wiring
-    Serial1.setTX(0);        // (TX not strictly needed for RX test)
-    Serial1.begin(BAUD_RATE);    // UART from GP2040
-  }
   // Initialize I/O
   Pins::initPins();
 
@@ -73,17 +74,16 @@ void loop() {
   animController.handleIdleState(systemActive);
   // handleMacroEvent();
   if (DEBUG_MODE) {
-    // if ((millis() - lastZoneSwitch) > CYCLE_ZONE_MS) {
-    //   Serial.println("Cycling Zone...");
-    //   delay(50);
-    //   animController.cycleZone();
-    //   lastZoneSwitch = millis();
-    //   lastModSwitch = millis();
-    // }
+    if ((millis() - lastZoneSwitch) > CYCLE_ZONE_MS) {
+      Serial.println("Cycling Zone...");
+      animController.cycleZone();
+      lastZoneSwitch = millis();
+      lastModSwitch = millis();
+    }
     if ((millis() - lastModSwitch) > CYCLE_MOD_MS) {
-      // Serial.println("Cycling Modifier...");
-      // animController.cycleAnimationModifier();
-      // lastModSwitch = millis();
+      Serial.println("Cycling Modifier...");
+      animController.cycleAnimationModifier();
+      lastModSwitch = millis();
     }
   }
   animController.processAnimations();
@@ -107,24 +107,48 @@ void updateActivityState(bool active) {
  * Process UART data received
  */
 void handleUARTActivity() {
-  int index = 0;
-  while (Serial1.available()) {
-    uint8_t byte = Serial1.read();
-    if (byte == 0xAA) {
-      index = 0;
+  InputPacket packet;
+
+  while (parser.parse(Serial1, packet)) {
+    // Process the packet
+    Serial.println("Received valid packet");
+
+    uint16_t buttons = packet.buttons_l | (packet.buttons_h << 8);
+
+    if (DEBUG_MODE) {
+      Serial.println();
+      Serial.println("---- PACKET DETAILS ----");
+      printHex8Label("Header", packet.header);
+      printHex8Label("Header2", packet.header2);
+      printHex8Label("Buttons_l", packet.buttons_l);
+      printHex8Label("Buttons_h", packet.buttons_h);
+      printHex8Label("Joystick", packet.joystick);
+      printHex8Label("Joystick Mode", packet.joystick_mode);
+      Serial.println("---------------------------");
     }
 
-    buffer[index++] = byte;
-
-    if (index == 6) {
-      // validate checksum
-      // process packet
-      index = 0;
+    // Example usage:
+    if (packet.joystick_mode & (1 << JOY_MODE_DPAD)) {
+      Serial.println("Joystick in DPAD mode");
+    } else if (packet.joystick_mode & (1 << JOY_MODE_LS)) {
+      Serial.println("Joystick in Left Stick mode");
+    } else if (packet.joystick_mode & (1 << JOY_MODE_RS)) {
+      Serial.println("Joystick in Right Stick mode");
     }
-    Serial.print("RX: ");
-    Serial.println(byte, HEX); // Debug: Print received byte in hex
+    Serial.println();
   }
-  // printf("RX: %02X\n", uart_getc(uart0));
+}
+
+/**
+ * Prints bytes in hex format with a label for debugging purposes
+ * @param label A string label to describe the value being printed
+ * @param value The byte value to print in hex
+ */
+void printHex8Label(const char* label, uint8_t value) {
+  Serial.print(label);
+  Serial.print(": 0x");
+  if (value < 0x10) Serial.print("0"); // leading zero for single-digit hex
+  Serial.println(value, HEX);
 }
 
 // /**
