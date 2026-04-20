@@ -3,7 +3,7 @@
 #include <led_layout.h>
 #include <animation_controller.h>
 #include <input_parser.h>
-#include <input_byte_config.h>
+#include <input_protocol.h>
 
 // UART Communication
 #include "hardware/uart.h"
@@ -125,15 +125,25 @@ void handleUARTActivity() {
       printHex8Label("Joystick", packet.joystick);
       printHex8Label("Joystick Mode", packet.joystick_mode);
       Serial.println("---------------------------");
+      Serial.println(packet.header, BIN);
     }
 
     // Example usage:
-    if (packet.joystick_mode & (1 << JOY_MODE_DPAD)) {
+    if (packet.joystick_mode & JOY_MODE_DPAD) {
       Serial.println("Joystick in DPAD mode");
-    } else if (packet.joystick_mode & (1 << JOY_MODE_LS)) {
+      animController.setLEDPinBrightness(P1_DP_MODE_PIN, 100);
+      animController.setLEDPinBrightness(P1_LS_MODE_PIN, 0);
+      animController.setLEDPinBrightness(P1_RS_MODE_PIN, 0);
+    } else if (packet.joystick_mode & JOY_MODE_LS) {
       Serial.println("Joystick in Left Stick mode");
-    } else if (packet.joystick_mode & (1 << JOY_MODE_RS)) {
+      animController.setLEDPinBrightness(P1_DP_MODE_PIN, 0);
+      animController.setLEDPinBrightness(P1_LS_MODE_PIN, 100);
+      animController.setLEDPinBrightness(P1_RS_MODE_PIN, 0);
+    } else if (packet.joystick_mode & JOY_MODE_RS) {
       Serial.println("Joystick in Right Stick mode");
+      animController.setLEDPinBrightness(P1_DP_MODE_PIN, 0);
+      animController.setLEDPinBrightness(P1_LS_MODE_PIN, 0);
+      animController.setLEDPinBrightness(P1_RS_MODE_PIN, 100);
     }
     Serial.println();
   }
@@ -150,22 +160,6 @@ void printHex8Label(const char* label, uint8_t value) {
   if (value < 0x10) Serial.print("0"); // leading zero for single-digit hex
   Serial.println(value, HEX);
 }
-
-// /**
-// * Updates the system activity state based on the recorded activity input state
-// */
-// void handleActivity() {
-//   PinStatus currentP1 = digitalRead(P1_UART_RX_PIN);
-//   PinStatus currentP2 = digitalRead(P2_UART_RX_PIN);
-
-//   if ((currentP1 == HIGH || currentP2 == HIGH) && lastActPinState == LOW) {
-//     updateActivityState(true);
-//   } else if (systemActive && (millis() - lastActivityMs) > IDLE_TIMEOUT_MS) {
-//     updateActivityState(false);
-//   }
-
-//   lastActPinState = currentP1 == HIGH || currentP2 == HIGH ? HIGH : LOW;
-// }
 
 // /**
 // * Sets the animation state based on the triggered activity event

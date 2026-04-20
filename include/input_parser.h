@@ -1,15 +1,17 @@
 #pragma once
 #include <Arduino.h>
+#include <input_protocol.h>
 
-typedef struct {
-    uint8_t header;         // 0xAA for packet start
-    uint8_t header2;        // 0x55 for additional sync robustness
-    uint8_t buttons_l;
-    uint8_t buttons_h;
-    uint8_t joystick;
-    uint8_t joystick_mode;
-    uint8_t checksum;
-} __attribute__((packed)) InputPacket;
+uint8_t crc8(const uint8_t* data, size_t len) {
+    uint8_t crc = 0x00; // Initial value
+    for (size_t i = 0; i < len; i++) {
+        crc ^= data[i]; // XOR byte into CRC
+        for (uint8_t j = 0; j < 8; j++) {
+            crc = (crc & 0x80) ? (crc << 1) ^ 0x07 : (crc << 1); // Shift and XOR with polynomial if MSB is set
+        }
+    }
+    return crc;
+}
 
 class InputParser {
 public:
@@ -19,11 +21,13 @@ public:
     bool parse(Stream &serial, InputPacket &outPacket);
 
 private:
-    static const uint8_t HEADER = 0xAA;
-    static const uint8_t HEADER2 = 0x55;
-
     uint8_t buffer[sizeof(InputPacket)];
     uint8_t index;
 
     bool validate(const InputPacket &packet);
+    bool invalidDirectionCombination(uint8_t joystick) {
+        // Invalid if both up and down or both left and right are pressed
+        return ((joystick & JOY_UP_BIT) && (joystick & JOY_DOWN_BIT)) ||
+               ((joystick & JOY_LEFT_BIT) && (joystick & JOY_RIGHT_BIT));
+    }
 };

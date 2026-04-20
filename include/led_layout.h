@@ -4,10 +4,10 @@
 #include <Arduino.h>
 
 enum Player1LedButtonIndex : uint8_t {
-  P1_BTN1 = 8,
-  P1_BTN2 = 10,
-  P1_BTN3 = 6,
-  P1_BTN4 = 4,
+  P1_B1 = 8,
+  P1_B2 = 10,
+  P1_B3 = 6,
+  P1_B4 = 4,
   P1_L1 = 0,
   P1_R1 = 2,
   P1_L2 = 14,
@@ -27,10 +27,10 @@ enum Player1LedJoystickIndex : uint8_t {
 };
 
 enum Player2LedButtonIndex : uint8_t {
-  P2_BTN1 = 8,
-  P2_BTN2 = 10,
-  P2_BTN3 = 6,
-  P2_BTN4 = 4,
+  P2_B1 = 8,
+  P2_B2 = 10,
+  P2_B3 = 6,
+  P2_B4 = 4,
   P2_L1 = 0,
   P2_R1 = 2,
   P2_L2 = 14,
