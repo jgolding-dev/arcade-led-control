@@ -8,9 +8,25 @@
 // -----------------------------
 #define INPUT_HEADER1 0xAA
 #define INPUT_HEADER2 0x55
+#define MAX_PAYLOAD 16  // safety cap
 #define INPUT_PACKET_SIZE 8
-#define MAX_JOYSTICK_VALUE 0x0F // Assuming all 4 directions are pressed simultaneously
-#define MAX_JOYSTICK_MODE_VALUE 0X02;
+
+const uint8_t MAX_JOYSTICK_VALUE = 0x0F; // Assuming all 4 directions are pressed simultaneously
+const uint8_t MAX_JOYSTICK_MODE_VALUE = 0x02;
+
+// -----------------------------
+// Packet struct
+// -----------------------------
+typedef struct {
+    uint8_t header;         // 0xAA for packet start
+    uint8_t header2;        // 0x55 for additional sync robustness
+    uint8_t length;         // payload size (should be 4 for buttons + joystick + mode)
+    uint8_t buttons_l;
+    uint8_t buttons_h;
+    uint8_t joystick;
+    uint8_t joystick_mode;
+    uint8_t checksum;
+} __attribute__((packed)) InputPacket;
 
 // ------------------ Buttons ----------------- //
 
@@ -44,19 +60,5 @@ enum JoystickModeBit : uint8_t {
     JOY_MODE_LS         = (1 << 0),
     JOY_MODE_RS         = (1 << 1)
 };
-
-// -----------------------------
-// Packet struct
-// -----------------------------
-typedef struct {
-    uint8_t header;         // 0xAA for packet start
-    uint8_t header2;        // 0x55 for additional sync robustness
-    uint8_t length;         // payload size (should be 4 for buttons + joystick + mode)
-    uint8_t buttons_l;
-    uint8_t buttons_h;
-    uint8_t joystick;
-    uint8_t joystick_mode;
-    uint8_t checksum;
-} __attribute__((packed)) InputPacket;
 
 #endif

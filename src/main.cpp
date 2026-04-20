@@ -109,43 +109,46 @@ void updateActivityState(bool active) {
 void handleUARTActivity() {
   InputPacket packet;
 
-  while (parser.parse(Serial1, packet)) {
-    // Process the packet
-    Serial.println("Received valid packet");
+  while (Serial.available()) {
+    uint8_t byte = Serial.read();
 
-    uint16_t buttons = packet.buttons_l | (packet.buttons_h << 8);
+    if (parser.parseByte(byte, packet)) {
+      Serial.println("Received valid packet");
 
-    if (DEBUG_MODE) {
-      Serial.println();
-      Serial.println("---- PACKET DETAILS ----");
-      printHex8Label("Header", packet.header);
-      printHex8Label("Header2", packet.header2);
-      printHex8Label("Buttons_l", packet.buttons_l);
-      printHex8Label("Buttons_h", packet.buttons_h);
-      printHex8Label("Joystick", packet.joystick);
-      printHex8Label("Joystick Mode", packet.joystick_mode);
-      Serial.println("---------------------------");
-      Serial.println(packet.header, BIN);
+      uint16_t buttons = packet.buttons_l | (packet.buttons_h << 8);
+
+      if (DEBUG_MODE) {
+        Serial.println();
+        Serial.println("---- PACKET DETAILS ----");
+        printHex8Label("Header", packet.header);
+        printHex8Label("Header2", packet.header2);
+        printHex8Label("Buttons_l", packet.buttons_l);
+        printHex8Label("Buttons_h", packet.buttons_h);
+        printHex8Label("Joystick", packet.joystick);
+        printHex8Label("Joystick Mode", packet.joystick_mode);
+        Serial.println("---------------------------");
+        Serial.println(packet.header, BIN);
+
+        // Example usage:
+        if (packet.joystick_mode & JOY_MODE_DPAD) {
+          Serial.println("Joystick in DPAD mode");
+          animController.setLEDPinBrightness(P1_DP_MODE_PIN, 100);
+          animController.setLEDPinBrightness(P1_LS_MODE_PIN, 0);
+          animController.setLEDPinBrightness(P1_RS_MODE_PIN, 0);
+        } else if (packet.joystick_mode & JOY_MODE_LS) {
+          Serial.println("Joystick in Left Stick mode");
+          animController.setLEDPinBrightness(P1_DP_MODE_PIN, 0);
+          animController.setLEDPinBrightness(P1_LS_MODE_PIN, 100);
+          animController.setLEDPinBrightness(P1_RS_MODE_PIN, 0);
+        } else if (packet.joystick_mode & JOY_MODE_RS) {
+          Serial.println("Joystick in Right Stick mode");
+          animController.setLEDPinBrightness(P1_DP_MODE_PIN, 0);
+          animController.setLEDPinBrightness(P1_LS_MODE_PIN, 0);
+          animController.setLEDPinBrightness(P1_RS_MODE_PIN, 100);
+        }
+        Serial.println();
+      }
     }
-
-    // Example usage:
-    if (packet.joystick_mode & JOY_MODE_DPAD) {
-      Serial.println("Joystick in DPAD mode");
-      animController.setLEDPinBrightness(P1_DP_MODE_PIN, 100);
-      animController.setLEDPinBrightness(P1_LS_MODE_PIN, 0);
-      animController.setLEDPinBrightness(P1_RS_MODE_PIN, 0);
-    } else if (packet.joystick_mode & JOY_MODE_LS) {
-      Serial.println("Joystick in Left Stick mode");
-      animController.setLEDPinBrightness(P1_DP_MODE_PIN, 0);
-      animController.setLEDPinBrightness(P1_LS_MODE_PIN, 100);
-      animController.setLEDPinBrightness(P1_RS_MODE_PIN, 0);
-    } else if (packet.joystick_mode & JOY_MODE_RS) {
-      Serial.println("Joystick in Right Stick mode");
-      animController.setLEDPinBrightness(P1_DP_MODE_PIN, 0);
-      animController.setLEDPinBrightness(P1_LS_MODE_PIN, 0);
-      animController.setLEDPinBrightness(P1_RS_MODE_PIN, 100);
-    }
-    Serial.println();
   }
 }
 

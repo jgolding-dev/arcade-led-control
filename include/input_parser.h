@@ -2,32 +2,31 @@
 #include <Arduino.h>
 #include <input_protocol.h>
 
-uint8_t crc8(const uint8_t* data, size_t len) {
-    uint8_t crc = 0x00; // Initial value
-    for (size_t i = 0; i < len; i++) {
-        crc ^= data[i]; // XOR byte into CRC
-        for (uint8_t j = 0; j < 8; j++) {
-            crc = (crc & 0x80) ? (crc << 1) ^ 0x07 : (crc << 1); // Shift and XOR with polynomial if MSB is set
-        }
-    }
-    return crc;
-}
-
 class InputParser {
 public:
     InputParser();
     
     // feed bytes from UART
-    bool parse(Stream &serial, InputPacket &outPacket);
+    bool parseByte(uint8_t byte, InputPacket &packet);
 
 private:
-    uint8_t buffer[sizeof(InputPacket)];
+    enum State {
+        WAIT_HEADER1,
+        WAIT_HEADER2,
+        WAIT_LENGTH,
+        READ_PAYLOAD,
+        READ_CHECKSUM
+    };
+
+    State state;
+
+    uint8_t buffer[32]; // buffer to hold incoming bytes (size should accommodate the largest expected packet)
     uint8_t index;
+    uint8_t length;
+
+    void reset();
 
     bool validate(const InputPacket &packet);
-    bool invalidDirectionCombination(uint8_t joystick) {
-        // Invalid if both up and down or both left and right are pressed
-        return ((joystick & JOY_UP_BIT) && (joystick & JOY_DOWN_BIT)) ||
-               ((joystick & JOY_LEFT_BIT) && (joystick & JOY_RIGHT_BIT));
-    }
+    bool invalidDirectionCombination(uint8_t joystick);
+    uint8_t crc8(const uint8_t* data, size_t len);
 };
