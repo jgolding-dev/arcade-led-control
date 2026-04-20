@@ -15,6 +15,7 @@ bool InputParser::parseByte(uint8_t byte, InputPacket &packet) {
         case WAIT_HEADER1:
             if (byte == INPUT_HEADER1) {
                 buffer[0] = byte;
+                index = 1;
                 state = WAIT_HEADER2;
             }
             break;
