@@ -12,7 +12,7 @@
 #define UART_ID uart0
 #define BAUD_RATE 115200
 
-const bool DEBUG_MODE = true;
+const bool DEBUG_MODE = false;
 
 // ---- Timing ----
 const unsigned long IDLE_TIMEOUT_MS = 15UL * 60UL * 1000UL;  // 15 Minutes
@@ -109,8 +109,8 @@ void updateActivityState(bool active) {
 void handleUARTActivity() {
   InputPacket packet;
 
-  while (Serial.available()) {
-    uint8_t byte = Serial.read();
+  while (Serial1.available()) {
+    uint8_t byte = Serial1.read();
 
     if (parser.parseByte(byte, packet)) {
       Serial.println("Received valid packet");
@@ -127,27 +127,27 @@ void handleUARTActivity() {
         printHex8Label("Joystick", packet.joystick);
         printHex8Label("Joystick Mode", packet.joystick_mode);
         Serial.println("---------------------------");
-        Serial.println(packet.header, BIN);
-
-        // Example usage:
-        if (packet.joystick_mode & JOY_MODE_DPAD) {
-          Serial.println("Joystick in DPAD mode");
-          animController.setLEDPinBrightness(P1_DP_MODE_PIN, 100);
-          animController.setLEDPinBrightness(P1_LS_MODE_PIN, 0);
-          animController.setLEDPinBrightness(P1_RS_MODE_PIN, 0);
-        } else if (packet.joystick_mode & JOY_MODE_LS) {
-          Serial.println("Joystick in Left Stick mode");
-          animController.setLEDPinBrightness(P1_DP_MODE_PIN, 0);
-          animController.setLEDPinBrightness(P1_LS_MODE_PIN, 100);
-          animController.setLEDPinBrightness(P1_RS_MODE_PIN, 0);
-        } else if (packet.joystick_mode & JOY_MODE_RS) {
-          Serial.println("Joystick in Right Stick mode");
-          animController.setLEDPinBrightness(P1_DP_MODE_PIN, 0);
-          animController.setLEDPinBrightness(P1_LS_MODE_PIN, 0);
-          animController.setLEDPinBrightness(P1_RS_MODE_PIN, 100);
-        }
         Serial.println();
       }
+
+      // Example usage:
+      if (packet.joystick_mode == JOY_MODE_DPAD) {
+        Serial.println("Joystick in DPAD mode");
+        animController.setLEDPinBrightness(P1_DP_MODE_PIN, 100);
+        animController.setLEDPinBrightness(P1_LS_MODE_PIN, 0);
+        animController.setLEDPinBrightness(P1_RS_MODE_PIN, 0);
+      } else if (packet.joystick_mode == JOY_MODE_LS) {
+        Serial.println("Joystick in Left Stick mode");
+        animController.setLEDPinBrightness(P1_DP_MODE_PIN, 0);
+        animController.setLEDPinBrightness(P1_LS_MODE_PIN, 100);
+        animController.setLEDPinBrightness(P1_RS_MODE_PIN, 0);
+      } else if (packet.joystick_mode == JOY_MODE_RS) {
+        Serial.println("Joystick in Right Stick mode");
+        animController.setLEDPinBrightness(P1_DP_MODE_PIN, 0);
+        animController.setLEDPinBrightness(P1_LS_MODE_PIN, 0);
+        animController.setLEDPinBrightness(P1_RS_MODE_PIN, 100);
+      }
+      Serial.println();
     }
   }
 }

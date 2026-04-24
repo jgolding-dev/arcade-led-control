@@ -29,4 +29,5 @@ private:
     bool validate(const InputPacket &packet);
     bool invalidDirectionCombination(uint8_t joystick);
     uint8_t crc8(const uint8_t* data, size_t len);
+    void printState();
 };
