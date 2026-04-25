@@ -12,7 +12,7 @@
 #define UART_ID uart0
 #define BAUD_RATE 115200
 
-const bool DEBUG_MODE = false;
+const bool DEBUG_MODE = true;
 
 // ---- Timing ----
 const unsigned long IDLE_TIMEOUT_MS = 15UL * 60UL * 1000UL;  // 15 Minutes

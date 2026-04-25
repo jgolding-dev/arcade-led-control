@@ -1,5 +1,4 @@
-#ifndef led_layout_h
-#define led_layout_h
+#pragma once
 
 #include <Arduino.h>
 
@@ -77,5 +76,3 @@ enum OptionsLedIndex: uint8_t {
 //                                              program is concerned, we have 100.
 
 #define COLOR_ORDER GRB  // Color order (RGB, GRB, etc.)
-
-#endif
