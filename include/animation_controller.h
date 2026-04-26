@@ -21,6 +21,8 @@ class AnimationController {
         void setAnimationModifier(int modifierIndex);
         void processAnimations();
         void setIdle(bool isIdle);
+        void setLEDPinBrightness(int ledPin, int percent);
+        void resetIndicators();
     private:
         void _setAllLEDs(int rValue, int gValue, int bValue);
         void _setColor(uint32_t color);

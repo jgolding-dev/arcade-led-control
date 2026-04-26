@@ -3,13 +3,12 @@
 #include <led_layout.h>
 #include <animation_controller.h>
 #include <input_parser.h>
-#include <input_byte_config.h>
+#include <input_protocol.h>
 
 // UART Communication
 #include "hardware/uart.h"
 #include "hardware/gpio.h"
 
-#define UART_ID uart0
 #define BAUD_RATE 115200
 
 const bool DEBUG_MODE = true;
@@ -17,77 +16,81 @@ const bool DEBUG_MODE = true;
 // ---- Timing ----
 const unsigned long IDLE_TIMEOUT_MS = 15UL * 60UL * 1000UL;  // 15 Minutes
 
-// For Testing
-const unsigned long CYCLE_MOD_MS = 5UL * 1000UL;    // 5 Seconds
-const unsigned long CYCLE_TYPE_MS = 35UL * 1000UL;  // 35 Seconds
-const unsigned long CYCLE_ZONE_MS = 35UL * 1000UL;  // 35 Seconds
+// ------ Macro States ------
+bool lastMacro1State = false;
+bool lastMacro2State = false;
+bool lastMacro3State = false;
+bool lastMacro4State = false;
 
-// ---- Pin States ----
-PinStatus lastActPinState    = LOW;
-PinStatus lastMacro1PinState = LOW;
-PinStatus lastMacro2PinState = LOW;
-PinStatus lastMacro3PinState = LOW;
-PinStatus lastMacro4PinState = LOW;
-
-unsigned long lastActivityMs = 0;
-unsigned long lastTypeSwitch = 0;
-unsigned long lastModSwitch  = 0;
-unsigned long lastZoneSwitch = 0;
-
-bool systemActive = true;
+// ------ Activity States ------
+unsigned long lastActivityMs    = 0;
+unsigned long lastP1PacketTime  = 0;
+unsigned long lastP2PacketTime  = 0;
+bool lastActivityState          = false;
+bool systemActive               = true;
 
 AnimationController animController(IDLE_TIMEOUT_MS);
 InputParser parser;
+InputPacket p1Packet;
+InputPacket p2Packet;
 
 
 // local function declarations
-void handleUARTActivity();
-// void handleActivity();
-// void handleMacroEvent();
+void handleActivity();
+bool readP1Input();
+bool readP2Input();
+void handleMacroEvent(InputPacket &packet);
 void updateActivityState(bool active);
-void printHex8Label(const char* label, uint8_t value);
 
 void setup() {
   delay(100); // allow USB stack to settle
 
-  // UART Initialization
-  Serial.begin(BAUD_RATE);
-  Serial1.setRX(P2_UART_RX_PIN);        // match your wiring
-  Serial1.begin(BAUD_RATE);    // UART from GP2040
-
   // Initialize I/O
   Pins::initPins();
 
-  // Set last activity time and update state
-  lastActivityMs = 0;
-  lastTypeSwitch = 0;
-  lastModSwitch  = 0;
-  lastZoneSwitch = 0;
-  systemActive = true;
+  // Debug Serial Initialization
+  Serial.begin(BAUD_RATE);
+
+  // P1 UART Initialization
+  Serial1.setRX(P1_UART_RX_PIN);
+  Serial1.begin(BAUD_RATE);    // UART from P1 controller board
+
+  // P2 UART Initialization
+  Serial2.setRX(P2_UART_RX_PIN);
+  Serial2.begin(BAUD_RATE);    // UART from P2 controller board
+
+  // Set activity states
+  lastActivityMs    = 0;
+  lastP1PacketTime  = 0;
+  lastP2PacketTime  = 0;
+  systemActive      = true;
 
   animController.setup();
 }
 
 void loop() {
-  handleUARTActivity();
-  // handleActivity();
+  handleActivity();
   animController.handleIdleState(systemActive);
-  // handleMacroEvent();
-  if (DEBUG_MODE) {
-    if ((millis() - lastZoneSwitch) > CYCLE_ZONE_MS) {
-      Serial.println("Cycling Zone...");
-      animController.cycleZone();
-      lastZoneSwitch = millis();
-      lastModSwitch = millis();
-    }
-    if ((millis() - lastModSwitch) > CYCLE_MOD_MS) {
-      Serial.println("Cycling Modifier...");
-      animController.cycleAnimationModifier();
-      lastModSwitch = millis();
-    }
-  }
+  handleMacroEvent(p1Packet);
   animController.processAnimations();
 }
+
+/**
+* Updates the system activity state based on the recorded activity input state
+*/
+void handleActivity() {
+  bool p1Active = readP1Input();
+  bool p2Active = readP2Input();
+
+  if ((p1Active || p2Active) && !lastActivityState) {
+    updateActivityState(true);
+  } else if (systemActive && (millis() - lastActivityMs) > IDLE_TIMEOUT_MS) {
+    updateActivityState(false);
+  }
+
+  lastActivityState = p1Active || p2Active ? true : false;
+}
+
 
 /**
 * Updates the activity state of the LED controller. If active, refresh the
@@ -104,89 +107,127 @@ void updateActivityState(bool active) {
 }
 
 /**
- * Process UART data received
+ * Process Player 1 UART data received
+ * @return true if activity detected, false otherwise
  */
-void handleUARTActivity() {
+bool readP1Input() {
   InputPacket packet;
+  bool inputDetected = false;
+  while (Serial1.available()) {
+    uint8_t byte = Serial1.read();
 
-  while (parser.parse(Serial1, packet)) {
-    // Process the packet
-    Serial.println("Received valid packet");
+    if (parser.parseByte(byte, packet)) {
+      p1Packet = packet;
+      uint16_t buttons = packet.buttons_l | (packet.buttons_h << 8);
 
-    uint16_t buttons = packet.buttons_l | (packet.buttons_h << 8);
+      if (buttons != 0) {
+        inputDetected = true;
+        if (DEBUG_MODE) {
+          Serial.print("Buttons: ");
+          Serial.println(buttons, BIN);
+        }
+      }
+      if (p1Packet.joystick != 0) {
+        inputDetected = true;
+        if (DEBUG_MODE) {
+          Serial.print("Joystick: ");
+          Serial.println(p1Packet.joystick, BIN);
+          Serial.println();
+        }
+      }
 
-    if (DEBUG_MODE) {
-      Serial.println();
-      Serial.println("---- PACKET DETAILS ----");
-      printHex8Label("Header", packet.header);
-      printHex8Label("Header2", packet.header2);
-      printHex8Label("Buttons_l", packet.buttons_l);
-      printHex8Label("Buttons_h", packet.buttons_h);
-      printHex8Label("Joystick", packet.joystick);
-      printHex8Label("Joystick Mode", packet.joystick_mode);
-      Serial.println("---------------------------");
+      // set LED indicators for joystick mode
+      if (p1Packet.joystick_mode == JOY_MODE_DPAD) {
+        animController.setLEDPinBrightness(P1_DP_MODE_PIN, 100);
+        animController.setLEDPinBrightness(P1_LS_MODE_PIN, 0);
+        animController.setLEDPinBrightness(P1_RS_MODE_PIN, 0);
+      } else
+      if (p1Packet.joystick_mode == JOY_MODE_LS) {
+        animController.setLEDPinBrightness(P1_DP_MODE_PIN, 0);
+        animController.setLEDPinBrightness(P1_LS_MODE_PIN, 100);
+        animController.setLEDPinBrightness(P1_RS_MODE_PIN, 0);
+      } else if (p1Packet.joystick_mode == JOY_MODE_RS) {
+        animController.setLEDPinBrightness(P1_DP_MODE_PIN, 0);
+        animController.setLEDPinBrightness(P1_LS_MODE_PIN, 0);
+        animController.setLEDPinBrightness(P1_RS_MODE_PIN, 100);
+      }
     }
-
-    // Example usage:
-    if (packet.joystick_mode & (1 << JOY_MODE_DPAD)) {
-      Serial.println("Joystick in DPAD mode");
-    } else if (packet.joystick_mode & (1 << JOY_MODE_LS)) {
-      Serial.println("Joystick in Left Stick mode");
-    } else if (packet.joystick_mode & (1 << JOY_MODE_RS)) {
-      Serial.println("Joystick in Right Stick mode");
-    }
-    Serial.println();
   }
+  return inputDetected;
 }
 
 /**
- * Prints bytes in hex format with a label for debugging purposes
- * @param label A string label to describe the value being printed
- * @param value The byte value to print in hex
+ * Process Player 2 UART data received
+ * @return true if activity detected, false otherwise
  */
-void printHex8Label(const char* label, uint8_t value) {
-  Serial.print(label);
-  Serial.print(": 0x");
-  if (value < 0x10) Serial.print("0"); // leading zero for single-digit hex
-  Serial.println(value, HEX);
+bool readP2Input() {
+  InputPacket packet;
+  bool inputDetected = false;
+  while (Serial2.available()) {
+    uint8_t byte = Serial2.read();
+
+    if (parser.parseByte(byte, packet)) {
+      p2Packet = packet;
+      uint16_t buttons = packet.buttons_l | (packet.buttons_h << 8);
+
+      if (buttons != 0) {
+        inputDetected = true;
+        if (DEBUG_MODE) {
+          Serial.print("Buttons: ");
+          Serial.println(buttons, BIN);        }
+      }
+      if (p2Packet.joystick != 0) {
+        inputDetected = true;
+        if (DEBUG_MODE) {
+          Serial.print("Joystick: ");
+          Serial.println(p2Packet.joystick, BIN);
+          Serial.println();
+        }
+      }
+
+      // set LED indicators for joystick mode
+      if (p2Packet.joystick_mode == JOY_MODE_DPAD) {
+        animController.setLEDPinBrightness(P2_DP_MODE_PIN, 100);
+        animController.setLEDPinBrightness(P2_LS_MODE_PIN, 0);
+        animController.setLEDPinBrightness(P2_RS_MODE_PIN, 0);
+      } else
+      if (p2Packet.joystick_mode == JOY_MODE_LS) {
+        animController.setLEDPinBrightness(P2_DP_MODE_PIN, 0);
+        animController.setLEDPinBrightness(P2_LS_MODE_PIN, 100);
+        animController.setLEDPinBrightness(P2_RS_MODE_PIN, 0);
+      } else if (p2Packet.joystick_mode == JOY_MODE_RS) {
+        animController.setLEDPinBrightness(P2_DP_MODE_PIN, 0);
+        animController.setLEDPinBrightness(P2_LS_MODE_PIN, 0);
+        animController.setLEDPinBrightness(P2_RS_MODE_PIN, 100);
+      }
+    }
+  }
+  return inputDetected;
 }
 
-// /**
-// * Updates the system activity state based on the recorded activity input state
-// */
-// void handleActivity() {
-//   PinStatus currentP1 = digitalRead(P1_UART_RX_PIN);
-//   PinStatus currentP2 = digitalRead(P2_UART_RX_PIN);
+/**
+* Sets the animation state based on the triggered activity event
+* @param packet The input packet to check for macro events
+*/
+void handleMacroEvent(InputPacket &packet) {
+  uint16_t buttons = packet.buttons_l | (packet.buttons_h << 8);
+  bool macro1State = ((buttons & SELECT_BIT) && (buttons & B3_BIT)) ? true : false; // Select + X/□
+  bool macro2State = ((buttons & SELECT_BIT) && (buttons & B4_BIT)) ? true : false; // Select + Y/△
+  bool macro3State = ((buttons & SELECT_BIT) && (buttons & R1_BIT)) ? true : false; // Select + R1/RB
+  bool macro4State = ((buttons & SELECT_BIT) && (buttons & L1_BIT)) ? true : false; // Select + L1/LB
 
-//   if ((currentP1 == HIGH || currentP2 == HIGH) && lastActPinState == LOW) {
-//     updateActivityState(true);
-//   } else if (systemActive && (millis() - lastActivityMs) > IDLE_TIMEOUT_MS) {
-//     updateActivityState(false);
-//   }
-
-//   lastActPinState = currentP1 == HIGH || currentP2 == HIGH ? HIGH : LOW;
-// }
-
-// /**
-// * Sets the animation state based on the triggered activity event
-// */
-// void handleMacroEvent() {
-//   PinStatus currentMacro1 = digitalRead(MACRO_1_PIN);
-//   PinStatus currentMacro2 = digitalRead(MACRO_2_PIN);
-//   PinStatus currentMacro3 = digitalRead(MACRO_3_PIN);
-//   PinStatus currentMacro4 = digitalRead(MACRO_4_PIN);
-
-//   if (currentMacro1 == HIGH && lastMacro1PinState == LOW) {
-//     animController.cycleZone();
-//   } else if (currentMacro2 == HIGH && lastMacro2PinState == LOW) {
-//     animController.cycleAnimationType();
-//   } else if (currentMacro3 == HIGH && lastMacro3PinState == LOW) {
-//     animController.cycleAnimationModifier();
-//   } else if (currentMacro4 == HIGH && lastMacro4PinState == LOW) {
-//     animController.cycleMasterBrightness();
-//   }
-//   lastMacro1PinState = currentMacro1;
-//   lastMacro2PinState = currentMacro2;
-//   lastMacro3PinState = currentMacro3;
-//   lastMacro4PinState = currentMacro4;
-// }
+  if (macro1State && !lastMacro1State) {
+    animController.cycleZone();
+  } else if (macro2State && !lastMacro2State) {
+    animController.cycleAnimationType();
+  } else if (macro3State && !lastMacro3State) {
+    animController.cycleAnimationModifier();
+  } else if (macro4State && !lastMacro4State) {
+    animController.cycleMasterBrightness();
+  }
+  
+  lastMacro1State = macro1State;
+  lastMacro2State = macro2State;
+  lastMacro3State = macro3State;
+  lastMacro4State = macro4State;
+}

@@ -4,6 +4,7 @@
 #include <Arduino.h>
 #include <pins.h>
 #include <led_layout.h>
+#include <input_protocol.h>
 #include <brightness_levels.h>
 #include <fastled_config.h>
 #include <FastLED.h>
@@ -161,6 +162,7 @@ public:
   void setAllLEDs(uint8_t r, uint8_t g, uint8_t b);
 private:
   // Array to hold LED color data
+
   CRGB _buttonLeds[PLAYER1_BUTTONS_LED_COUNT];
   CRGB _joystickLeds[PLAYER1_JOYSTICK_LED_COUNT];
   void _setSFTurbo();

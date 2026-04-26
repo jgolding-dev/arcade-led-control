@@ -1,29 +1,35 @@
 #pragma once
 #include <Arduino.h>
-
-typedef struct {
-    uint8_t header;         // 0xAA for packet start
-    uint8_t header2;        // 0x55 for additional sync robustness
-    uint8_t buttons_l;
-    uint8_t buttons_h;
-    uint8_t joystick;
-    uint8_t joystick_mode;
-    uint8_t checksum;
-} __attribute__((packed)) InputPacket;
+#include <input_protocol.h>
 
 class InputParser {
 public:
     InputParser();
     
     // feed bytes from UART
-    bool parse(Stream &serial, InputPacket &outPacket);
+    bool parseByte(uint8_t byte, InputPacket &packet);
 
 private:
-    static const uint8_t HEADER = 0xAA;
-    static const uint8_t HEADER2 = 0x55;
+    enum State {
+        WAIT_HEADER1,
+        WAIT_HEADER2,
+        WAIT_LENGTH,
+        READ_PAYLOAD,
+        READ_CHECKSUM
+    };
 
-    uint8_t buffer[sizeof(InputPacket)];
+    State state;
+
+    uint8_t buffer[32]; // buffer to hold incoming bytes (size should accommodate the largest expected packet)
     uint8_t index;
+    uint8_t length;
+
+    void reset();
 
     bool validate(const InputPacket &packet);
+    bool invalidDirectionCombination(uint8_t joystick);
+    uint8_t crc8(const uint8_t* data, size_t len);
+    void printState();
+    static void printHex8Label(const char* label, uint8_t value);
+
 };

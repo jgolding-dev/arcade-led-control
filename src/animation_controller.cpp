@@ -38,10 +38,27 @@ void AnimationController::setup() {
   _currentZone = PLAYER_1;
   _currentBrightness = BRIGHTNESS_MAX;
   _idleStatus = false;
+  resetIndicators();
   for (uint8_t i = 0; i < ZONE_COUNT; i++) {
     _zones[i]->setup();
   }
   _zones[FULL]->wake();
+}
+
+/**
+* Sets the brightness value of single LED pin to the specified percentage value
+* @param ledPin The pin number of the LED to set the brightness of
+* @param percent The brightness percentage value (0-100)
+*/
+void AnimationController::setLEDPinBrightness(int ledPin, int percent) {
+  // Constrain percentage to 0-100
+  percent = constrain(percent, 0, 100);
+
+  // set brightness level using gamma correction
+  float gamma = 2.2;
+  float normalized = percent / 100.0;
+  int brightness = pow(normalized, gamma) * 255;
+  analogWrite(ledPin, brightness);
 }
 
 void AnimationController::cycleZone() {
@@ -146,4 +163,16 @@ void AnimationController::_reset() {
   for (uint8_t i = 0; i < ZONE_COUNT; i++) {
     _zones[i]->reset();
   }
+}
+
+/**
+ * Resets the joystick mode indicator lights
+ */
+void AnimationController::resetIndicators() {
+  setLEDPinBrightness(P1_DP_MODE_PIN, 0);
+  setLEDPinBrightness(P1_LS_MODE_PIN, 0);
+  setLEDPinBrightness(P1_RS_MODE_PIN, 0);
+  setLEDPinBrightness(P2_DP_MODE_PIN, 0);
+  setLEDPinBrightness(P2_LS_MODE_PIN, 0);
+  setLEDPinBrightness(P2_RS_MODE_PIN, 0);
 }
