@@ -83,10 +83,10 @@ void Player2::_setSFTurbo() {
   }
 
   // buttons
-  int light[] = {P2_B1, (P2_B1 + 1), P2_B3, (P2_B3 + 1) };
-  int medium[] = { P2_B2, (P2_B2 + 1), P2_B4, (P2_B4 + 1) };
-  int heavy[] = { P2_L1, (P2_L1 + 1), P2_R1, (P2_R1 + 1) };
-  int special[] = { P2_L2, (P2_L2 + 1), P2_R2, (P2_R2 + 1) };
+  int light[] = {B1_LED, (B1_LED + 1), B3_LED, (B3_LED + 1) };
+  int medium[] = { B2_LED, (B2_LED + 1), B4_LED, (B4_LED + 1) };
+  int heavy[] = { L1_LED, (L1_LED + 1), R1_LED, (R1_LED + 1) };
+  int special[] = { L2_LED, (L2_LED + 1), R2_LED, (R2_LED + 1) };
 
   _setColor(_buttonLeds, RED, light, 4);
   _setColor(_buttonLeds, BLUE, medium, 4);

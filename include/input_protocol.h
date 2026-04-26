@@ -31,19 +31,19 @@ typedef struct {
 // ------------------ Buttons ----------------- //
 
 enum ButtonBit : uint16_t {
-    B1_BIT              = (1 << 0),
-    B2_BIT              = (1 << 1),
-    B3_BIT              = (1 << 2),
-    B4_BIT              = (1 << 3),
-    L1_BIT              = (1 << 4),
-    R1_BIT              = (1 << 5),
-    L2_BIT              = (1 << 6),
-    R2_BIT              = (1 << 7),
-    SELECT_BIT          = (1 << 8),
-    START_BIT           = (1 << 9),
-    HOME_BIT            = (1 << 10),
-    EXTRA1_BIT          = (1 << 11),
-    EXTRA2_BIT          = (1 << 12)
+    B1_BIT              = (1 << 0),     // A/X
+    B2_BIT              = (1 << 1),     // B/O
+    B3_BIT              = (1 << 2),     // X/□
+    B4_BIT              = (1 << 3),     // Y/△
+    L1_BIT              = (1 << 4),     // L1/LB
+    R1_BIT              = (1 << 5),     // R1/RB
+    L2_BIT              = (1 << 6),     // L2/LT
+    R2_BIT              = (1 << 7),     // R2/RT
+    SELECT_BIT          = (1 << 8),     // Select/Share
+    START_BIT           = (1 << 9),     // Start/Options
+    HOME_BIT            = (1 << 10),    // Guide/PS
+    EXTRA1_BIT          = (1 << 11),    // In-App Guide/PS
+    EXTRA2_BIT          = (1 << 12)     // Record
 };
 
 // ------------------ Joystick ----------------- //
