@@ -77,9 +77,20 @@ bool InputParser::parseByte(uint8_t byte, InputPacket &packet) {
 
                 memcpy(&packet, buffer, totalSize);
                 if (validate(packet)) {
-                    if (DEBUG_MODE) Serial.println("Packet validated successfully. Resetting state for next packet.");
+                    if (DEBUG_MODE) {
+                        Serial.println("Valid packet processed");
+                        Serial.println();
+                        Serial.println("---- PACKET DETAILS ----");
+                        printHex8Label("Header", packet.header);
+                        printHex8Label("Header2", packet.header2);
+                        printHex8Label("Buttons_l", packet.buttons_l);
+                        printHex8Label("Buttons_h", packet.buttons_h);
+                        printHex8Label("Joystick", packet.joystick);
+                        printHex8Label("Joystick Mode", packet.joystick_mode);
+                        Serial.println("---------------------------");
+                        Serial.println();
+                    }
                     reset();
-                    if (DEBUG_MODE) printState();
                     return true; // valid packet parsed
                 } else {
                     // resync: check if this byte could be a header
@@ -164,4 +175,16 @@ void InputParser::printState() {
     Serial.print("Buffer length: "); Serial.println(length);
     Serial.println("-------------------------------");
     Serial.println();
+}
+
+/**
+ * Prints bytes in hex format with a label for debugging purposes
+ * @param label A string label to describe the value being printed
+ * @param value The byte value to print in hex
+ */
+static void printHex8Label(const char* label, uint8_t value) {
+  Serial.print(label);
+  Serial.print(": 0x");
+  if (value < 0x10) Serial.print("0"); // leading zero for single-digit hex
+  Serial.println(value, HEX);
 }

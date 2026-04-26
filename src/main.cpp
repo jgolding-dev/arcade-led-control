@@ -45,7 +45,6 @@ void handleUARTActivity();
 // void handleActivity();
 // void handleMacroEvent();
 void updateActivityState(bool active);
-void printHex8Label(const char* label, uint8_t value);
 
 void setup() {
   delay(100); // allow USB stack to settle
@@ -113,36 +112,37 @@ void handleUARTActivity() {
     uint8_t byte = Serial1.read();
 
     if (parser.parseByte(byte, packet)) {
-      Serial.println("Received valid packet");
-
       uint16_t buttons = packet.buttons_l | (packet.buttons_h << 8);
 
       if (DEBUG_MODE) {
-        Serial.println();
-        Serial.println("---- PACKET DETAILS ----");
-        printHex8Label("Header", packet.header);
-        printHex8Label("Header2", packet.header2);
-        printHex8Label("Buttons_l", packet.buttons_l);
-        printHex8Label("Buttons_h", packet.buttons_h);
-        printHex8Label("Joystick", packet.joystick);
-        printHex8Label("Joystick Mode", packet.joystick_mode);
-        Serial.println("---------------------------");
-        Serial.println();
+        if (buttons != 0) {
+          Serial.print("Buttons: ");
+          Serial.println(buttons, BIN);
+        }
+        if (packet.joystick != 0) {
+          Serial.print("Joystick: ");
+          Serial.println(packet.joystick, BIN);
+        }
+        if (packet.joystick_mode != 0) {
+          Serial.print("Joystick Mode: ");
+          Serial.println(packet.joystick_mode, BIN);
+        }
       }
 
-      // Example usage:
+      // set LED indicators for joystick mode
       if (packet.joystick_mode == JOY_MODE_DPAD) {
-        Serial.println("Joystick in DPAD mode");
+        Serial.println("Joystick Mode: DPAD");
         animController.setLEDPinBrightness(P1_DP_MODE_PIN, 100);
         animController.setLEDPinBrightness(P1_LS_MODE_PIN, 0);
         animController.setLEDPinBrightness(P1_RS_MODE_PIN, 0);
-      } else if (packet.joystick_mode == JOY_MODE_LS) {
-        Serial.println("Joystick in Left Stick mode");
+      } else
+      if (packet.joystick_mode == JOY_MODE_LS) {
+        Serial.println("Joystick Mode: Left Stick");
         animController.setLEDPinBrightness(P1_DP_MODE_PIN, 0);
         animController.setLEDPinBrightness(P1_LS_MODE_PIN, 100);
         animController.setLEDPinBrightness(P1_RS_MODE_PIN, 0);
       } else if (packet.joystick_mode == JOY_MODE_RS) {
-        Serial.println("Joystick in Right Stick mode");
+        Serial.println("Joystick Mode: Right Stick");
         animController.setLEDPinBrightness(P1_DP_MODE_PIN, 0);
         animController.setLEDPinBrightness(P1_LS_MODE_PIN, 0);
         animController.setLEDPinBrightness(P1_RS_MODE_PIN, 100);
@@ -150,18 +150,6 @@ void handleUARTActivity() {
       Serial.println();
     }
   }
-}
-
-/**
- * Prints bytes in hex format with a label for debugging purposes
- * @param label A string label to describe the value being printed
- * @param value The byte value to print in hex
- */
-void printHex8Label(const char* label, uint8_t value) {
-  Serial.print(label);
-  Serial.print(": 0x");
-  if (value < 0x10) Serial.print("0"); // leading zero for single-digit hex
-  Serial.println(value, HEX);
 }
 
 // /**

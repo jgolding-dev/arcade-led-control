@@ -30,4 +30,6 @@ private:
     bool invalidDirectionCombination(uint8_t joystick);
     uint8_t crc8(const uint8_t* data, size_t len);
     void printState();
+    static void printHex8Label(const char* label, uint8_t value);
+
 };
