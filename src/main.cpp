@@ -5,13 +5,9 @@
 #include <input_parser.h>
 #include <input_protocol.h>
 
-// UART Communication
-#include "hardware/uart.h"
-#include "hardware/gpio.h"
-
 #define BAUD_RATE 115200
 
-const bool DEBUG_MODE = true;
+const bool DEBUG_MODE = false;
 
 // ---- Timing ----
 const unsigned long IDLE_TIMEOUT_MS = 15UL * 60UL * 1000UL;  // 15 Minutes
@@ -30,7 +26,8 @@ bool lastActivityState          = false;
 bool systemActive               = true;
 
 AnimationController animController(IDLE_TIMEOUT_MS);
-InputParser parser;
+InputParser p1Parser;
+InputParser p2Parser;
 InputPacket p1Packet;
 InputPacket p2Packet;
 
@@ -54,7 +51,7 @@ void setup() {
   // P1 UART Initialization
   Serial1.setRX(P1_UART_RX_PIN);
   Serial1.begin(BAUD_RATE);    // UART from P1 controller board
-
+  
   // P2 UART Initialization
   Serial2.setRX(P2_UART_RX_PIN);
   Serial2.begin(BAUD_RATE);    // UART from P2 controller board
@@ -73,6 +70,8 @@ void loop() {
   animController.handleIdleState(systemActive);
   handleMacroEvent(p1Packet);
   animController.processAnimations();
+
+  delay(1); // For USB Stability
 }
 
 /**
@@ -111,14 +110,15 @@ void updateActivityState(bool active) {
  * @return true if activity detected, false otherwise
  */
 bool readP1Input() {
-  InputPacket packet;
+  static InputPacket packet;
   bool inputDetected = false;
-  while (Serial1.available()) {
+
+  if (Serial1.available()) {
     uint8_t byte = Serial1.read();
 
-    if (parser.parseByte(byte, packet)) {
+    if (p1Parser.parseByte(byte, packet)) {
       p1Packet = packet;
-      uint16_t buttons = packet.buttons_l | (packet.buttons_h << 8);
+      uint16_t buttons = p1Packet.buttons_l | (p1Packet.buttons_h << 8);
 
       if (buttons != 0) {
         inputDetected = true;
@@ -161,20 +161,22 @@ bool readP1Input() {
  * @return true if activity detected, false otherwise
  */
 bool readP2Input() {
-  InputPacket packet;
+  static InputPacket packet;
   bool inputDetected = false;
-  while (Serial2.available()) {
+
+  if (Serial2.available()) {
     uint8_t byte = Serial2.read();
 
-    if (parser.parseByte(byte, packet)) {
+    if (p2Parser.parseByte(byte, packet)) {
       p2Packet = packet;
-      uint16_t buttons = packet.buttons_l | (packet.buttons_h << 8);
+      uint16_t buttons = p2Packet.buttons_l | (p2Packet.buttons_h << 8);
 
       if (buttons != 0) {
         inputDetected = true;
         if (DEBUG_MODE) {
           Serial.print("Buttons: ");
-          Serial.println(buttons, BIN);        }
+          Serial.println(buttons, BIN);
+        }
       }
       if (p2Packet.joystick != 0) {
         inputDetected = true;

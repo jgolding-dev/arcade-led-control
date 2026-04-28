@@ -18,14 +18,14 @@
 #define PLAYER2_BUTTONS_DATA_PIN          28
 #define PLAYER2_JOYSTICK_DATA_PIN         27     
 
-#define REC_BUTTON_LED_PIN                5
+#define REC_BUTTON_LED_PIN                13
 #define P2_LS_MODE_PIN                    6
 #define P2_DP_MODE_PIN                    8
 #define P2_RS_MODE_PIN                    10
 
 // ---------------- Input ---------------- //
 
-#define P2_UART_RX_PIN                    1
+#define P2_UART_RX_PIN                    5
 #define DISPLAY_SCK_PIN                   2
 #define DISPLAY_MOSI_PIN                  3
 #define DISPLAY_CS_PIN                    0
@@ -36,7 +36,7 @@
 #define ROTARY_CLK_PIN                    14
 #define DISPLAY_RST_PIN                   15
 
-#define P1_UART_RX_PIN                    13
+#define P1_UART_RX_PIN                    1
 
 // ---------------- Groups ---------------- //
 
@@ -46,7 +46,6 @@ public:
     // Options
     pinMode(OPTIONS_BUTTONS_DATA_PIN, OUTPUT);
     pinMode(REC_BUTTON_LED_PIN, OUTPUT);
-
 
     // Player 1
     pinMode(PLAYER1_BUTTONS_DATA_PIN, OUTPUT);
