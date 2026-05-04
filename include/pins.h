@@ -18,10 +18,10 @@
 #define PLAYER2_BUTTONS_DATA_PIN          28
 #define PLAYER2_JOYSTICK_DATA_PIN         27     
 
-#define REC_BUTTON_LED_PIN                13
-#define P2_LS_MODE_PIN                    6
+#define REC_BUTTON_LED_PIN                6
+#define P2_LS_MODE_PIN                    7
 #define P2_DP_MODE_PIN                    8
-#define P2_RS_MODE_PIN                    10
+#define P2_RS_MODE_PIN                    11
 
 // ---------------- Input ---------------- //
 
@@ -31,8 +31,8 @@
 #define DISPLAY_CS_PIN                    0
 #define DISPLAY_DC_PIN                    4
 
-#define ROTARY_SW_PIN                     11
-#define ROTARY_DT_PIN                     12
+#define ROTARY_SW_PIN                     12
+#define ROTARY_DT_PIN                     13
 #define ROTARY_CLK_PIN                    14
 #define DISPLAY_RST_PIN                   15
 
