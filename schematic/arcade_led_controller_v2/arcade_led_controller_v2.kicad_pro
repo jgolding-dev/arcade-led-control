@@ -664,10 +664,6 @@
     "netclass_assignments": null,
     "netclass_patterns": [
       {
-        "netclass": "LED_Data",
-        "pattern": "/(P[0-9]_[A-Za-z]+|ACCENT)_DATA"
-      },
-      {
         "netclass": "GND",
         "pattern": "/?([A-Z0-9]+_)*GND(_[0-9])?"
       },
@@ -693,19 +689,7 @@
       },
       {
         "netclass": "Rotary_Signal",
-        "pattern": "/ROTARY_(CW|CCW|BTN)"
-      },
-      {
-        "netclass": "Display_Signal",
-        "pattern": "/(P1|P2)_LCD_(SCLK|MOSI|MISO|CS)"
-      },
-      {
-        "netclass": "GND",
-        "pattern": "/(P1|P2)_LCD_GND"
-      },
-      {
-        "netclass": "+5V",
-        "pattern": "/(P1|P2)_LCD_+5V"
+        "pattern": "/ROTARY_(SW|DT|CLK)"
       },
       {
         "netclass": "GND",
@@ -718,6 +702,14 @@
       {
         "netclass": "Gamepad_Signal",
         "pattern": "/(P1|P2)_SIG"
+      },
+      {
+        "netclass": "Display_Signal",
+        "pattern": "/DISPLAY_[A-Z0-9]+"
+      },
+      {
+        "netclass": "LED_Data",
+        "pattern": "/(REC|P1|P2|OPTIONS|ACCENT|LS|RS|DP)(_[A-Z0-9]+)*_(CATHODE|DATA|LED|GP)([0-9])?"
       }
     ]
   },
@@ -861,7 +853,7 @@
         "uuid": "e63e39d7-6ac0-4ffd-8aa3-1841a4541b55"
       }
     ],
-    "used_designators": "P2_LS_JOY_MODE_LED2,U3,#PWR82,REC_LED1",
+    "used_designators": "",
     "variants": []
   },
   "sheets": [
