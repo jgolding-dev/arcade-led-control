@@ -853,7 +853,7 @@
         "uuid": "e63e39d7-6ac0-4ffd-8aa3-1841a4541b55"
       }
     ],
-    "used_designators": "",
+    "used_designators": "J1-3,#PWR11,#PWR26,#PWR38,#PWR41,#PWR45,#PWR47-48,#PWR55-57,#PWR83-88,#PWR104-110,SW1,+5V_BUS_3-4",
     "variants": []
   },
   "sheets": [
