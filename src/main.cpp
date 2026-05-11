@@ -39,7 +39,9 @@ AnimationController animController(IDLE_TIMEOUT_MS);
 InputParser p1Parser;
 InputParser p2Parser;
 InputPacket p1Packet;
+InputPacket lastP1Packet;
 InputPacket p2Packet;
+InputPacket lastP2Packet;
 
 
 // local function declarations
@@ -92,16 +94,20 @@ void handleActivity() {
   // If we haven't received any communication from the gamepad for the duration of
   // our timeout, then assume the gamepad has disconnected
   if (p1Connected && (millis() - lastP1UartTime) > UART_COMMUNICATION_TIMEOUT) {
+    Serial.println("Player 1 Disconnected");
     p1Connected = false;
     shutOffJoyIndicators(P1_INDEX);
   } else if (!p1Connected && (millis() - lastP1UartTime) < UART_COMMUNICATION_TIMEOUT) {
+    Serial.println("Player 1 Connected");
     p1Connected = true;
   }
 
   if (p2Connected && (millis() - lastP2UartTime) > UART_COMMUNICATION_TIMEOUT) {
+    Serial.println("Player 2 Disconnected");
     p2Connected = false;
     shutOffJoyIndicators(P2_INDEX);
   } else if (!p2Connected && (millis() - lastP2UartTime) < UART_COMMUNICATION_TIMEOUT) {
+    Serial.println("Player 2 Connected");
     p2Connected = true;
   }
 
@@ -161,16 +167,19 @@ void handleJoyIndicators() {
     if (p1Connected) {
       switch(p1Packet.joystick_mode) {
         case JOY_MODE_DPAD:
+          // Serial1.println("New Player 1 Joystick Mode: DPAD");
           animController.setLEDPinBrightness(P1_DP_MODE_PIN, 100);
           animController.setLEDPinBrightness(P1_LS_MODE_PIN, 0);
           animController.setLEDPinBrightness(P1_RS_MODE_PIN, 0);
           break;
         case JOY_MODE_LS:
+          // Serial1.println("New Player 1 Joystick Mode: LS");
           animController.setLEDPinBrightness(P1_DP_MODE_PIN, 0);
           animController.setLEDPinBrightness(P1_LS_MODE_PIN, 100);
           animController.setLEDPinBrightness(P1_RS_MODE_PIN, 0);
           break;
         case JOY_MODE_RS:
+          // Serial1.println("New Player 1 Joystick Mode: RS");
           animController.setLEDPinBrightness(P1_DP_MODE_PIN, 0);
           animController.setLEDPinBrightness(P1_LS_MODE_PIN, 0);
           animController.setLEDPinBrightness(P1_RS_MODE_PIN, 100);
@@ -185,16 +194,19 @@ void handleJoyIndicators() {
     if (p2Connected) {
       switch(p2Packet.joystick_mode) {
         case JOY_MODE_DPAD:
+          // Serial1.println("New Player 2 Joystick Mode: DPAD");
           animController.setLEDPinBrightness(P2_DP_MODE_PIN, 100);
           animController.setLEDPinBrightness(P2_LS_MODE_PIN, 0);
           animController.setLEDPinBrightness(P2_RS_MODE_PIN, 0);
           break;
         case JOY_MODE_LS:
+          // Serial.println("New Player 2 Joystick Mode: LS");
           animController.setLEDPinBrightness(P2_DP_MODE_PIN, 0);
           animController.setLEDPinBrightness(P2_LS_MODE_PIN, 100);
           animController.setLEDPinBrightness(P2_RS_MODE_PIN, 0);
           break;
         case JOY_MODE_RS:
+          // Serial1.println("New Player 2 Joystick Mode: RS");
           animController.setLEDPinBrightness(P2_DP_MODE_PIN, 0);
           animController.setLEDPinBrightness(P2_LS_MODE_PIN, 0);
           animController.setLEDPinBrightness(P2_RS_MODE_PIN, 100);
@@ -214,6 +226,7 @@ void handleJoyIndicators() {
  */
 bool readP1Input() {
   static InputPacket packet;
+  bool activity = false;
 
   while (Serial1.available()) {
     lastP1UartTime = millis();
@@ -222,8 +235,9 @@ bool readP1Input() {
     if (p1Parser.parseByte(byte, packet)) {
       p1Packet = packet;
       uint16_t buttons = p1Packet.buttons_l | (p1Packet.buttons_h << 8);
+      activity = (buttons !=0) || (p1Packet.joystick != 0);
 
-      if (DEBUG_MODE) {
+      if (DEBUG_MODE && activity) {
         Serial.println("-------Player 1 Input Detected-------");
         Serial.print("Buttons: ");
         Serial.println(buttons, BIN);
@@ -232,11 +246,9 @@ bool readP1Input() {
         Serial.println("-----------------------------------");
         Serial.println();
       }
-
-      return (buttons !=0) || (p1Packet.joystick != 0); // if any buttons or joystick activity, return true
     }
   }
-  return false; // no input detected
+  return activity; // if any buttons or joystick activity, return true
 }
 
 /**
@@ -245,6 +257,7 @@ bool readP1Input() {
  */
 bool readP2Input() {
   static InputPacket packet;
+  bool activity = false;
 
   while (Serial2.available()) {
     lastP2UartTime = millis();
@@ -253,8 +266,9 @@ bool readP2Input() {
     if (p2Parser.parseByte(byte, packet)) {
       p2Packet = packet;
       uint16_t buttons = p2Packet.buttons_l | (p2Packet.buttons_h << 8);
+      activity = (buttons !=0) || (p2Packet.joystick != 0);
 
-      if (DEBUG_MODE) {
+      if (DEBUG_MODE && activity) {
         Serial.println("-------Player 2 Input Detected-------");
         Serial.print("Buttons: ");
         Serial.println(buttons, BIN);
@@ -263,10 +277,9 @@ bool readP2Input() {
         Serial.println("-----------------------------------");
         Serial.println();
       }
-      return (buttons !=0) || (p2Packet.joystick != 0); // if any buttons or joystick activity, return true
     }
   }
-  return false; // no input detected
+  return activity; // if any buttons or joystick activity, return true
 }
 
 /**
