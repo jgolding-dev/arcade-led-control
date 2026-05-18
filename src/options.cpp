@@ -4,7 +4,7 @@ Options::Options(int brightness)
   : Zone(brightness) {}
 
 void Options::setup() {
-  animationTypes = OPTIONS_ANIMATION_TYPES;
+  animationTypes = ANIMATION_TYPES;
   currentAnimation = CUSTOM;
   FastLED.addLeds<OPTIONS_BUTTONS_LED_TYPE, OPTIONS_BUTTONS_DATA_PIN, GRB>(_leds, OPTIONS_BUTTONS_LED_COUNT);
   FastLED.setBrightness(_currentBrightness);

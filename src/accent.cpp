@@ -4,7 +4,7 @@ Accent::Accent(int brightness)
   : Zone(brightness) {}
 
 void Accent::setup() {
-  animationTypes = ACCENT_ANIMATION_TYPES;
+  animationTypes = ANIMATION_TYPES;
   currentAnimation = CUSTOM;
   FastLED.addLeds<ACCENT_LED_TYPE, ACCENT_DATA_PIN, GRB>(_leds, ACCENT_LED_COUNT);
   FastLED.setBrightness(_currentBrightness);

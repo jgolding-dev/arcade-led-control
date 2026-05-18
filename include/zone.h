@@ -22,43 +22,7 @@ enum ANIMATION_TYPE {
   IDLE
 };
 
-const ANIMATION_TYPE FULL_ANIMATION_TYPES[] = {
-  CUSTOM,
-  STATIC,
-  // COLOR_SHIFT,
-  FADE,
-  // PULSE,
-  // OFF
-};
-
-const ANIMATION_TYPE OPTIONS_ANIMATION_TYPES[] = {
-  CUSTOM,
-  STATIC,
-  // COLOR_SHIFT,
-  FADE,
-  // PULSE,
-  // OFF
-};
-
-const ANIMATION_TYPE PLAYER1_ANIMATION_TYPES[] = {
-  CUSTOM,
-  STATIC,
-  // COLOR_SHIFT,
-  FADE,
-  // PULSE,
-  // OFF
-};
-
-const ANIMATION_TYPE PLAYER2_ANIMATION_TYPES[] = {
-  CUSTOM,
-  STATIC,
-  // COLOR_SHIFT,
-  FADE,
-  // PULSE,
-  // OFF
-};
-
-const ANIMATION_TYPE ACCENT_ANIMATION_TYPES[] = {
+const ANIMATION_TYPE ANIMATION_TYPES[] = {
   CUSTOM,
   STATIC,
   // COLOR_SHIFT,
@@ -133,8 +97,17 @@ protected:
   int _fadeDir;
   int _zoneSwitchBlinkDir;
   unsigned long _lastZoneSwitchAnimStepMs;
+
+  // blend animation data
+  CRGBPalette16 c_olorPalette;
+  TBlendType _blendType;
+  uint8_t _blendIndex;    // Tracks the current position in the blend color palette
+
+  // Virtual functions to be overridden by children
   virtual void _animateCustom();
+  virtual void _animateColorShift();
   virtual void _setSFTurbo();
+  
   void _animateFadeRGB();
   void _setLED(CRGB* leds, const RGB_t &color, int index);
   void _processZoneSwitchAnimation();

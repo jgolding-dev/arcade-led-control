@@ -11,6 +11,8 @@ void Zone::setup() {
   _lastZoneSwitchAnimStepMs = 0;
   _customTypeIndex = 0;
   _staticColorIndex = 0;
+  _blendType = LINEARBLEND;
+  _blendIndex = 0;
 }
 
 /**

@@ -41,4 +41,14 @@ const RGB_t COLORS[NUM_COLORS] = {
   RGB_CYAN
 };
 
+const CRGBPalette16 COLOR_PALETTE = CRGBPalette16(
+  CRGB::Red, CRGB::Red,
+  CRGB::Orange, CRGB::Orange,
+  CRGB::Yellow, CRGB::Yellow,
+  CRGB::Green, CRGB::Green,
+  CRGB::Blue, CRGB::Blue,
+  CRGB::Purple, CRGB::Purple,
+  CRGB::Red, CRGB::Red  // Loops back to the beginning
+);
+
 #endif
