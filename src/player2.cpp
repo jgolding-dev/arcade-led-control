@@ -4,7 +4,7 @@ Player2::Player2(int brightness)
   : Zone(brightness) {}
 
 void Player2::setup() {
-  animationTypes = PLAYER2_ANIMATION_TYPES;
+  animationTypes = ANIMATION_TYPES;
   previousAnimation = STATIC;
   currentAnimation = IDLE;
   _staticColorIndex = 0;

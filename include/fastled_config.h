@@ -3,12 +3,14 @@
 #ifndef fastled_config_h
 #define fastled_config_h
 
+#include <Arduino.h>
+#include <FastLED.h>
+
 #define FASTLED_RP2040_CLOCKLESS_M0_FALLBACK 0
 #define FASTLED_RP2040_CLOCKLESS_PIO 1
 
 #define NUM_COLORS 9
 
-#include <Arduino.h>
 
 // RGB value structure.
 typedef struct __attribute__ ((__packed__)) {
@@ -37,5 +39,15 @@ const RGB_t STATIC_COLORS[NUM_COLORS] = {
   GOLD,
   WHITE
 };
+
+const CRGBPalette16 COLOR_PALETTE = CRGBPalette16(
+  CRGB::Red,
+  CRGB::Orange,
+  CRGB::Yellow,
+  CRGB::Green,
+  CRGB::Blue,
+  CRGB::Purple,
+  CRGB::Red // Loops back to the beginning
+);
 
 #endif

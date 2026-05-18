@@ -4,7 +4,7 @@ Accent::Accent(int brightness)
   : Zone(brightness) {}
 
 void Accent::setup() {
-  animationTypes = ACCENT_ANIMATION_TYPES;
+  animationTypes = ANIMATION_TYPES;
   previousAnimation = STATIC;
   currentAnimation = IDLE;
   _staticColorIndex = 0;

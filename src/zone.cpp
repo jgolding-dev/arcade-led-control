@@ -7,6 +7,8 @@ void Zone::setup() {
   previousAnimation = STATIC;
   currentAnimation = IDLE;
   _fadeStepIndex = 1;  // FADE_STEP_NORMAL
+  _blendType = LINEARBLEND;
+  _blendIndex = 0;
 }
 
 /**

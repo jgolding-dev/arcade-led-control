@@ -4,7 +4,7 @@ Options::Options(int brightness)
   : Zone(brightness) {}
 
 void Options::setup() {
-  animationTypes = OPTIONS_ANIMATION_TYPES;
+  animationTypes = ANIMATION_TYPES;
   previousAnimation = STATIC;
   currentAnimation = IDLE;
   _staticColorIndex = 0;
