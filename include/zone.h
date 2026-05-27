@@ -108,7 +108,6 @@ public:
   void setLEDs(CRGB* leds, const CRGB &color, int* indexes, int size);
   void setMasterBrightness(int value);
 
-
   // Virtual functions to be overridden by children
   virtual void setup();
   virtual void process();

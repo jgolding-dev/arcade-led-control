@@ -169,10 +169,10 @@ void AnimationController::_reset() {
  * Resets the joystick mode indicator lights
  */
 void AnimationController::resetIndicators() {
-  setLEDPinBrightness(P1_DP_MODE_PIN, 0);
-  setLEDPinBrightness(P1_LS_MODE_PIN, 0);
-  setLEDPinBrightness(P1_RS_MODE_PIN, 0);
-  setLEDPinBrightness(P2_DP_MODE_PIN, 0);
-  setLEDPinBrightness(P2_LS_MODE_PIN, 0);
-  setLEDPinBrightness(P2_RS_MODE_PIN, 0);
+  setLEDPinBrightness(P1_DP_MODE_PIN, BRIGHTNESS_OFF);
+  setLEDPinBrightness(P1_LS_MODE_PIN, BRIGHTNESS_OFF);
+  setLEDPinBrightness(P1_RS_MODE_PIN, BRIGHTNESS_OFF);
+  setLEDPinBrightness(P2_DP_MODE_PIN, BRIGHTNESS_OFF);
+  setLEDPinBrightness(P2_LS_MODE_PIN, BRIGHTNESS_OFF);
+  setLEDPinBrightness(P2_RS_MODE_PIN, BRIGHTNESS_OFF);
 }

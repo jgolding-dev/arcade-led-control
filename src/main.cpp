@@ -48,6 +48,7 @@ InputPacket lastP2Packet;
 void handleActivity();
 void handleJoyIndicators();
 void shutOffJoyIndicators(PlayerIndex index);
+void setRecordLED(int brightness);
 bool readP1Input();
 bool readP2Input();
 void handleMacroEvent(bool active, InputPacket &packet);
@@ -71,6 +72,11 @@ void setup() {
   Serial2.begin(BAUD_RATE);    // UART from P2 controller board
 
   animController.setup();
+
+  // Record LED on by default to indicate system is active
+  setRecordLED(BRIGHTNESS_MAX);
+
+  // Default joy indicators to off until UART communication is received
   shutOffJoyIndicators(P1_INDEX);
   shutOffJoyIndicators(P2_INDEX);
 }
@@ -134,10 +140,12 @@ void updateActivityState(bool active) {
   if (active) {
     lastActivityMs = millis();
     systemActive = true;
+    setRecordLED(BRIGHTNESS_MAX);
   } else {
     systemActive = false;
     shutOffJoyIndicators(P1_INDEX);
     shutOffJoyIndicators(P2_INDEX);
+    setRecordLED(BRIGHTNESS_OFF);
   }
 }
 
@@ -148,16 +156,24 @@ void updateActivityState(bool active) {
 void shutOffJoyIndicators(PlayerIndex index) {
   switch (index) {
     case P1_INDEX:
-      animController.setLEDPinBrightness(P1_LS_MODE_PIN, 0);
-      animController.setLEDPinBrightness(P1_DP_MODE_PIN, 0);
-      animController.setLEDPinBrightness(P1_RS_MODE_PIN, 0);
+      animController.setLEDPinBrightness(P1_LS_MODE_PIN, BRIGHTNESS_OFF);
+      animController.setLEDPinBrightness(P1_DP_MODE_PIN, BRIGHTNESS_OFF);
+      animController.setLEDPinBrightness(P1_RS_MODE_PIN, BRIGHTNESS_OFF);
       break;
     case P2_INDEX:
-      animController.setLEDPinBrightness(P2_LS_MODE_PIN, 0);
-      animController.setLEDPinBrightness(P2_DP_MODE_PIN, 0);
-      animController.setLEDPinBrightness(P2_RS_MODE_PIN, 0);
+      animController.setLEDPinBrightness(P2_LS_MODE_PIN, BRIGHTNESS_OFF);
+      animController.setLEDPinBrightness(P2_DP_MODE_PIN, BRIGHTNESS_OFF);
+      animController.setLEDPinBrightness(P2_RS_MODE_PIN, BRIGHTNESS_OFF);
       break;
   }
+}
+
+/**
+ * Set the brightness of the recording LED indicator
+ * @param brightness The brightness value to set for the recording LED (0-100)
+ */
+void setRecordLED(int brightness) {
+  animController.setLEDPinBrightness(REC_BUTTON_LED_PIN, brightness);
 }
 
 /**
@@ -170,26 +186,26 @@ void handleJoyIndicators() {
       switch(p1Packet.joystick_mode) {
         case JOY_MODE_DPAD:
           // Serial1.println("New Player 1 Joystick Mode: DPAD");
-          animController.setLEDPinBrightness(P1_DP_MODE_PIN, 100);
-          animController.setLEDPinBrightness(P1_LS_MODE_PIN, 0);
-          animController.setLEDPinBrightness(P1_RS_MODE_PIN, 0);
+          animController.setLEDPinBrightness(P1_DP_MODE_PIN, BRIGHTNESS_MAX);
+          animController.setLEDPinBrightness(P1_LS_MODE_PIN, BRIGHTNESS_OFF);
+          animController.setLEDPinBrightness(P1_RS_MODE_PIN, BRIGHTNESS_OFF);
           break;
         case JOY_MODE_LS:
           // Serial1.println("New Player 1 Joystick Mode: LS");
-          animController.setLEDPinBrightness(P1_DP_MODE_PIN, 0);
-          animController.setLEDPinBrightness(P1_LS_MODE_PIN, 100);
-          animController.setLEDPinBrightness(P1_RS_MODE_PIN, 0);
+          animController.setLEDPinBrightness(P1_DP_MODE_PIN, BRIGHTNESS_OFF);
+          animController.setLEDPinBrightness(P1_LS_MODE_PIN, BRIGHTNESS_MAX);
+          animController.setLEDPinBrightness(P1_RS_MODE_PIN, BRIGHTNESS_OFF);
           break;
         case JOY_MODE_RS:
           // Serial1.println("New Player 1 Joystick Mode: RS");
-          animController.setLEDPinBrightness(P1_DP_MODE_PIN, 0);
-          animController.setLEDPinBrightness(P1_LS_MODE_PIN, 0);
-          animController.setLEDPinBrightness(P1_RS_MODE_PIN, 100);
+          animController.setLEDPinBrightness(P1_DP_MODE_PIN, BRIGHTNESS_OFF);
+          animController.setLEDPinBrightness(P1_LS_MODE_PIN, BRIGHTNESS_OFF);
+          animController.setLEDPinBrightness(P1_RS_MODE_PIN, BRIGHTNESS_MAX);
           break;
         default:
-          animController.setLEDPinBrightness(P1_DP_MODE_PIN, 0);
-          animController.setLEDPinBrightness(P1_LS_MODE_PIN, 0);
-          animController.setLEDPinBrightness(P1_RS_MODE_PIN, 0);
+          animController.setLEDPinBrightness(P1_DP_MODE_PIN, BRIGHTNESS_OFF);
+          animController.setLEDPinBrightness(P1_LS_MODE_PIN, BRIGHTNESS_OFF);
+          animController.setLEDPinBrightness(P1_RS_MODE_PIN, BRIGHTNESS_OFF);
           break;
       }
     }
@@ -198,26 +214,26 @@ void handleJoyIndicators() {
       switch(p2Packet.joystick_mode) {
         case JOY_MODE_DPAD:
           // Serial1.println("New Player 2 Joystick Mode: DPAD");
-          animController.setLEDPinBrightness(P2_DP_MODE_PIN, 100);
-          animController.setLEDPinBrightness(P2_LS_MODE_PIN, 0);
-          animController.setLEDPinBrightness(P2_RS_MODE_PIN, 0);
+          animController.setLEDPinBrightness(P2_DP_MODE_PIN, BRIGHTNESS_MAX);
+          animController.setLEDPinBrightness(P2_LS_MODE_PIN, BRIGHTNESS_OFF);
+          animController.setLEDPinBrightness(P2_RS_MODE_PIN, BRIGHTNESS_OFF);
           break;
         case JOY_MODE_LS:
           // Serial.println("New Player 2 Joystick Mode: LS");
-          animController.setLEDPinBrightness(P2_DP_MODE_PIN, 0);
-          animController.setLEDPinBrightness(P2_LS_MODE_PIN, 100);
-          animController.setLEDPinBrightness(P2_RS_MODE_PIN, 0);
+          animController.setLEDPinBrightness(P2_DP_MODE_PIN, BRIGHTNESS_OFF);
+          animController.setLEDPinBrightness(P2_LS_MODE_PIN, BRIGHTNESS_MAX);
+          animController.setLEDPinBrightness(P2_RS_MODE_PIN, BRIGHTNESS_OFF);
           break;
         case JOY_MODE_RS:
           // Serial1.println("New Player 2 Joystick Mode: RS");
-          animController.setLEDPinBrightness(P2_DP_MODE_PIN, 0);
-          animController.setLEDPinBrightness(P2_LS_MODE_PIN, 0);
-          animController.setLEDPinBrightness(P2_RS_MODE_PIN, 100);
+          animController.setLEDPinBrightness(P2_DP_MODE_PIN, BRIGHTNESS_OFF);
+          animController.setLEDPinBrightness(P2_LS_MODE_PIN, BRIGHTNESS_OFF);
+          animController.setLEDPinBrightness(P2_RS_MODE_PIN, BRIGHTNESS_MAX);
           break;
         default:
-          animController.setLEDPinBrightness(P2_DP_MODE_PIN, 0);
-          animController.setLEDPinBrightness(P2_LS_MODE_PIN, 0);
-          animController.setLEDPinBrightness(P2_RS_MODE_PIN, 0);
+          animController.setLEDPinBrightness(P2_DP_MODE_PIN, BRIGHTNESS_OFF);
+          animController.setLEDPinBrightness(P2_LS_MODE_PIN, BRIGHTNESS_OFF);
+          animController.setLEDPinBrightness(P2_RS_MODE_PIN, BRIGHTNESS_OFF);
           break;
       }
     }
