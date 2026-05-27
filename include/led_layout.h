@@ -43,7 +43,7 @@ enum OptionsLedIndex: uint8_t {
 
 // -------- Counts -------- //
 
-#define OPTIONS_BUTTONS_LED_COUNT         5
+#define OPTIONS_BUTTONS_LED_COUNT         6
 #define PLAYER1_BUTTONS_LED_COUNT         16
 #define PLAYER1_JOYSTICK_LED_COUNT        9
 #define PLAYER2_BUTTONS_LED_COUNT         16

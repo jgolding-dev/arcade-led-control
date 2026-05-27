@@ -28,12 +28,12 @@ bool lastMacro4State = false;
 unsigned long lastActivityMs  = 0;
 unsigned long lastP1UartTime  = 0;
 unsigned long lastP2UartTime  = 0;
-bool lastActivityState          = false;
-bool systemActive               = true;
-bool p1Connected                = false; // Whether player 1 is connected to the system
-bool p2Connected                = false; // Whether player 2 is connected to the system
-bool p1Active                   = false; // Whether player 1 is currently actuating an input
-bool p2Active                   = false; // Whether player 2 is currently actuating an input
+bool lastActivityState        = false;
+bool systemActive             = true;
+bool p1Connected              = false; // Whether player 1 is connected to the system
+bool p2Connected              = false; // Whether player 2 is connected to the system
+bool p1Active                 = false; // Whether player 1 is currently actuating an input
+bool p2Active                 = false; // Whether player 2 is currently actuating an input
 
 AnimationController animController(IDLE_TIMEOUT_MS);
 InputParser p1Parser;
@@ -58,6 +58,8 @@ void setup() {
 
   // Initialize I/O
   Pins::initPins();
+  shutOffJoyIndicators(P1_INDEX);
+  shutOffJoyIndicators(P2_INDEX);
 
   // Debug Serial Initialization
   Serial.begin(BAUD_RATE);
@@ -188,6 +190,7 @@ void handleJoyIndicators() {
           animController.setLEDPinBrightness(P1_DP_MODE_PIN, 0);
           animController.setLEDPinBrightness(P1_LS_MODE_PIN, 0);
           animController.setLEDPinBrightness(P1_RS_MODE_PIN, 0);
+          break;
       }
     }
 
@@ -215,6 +218,7 @@ void handleJoyIndicators() {
           animController.setLEDPinBrightness(P2_DP_MODE_PIN, 0);
           animController.setLEDPinBrightness(P2_LS_MODE_PIN, 0);
           animController.setLEDPinBrightness(P2_RS_MODE_PIN, 0);
+          break;
       }
     }
   }

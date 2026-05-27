@@ -20,7 +20,7 @@
 
 #define REC_BUTTON_LED_PIN                6
 #define P2_LS_MODE_PIN                    7
-#define P2_DP_MODE_PIN                    10
+#define P2_DP_MODE_PIN                    8
 #define P2_RS_MODE_PIN                    11
 
 // ---------------- Input ---------------- //
