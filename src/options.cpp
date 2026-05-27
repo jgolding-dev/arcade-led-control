@@ -5,7 +5,7 @@ Options::Options(int brightness)
 
 void Options::setup() {
   animationTypes = OPTIONS_ANIMATION_TYPES;
-  previousAnimation = STATIC;
+  previousAnimation = CUSTOM;
   currentAnimation = IDLE;
   _staticColorIndex = 0;
   _fadeStepIndex = 1;  // FADE_STEP_NORMAL
@@ -35,7 +35,7 @@ void Options::cycleAnimationModifier() {
   switch (currentAnimation) {
     case STATIC:
       _staticColorIndex = (_staticColorIndex + 1) % (sizeof(STATIC_COLORS) / sizeof(STATIC_COLORS[0]));
-      Zone::setAllLEDs(STATIC_COLORS[_staticColorIndex]);
+      Zone::setAllZone(STATIC_COLORS[_staticColorIndex]);
       break;
     case FADE:
       _fadeStepIndex = (_fadeStepIndex + 1) % (sizeof(FADE_STEP_MS) / sizeof(FADE_STEP_MS[0]));
@@ -53,7 +53,7 @@ void Options::cycleAnimationModifier() {
 * @param gValue the brightness value of the green channel
 * @param bValue the brightness value of the blue channel
 */
-void Options::setAllLEDs(uint8_t rValue, uint8_t gValue, uint8_t bValue) {
+void Options::setAllZone(uint8_t rValue, uint8_t gValue, uint8_t bValue) {
   Serial.println("Setting Options LEDs");
   for (int i = 0; i < OPTIONS_BUTTONS_LED_COUNT; i++) {
     _leds[i].r = rValue;
@@ -69,8 +69,7 @@ void Options::setAllLEDs(uint8_t rValue, uint8_t gValue, uint8_t bValue) {
 void Options::_setSFTurbo() {
   Serial.println("Setting Options SF_Turbo");
 
-  // Zone::setAllLEDs(BLACK);
-  Zone::setAllLEDs(WHITE);
+  Zone::setAllZone(WHITE);
 
   FastLED.show();
 }

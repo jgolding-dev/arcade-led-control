@@ -5,7 +5,7 @@ Accent::Accent(int brightness)
 
 void Accent::setup() {
   animationTypes = ACCENT_ANIMATION_TYPES;
-  previousAnimation = STATIC;
+  previousAnimation = CUSTOM;
   currentAnimation = IDLE;
   _staticColorIndex = 0;
   _fadeStepIndex = 1;  // FADE_STEP_NORMAL
@@ -35,7 +35,7 @@ void Accent::cycleAnimationModifier() {
   switch (currentAnimation) {
     case STATIC:
       _staticColorIndex = (_staticColorIndex + 1) % (sizeof(STATIC_COLORS) / sizeof(STATIC_COLORS[0]));
-      Zone::setAllLEDs(STATIC_COLORS[_staticColorIndex]);
+      Zone::setAllZone(STATIC_COLORS[_staticColorIndex]);
       break;
     case FADE:
       _fadeStepIndex = (_fadeStepIndex + 1) % (sizeof(FADE_STEP_MS) / sizeof(FADE_STEP_MS[0]));
@@ -53,7 +53,7 @@ void Accent::cycleAnimationModifier() {
 * @param gValue the brightness value of the green channel
 * @param bValue the brightness value of the blue channel
 */
-void Accent::setAllLEDs(uint8_t rValue, uint8_t gValue, uint8_t bValue) {
+void Accent::setAllZone(uint8_t rValue, uint8_t gValue, uint8_t bValue) {
   Serial.println("Setting Accent LEDs");
   for (int i = 0; i < ACCENT_LED_COUNT; i++) {
     _leds[i].r = rValue;

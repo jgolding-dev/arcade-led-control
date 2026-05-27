@@ -58,8 +58,6 @@ void setup() {
 
   // Initialize I/O
   Pins::initPins();
-  shutOffJoyIndicators(P1_INDEX);
-  shutOffJoyIndicators(P2_INDEX);
 
   // Debug Serial Initialization
   Serial.begin(BAUD_RATE);
@@ -73,6 +71,8 @@ void setup() {
   Serial2.begin(BAUD_RATE);    // UART from P2 controller board
 
   animController.setup();
+  shutOffJoyIndicators(P1_INDEX);
+  shutOffJoyIndicators(P2_INDEX);
 }
 
 void loop() {

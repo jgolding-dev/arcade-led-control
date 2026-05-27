@@ -4,7 +4,7 @@ Zone::Zone(int brightness)
   : _currentBrightness(brightness) {}
 
 void Zone::setup() {
-  previousAnimation = STATIC;
+  previousAnimation = CUSTOM;
   currentAnimation = IDLE;
   _fadeStepIndex = 1;  // FADE_STEP_NORMAL
 }
@@ -63,10 +63,10 @@ void Zone::setAnimationType(ANIMATION_TYPE animType) {
   previousAnimation = currentAnimation;
   currentAnimation = animType;
   reset();
-  setAllLEDs(BLACK);
+  setAllZone(BLACK);
   switch (animType) {
     case STATIC:
-      setAllLEDs(STATIC_COLORS[_staticColorIndex]);
+      setAllZone(STATIC_COLORS[_staticColorIndex]);
       break;
     case CUSTOM:
       _setCustom(CUSTOM_TYPES[_customTypeIndex]);
@@ -83,7 +83,7 @@ void Zone::setAnimationModifier(int modifierIndex) {
   switch(currentAnimation) {
     case STATIC:
       _staticColorIndex = modifierIndex;
-      setAllLEDs(STATIC_COLORS[_staticColorIndex]);
+      setAllZone(STATIC_COLORS[_staticColorIndex]);
       break;
     case FADE:
       _fadeStepIndex = modifierIndex;
@@ -106,7 +106,7 @@ void Zone::cycleAnimationModifier() {
   switch (currentAnimation) {
     case STATIC:
       _staticColorIndex = (_staticColorIndex + 1) % (sizeof(STATIC_COLORS) / sizeof(STATIC_COLORS[0]));
-      setAllLEDs(STATIC_COLORS[_staticColorIndex]);
+      setAllZone(STATIC_COLORS[_staticColorIndex]);
       break;
     case CUSTOM:
       _customTypeIndex = (_customTypeIndex + 1) % (sizeof(STATIC_COLORS) / sizeof(STATIC_COLORS[0]));
@@ -131,21 +131,21 @@ void Zone::_animateFadeRGB() {
   }
   _lastAnimStepMs = now;
   // Turn off all LEDs first
-  setAllLEDs(0, 0, 0);
+  setAllZone(0, 0, 0);
 
   // Calculate brightness as a percentage of the current brightness setting
   float normalized = _fadePercent / 100.0;
-  int brightness = normalized * _currentBrightness;
+  uint8_t brightness = normalized * _currentBrightness;
 
   switch (_fadeColorIndex) {
     case 0:  // red
-      setAllLEDs(brightness, 0, 0);
+      setAllZone(brightness, 0, 0);
       break;
     case 1:  // green
-      setAllLEDs(0, brightness, 0);
+      setAllZone(0, brightness, 0);
       break;
     case 2:  // blue
-      setAllLEDs(0, 0, brightness);
+      setAllZone(0, 0, brightness);
       break;
     default:
       // no color
@@ -167,7 +167,7 @@ void Zone::_animateFadeRGB() {
 * @param gValue the brightness value of the green channel
 * @param bValue the brightness value of the blue channel
 */
-void Zone::setAllLEDs(uint8_t rValue, uint8_t gValue, uint8_t bValue) {
+void Zone::setAllZone(uint8_t rValue, uint8_t gValue, uint8_t bValue) {
   // Should be overridden
 }
 
@@ -175,8 +175,8 @@ void Zone::setAllLEDs(uint8_t rValue, uint8_t gValue, uint8_t bValue) {
 * Sets the brightness level (%) of all LED channels (R/G/B)
 * @param color the color to set for all LEDs
 */
-void Zone::setAllLEDs(const RGB_t &color) {
-  setAllLEDs(color.r, color.g, color.b);
+void Zone::setAllZone(const CRGB &color) {
+  setAllZone(color.r, color.g, color.b);
 }
 
 /**
@@ -185,20 +185,8 @@ void Zone::setAllLEDs(const RGB_t &color) {
  * @param color the color to set for the LED
  * @param index the index of the CRGB array corresponding to the LED
  */
-void Zone::_setColor(CRGB* leds, const RGB_t &color, int index) {
-  leds[index].setRGB(color.r, color.g, color.b);
-}
-
-/**
- * Set the color for all the LEDs in the CRGB array
- * @param led the FastLED CRGB array
- * @param color the color to set for the LEDs
- * @param index the number of LEDs in the CRGB array
- */
-void Zone::_setAllCRGB(CRGB* leds, const RGB_t &color, int count) {
-  for (int i = 0; i < count; i++) {
-    _setColor(leds, color, i);
-  }
+void Zone::_setLED(CRGB* leds, const CRGB &color, int index) {
+  leds[index] = color;
 }
 
 /**
@@ -208,10 +196,22 @@ void Zone::_setAllCRGB(CRGB* leds, const RGB_t &color, int count) {
  * @param indexes the indexes of the CRGB array corresponding to the LEDs
  * @param size the size of the CRGB array
  */
-void Zone::_setColor(CRGB* leds, const RGB_t &color, int* indexes, int size) {
+void Zone::setLEDs(CRGB* leds, const CRGB &color, int* indexes, int size) {
   for (int i = 0; i < size; i++) {
     int index = indexes[i];
     leds[index].setRGB(color.r, color.g, color.b);
+  }
+}
+
+/**
+ * Set the color for all the LEDs in the CRGB array
+ * @param led the FastLED CRGB array
+ * @param color the color to set for the LEDs
+ * @param index the number of LEDs in the CRGB array
+ */
+void Zone::setLEDs(CRGB* leds, const CRGB &color, int count) {
+  for (int i = 0; i < count; i++) {
+    leds[i] = color;
   }
 }
 

@@ -15,7 +15,7 @@ Full::Full(int brightness, Player1* p1Zone, Player2* p2Zone, Options* opZone, Ac
 
 void Full::setup() {
   animationTypes = FULL_ANIMATION_TYPES;
-  previousAnimation = STATIC;
+  previousAnimation = CUSTOM;
   currentAnimation = IDLE;
   _staticColorIndex = 0;
   _fadeStepIndex = 1;  // FADE_STEP_NORMAL
@@ -29,7 +29,7 @@ void Full::setAnimationType(ANIMATION_TYPE animType) {
   for (uint8_t i = 0; i < ZONE_COUNT; i++) {
     _subZones[i]->reset();
   }
-  Zone::setAllLEDs(BLACK);
+  Zone::setAllZone(BLACK);
 
   int animationModifier = -1;
   switch (currentAnimation) {
@@ -89,8 +89,8 @@ void Full::cycleAnimationModifier() {
 * @param gValue the brightness value of the green channel
 * @param bValue the brightness value of the blue channel
 */
-void Full::setAllLEDs(uint8_t rValue, uint8_t gValue, uint8_t bValue) {
+void Full::setAllZone(uint8_t rValue, uint8_t gValue, uint8_t bValue) {
   for(uint8_t i = 0; i < ZONE_COUNT; i++) {
-    _subZones[i]->setAllLEDs(rValue, gValue, bValue);
+    _subZones[i]->setAllZone(rValue, gValue, bValue);
   }
 }

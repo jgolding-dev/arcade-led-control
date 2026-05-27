@@ -24,8 +24,7 @@ class AnimationController {
         void setLEDPinBrightness(int ledPin, int percent);
         void resetIndicators();
     private:
-        void _setAllLEDs(int rValue, int gValue, int bValue);
-        void _setColor(uint32_t color);
+        void setAllZone(int rValue, int gValue, int bValue);
         void _animateFadeRGB();
         void _reset();
 
