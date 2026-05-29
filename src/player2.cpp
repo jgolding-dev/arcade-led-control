@@ -10,8 +10,8 @@ void Player2::setup() {
   _staticColorIndex = 0;
   _fadeStepIndex = 1;  // FADE_STEP_NORMAL
   _fadeColorIndex = 0;
-  FastLED.addLeds<PLAYER2_BUTTONS_LED_TYPE, PLAYER2_BUTTONS_DATA_PIN, COLOR_ORDER>(_buttonLeds, PLAYER2_BUTTONS_LED_COUNT);
-  FastLED.addLeds<PLAYER2_JOYSTICK_LED_TYPE, PLAYER2_JOYSTICK_DATA_PIN, COLOR_ORDER>(_joystickLeds, PLAYER2_JOYSTICK_LED_COUNT);
+  FastLED.addLeds<PLAYER2_BUTTONS_LED_TYPE, PLAYER2_BUTTONS_DATA_PIN, GRB>(_buttonLeds, PLAYER2_BUTTONS_LED_COUNT);
+  FastLED.addLeds<PLAYER2_JOYSTICK_LED_TYPE, PLAYER2_JOYSTICK_DATA_PIN, GRB>(_joystickLeds, PLAYER2_JOYSTICK_LED_COUNT);
   FastLED.setBrightness(_currentBrightness);
 }
 
@@ -35,8 +35,8 @@ void Player2::process() {
 void Player2::cycleAnimationModifier() {
   switch (currentAnimation) {
     case STATIC:
-      _staticColorIndex = (_staticColorIndex + 1) % (sizeof(STATIC_COLORS) / sizeof(STATIC_COLORS[0]));
-      Zone::setAllZone(STATIC_COLORS[_staticColorIndex]);
+      _staticColorIndex = (_staticColorIndex + 1) % (sizeof(COLORS) / sizeof(COLORS[0]));
+      Zone::setAllZone(COLORS[_staticColorIndex]);
       break;
     case FADE:
       _fadeStepIndex = (_fadeStepIndex + 1) % (sizeof(FADE_STEP_MS) / sizeof(FADE_STEP_MS[0]));
@@ -75,11 +75,11 @@ void Player2::setAllZone(uint8_t rValue, uint8_t gValue, uint8_t bValue) {
 void Player2::_setSFTurbo() {
   Serial.println("Setting Player 1 SF_Turbo");
 
-  Zone::setAllZone(BLACK);
+  Zone::setAllZone(RGB_BLACK);
 
   // joystick
   for (int i = 0; i < PLAYER2_JOYSTICK_LED_COUNT; i++) {
-    Zone::_setLED(_joystickLeds, BLUE, i);
+    Zone::_setLED(_joystickLeds, RGB_BLUE, i);
   }
 
   // buttons
@@ -88,10 +88,10 @@ void Player2::_setSFTurbo() {
   int heavy[] = { L1_LED, (L1_LED + 1), R1_LED, (R1_LED + 1) };
   int special[] = { L2_LED, (L2_LED + 1), R2_LED, (R2_LED + 1) };
 
-  setLEDs(_buttonLeds, RED, light, 4);
-  setLEDs(_buttonLeds, BLUE, medium, 4);
-  setLEDs(_buttonLeds, GREEN, heavy, 4);
-  setLEDs(_buttonLeds, YELLOW, special, 4);
+  setLEDs(_buttonLeds, RGB_RED, light, 4);
+  setLEDs(_buttonLeds, RGB_BLUE, medium, 4);
+  setLEDs(_buttonLeds, RGB_GREEN, heavy, 4);
+  setLEDs(_buttonLeds, RGB_YELLOW, special, 4);
 
   FastLED.show();
 }

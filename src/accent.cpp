@@ -10,7 +10,7 @@ void Accent::setup() {
   _staticColorIndex = 0;
   _fadeStepIndex = 1;  // FADE_STEP_NORMAL
   _fadeColorIndex = 0;
-  FastLED.addLeds<ACCENT_LED_TYPE, ACCENT_DATA_PIN, COLOR_ORDER>(_leds, ACCENT_LED_COUNT);
+  FastLED.addLeds<ACCENT_LED_TYPE, ACCENT_DATA_PIN, GRB>(_leds, ACCENT_LED_COUNT);
   FastLED.setBrightness(_currentBrightness);
 }
 
@@ -34,8 +34,8 @@ void Accent::process() {
 void Accent::cycleAnimationModifier() {
   switch (currentAnimation) {
     case STATIC:
-      _staticColorIndex = (_staticColorIndex + 1) % (sizeof(STATIC_COLORS) / sizeof(STATIC_COLORS[0]));
-      Zone::setAllZone(STATIC_COLORS[_staticColorIndex]);
+      _staticColorIndex = (_staticColorIndex + 1) % (sizeof(COLORS) / sizeof(COLORS[0]));
+      Zone::setAllZone(COLORS[_staticColorIndex]);
       break;
     case FADE:
       _fadeStepIndex = (_fadeStepIndex + 1) % (sizeof(FADE_STEP_MS) / sizeof(FADE_STEP_MS[0]));

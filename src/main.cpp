@@ -7,7 +7,7 @@
 
 #define BAUD_RATE 115200
 
-const bool DEBUG_MODE = false;
+const bool DEBUG_MODE = true;
 
 enum PlayerIndex : uint8_t {
   P1_INDEX    = 0,
@@ -62,6 +62,9 @@ void setup() {
 
   // Debug Serial Initialization
   Serial.begin(BAUD_RATE);
+  if (DEBUG_MODE) {
+    Serial.println("Debug Serial Initialized");
+  }
 
   // P1 UART Initialization
   Serial1.setRX(P1_UART_RX_PIN);

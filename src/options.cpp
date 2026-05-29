@@ -10,7 +10,7 @@ void Options::setup() {
   _staticColorIndex = 0;
   _fadeStepIndex = 1;  // FADE_STEP_NORMAL
   _fadeColorIndex = 0;
-  FastLED.addLeds<OPTIONS_BUTTONS_LED_TYPE, OPTIONS_BUTTONS_DATA_PIN, COLOR_ORDER>(_leds, OPTIONS_BUTTONS_LED_COUNT);
+  FastLED.addLeds<OPTIONS_BUTTONS_LED_TYPE, OPTIONS_BUTTONS_DATA_PIN, GRB>(_leds, OPTIONS_BUTTONS_LED_COUNT);
   FastLED.setBrightness(_currentBrightness);
 }
 
@@ -34,8 +34,8 @@ void Options::process() {
 void Options::cycleAnimationModifier() {
   switch (currentAnimation) {
     case STATIC:
-      _staticColorIndex = (_staticColorIndex + 1) % (sizeof(STATIC_COLORS) / sizeof(STATIC_COLORS[0]));
-      Zone::setAllZone(STATIC_COLORS[_staticColorIndex]);
+      _staticColorIndex = (_staticColorIndex + 1) % (sizeof(COLORS) / sizeof(COLORS[0]));
+      Zone::setAllZone(COLORS[_staticColorIndex]);
       break;
     case FADE:
       _fadeStepIndex = (_fadeStepIndex + 1) % (sizeof(FADE_STEP_MS) / sizeof(FADE_STEP_MS[0]));
@@ -69,7 +69,7 @@ void Options::setAllZone(uint8_t rValue, uint8_t gValue, uint8_t bValue) {
 void Options::_setSFTurbo() {
   Serial.println("Setting Options SF_Turbo");
 
-  Zone::setAllZone(WHITE);
+  Zone::setAllZone(RGB_WHITE);
 
   FastLED.show();
 }

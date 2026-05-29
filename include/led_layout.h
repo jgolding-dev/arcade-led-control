@@ -1,4 +1,5 @@
-#pragma once
+#ifndef led_layout_h
+#define led_layout_h
 
 #include <Arduino.h>
 
@@ -26,11 +27,12 @@ enum LedJoystickIndex : uint8_t {
 };  
 
 enum OptionsLedIndex: uint8_t {
-  HOME_LED            = 0,
-  P1_SELECT_LED       = 1,
-  P1_START_LED        = 2,
-  P2_SELECT_LED       = 3,
-  P2_START_LED        = 4
+  EXTRA1_LED          = 0,
+  HOME_LED            = 1,
+  P1_SELECT_LED       = 2,
+  P1_START_LED        = 3,
+  P2_SELECT_LED       = 4,
+  P2_START_LED        = 5
 };
 
 // -------- LED Chip Types -------- //
@@ -52,4 +54,4 @@ enum OptionsLedIndex: uint8_t {
 //                                              split into 1 IC per 3 LEDs. So, as far as our
 //                                              program is concerned, we have 100.
 
-#define COLOR_ORDER GRB  // Color order (RGB, GRB, etc.)
+#endif

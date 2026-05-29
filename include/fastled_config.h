@@ -11,24 +11,34 @@
 #include <Arduino.h>
 #include <FastLED.h>
 
-const CRGB BLACK   = CRGB::Black;
-const CRGB BLUE    = CRGB::Blue;
-const CRGB RED     = CRGB::Red;
-const CRGB GREEN   = CRGB::Green;
-const CRGB YELLOW  = CRGB::Yellow;
-const CRGB PURPLE  = CRGB::Purple;
-const CRGB CYAN    = CRGB::Cyan;
-const CRGB WHITE   = CRGB::White;
-const CRGB GOLD    = CRGB::Gold;
-const CRGB STATIC_COLORS[NUM_COLORS] = {
-  BLUE,
-  RED,
-  GREEN,
-  PURPLE,
-  YELLOW,
-  CYAN,
-  GOLD,
-  WHITE
+// RGB value structure.
+typedef struct __attribute__ ((__packed__)) {
+    uint8_t r;
+    uint8_t g;
+    uint8_t b;
+} RGB_t;
+
+const RGB_t RGB_BLACK        = {000,000,000};
+const RGB_t RGB_BLUE         = {000,000,255};
+const RGB_t RGB_BLUE_VIOLET  = {138, 43, 226};
+const RGB_t RGB_MAGENTA      = {255, 0, 255};
+const RGB_t RGB_WHITE        = {255, 255, 255};
+const RGB_t RGB_RED          = {255, 0, 0};
+const RGB_t RGB_ORANGE       = {255, 165, 0};
+const RGB_t RGB_YELLOW       = {255, 255, 0};
+const RGB_t RGB_GREEN        = {0, 255, 0};
+const RGB_t RGB_CYAN         = {0, 255, 255};
+
+const RGB_t COLORS[NUM_COLORS] = {
+  RGB_BLUE,
+  RGB_BLUE_VIOLET,
+  RGB_MAGENTA,
+  RGB_WHITE,
+  RGB_RED,
+  RGB_ORANGE,
+  RGB_YELLOW,
+  RGB_GREEN,
+  RGB_CYAN
 };
 
 #endif

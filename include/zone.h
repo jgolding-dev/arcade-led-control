@@ -103,9 +103,9 @@ public:
   void startZoneSwitchAnimation();
   void cycleAnimationType();
   void setAnimationModifier(int modifierIndex);
-  void setAllZone(const CRGB &color);
-  void setLEDs(CRGB* leds, const CRGB &color, int count);
-  void setLEDs(CRGB* leds, const CRGB &color, int* indexes, int size);
+  void setAllZone(const RGB_t &color);
+  void setLEDs(CRGB* leds, const RGB_t &color, int count);
+  void setLEDs(CRGB* leds, const RGB_t &color, int* indexes, int size);
   void setMasterBrightness(int value);
 
   // Virtual functions to be overridden by children
@@ -128,8 +128,7 @@ protected:
   virtual void _setCustom(const CustomType &type);
   virtual void _setSFTurbo();
   void _animateFadeRGB();
-  void _setLEDPinBrightness(int ledPin, int percent);
-  void _setLED(CRGB* leds, const CRGB &color, int index);
+  void _setLED(CRGB* leds, const RGB_t &color, int index);
 };
 
 // -------- Child Classes -------- //

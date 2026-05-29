@@ -29,7 +29,7 @@ void Full::setAnimationType(ANIMATION_TYPE animType) {
   for (uint8_t i = 0; i < ZONE_COUNT; i++) {
     _subZones[i]->reset();
   }
-  Zone::setAllZone(BLACK);
+  Zone::setAllZone(RGB_BLACK);
 
   int animationModifier = -1;
   switch (currentAnimation) {
@@ -66,7 +66,7 @@ void Full::cycleAnimationModifier() {
   int animationModifier = -1;
   switch (currentAnimation) {
     case STATIC:
-      _staticColorIndex = (_staticColorIndex + 1) % (sizeof(STATIC_COLORS) / sizeof(STATIC_COLORS[0]));
+      _staticColorIndex = (_staticColorIndex + 1) % (sizeof(COLORS) / sizeof(COLORS[0]));
       animationModifier = _staticColorIndex;
     case FADE:
       _fadeStepIndex = (_fadeStepIndex + 1) % (sizeof(FADE_STEP_MS) / sizeof(FADE_STEP_MS[0]));
