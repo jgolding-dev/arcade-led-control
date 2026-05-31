@@ -12,6 +12,32 @@ void Options::setup() {
   _fadeColorIndex = 0;
   FastLED.addLeds<OPTIONS_BUTTONS_LED_TYPE, OPTIONS_BUTTONS_DATA_PIN, GRB>(_leds, OPTIONS_BUTTONS_LED_COUNT);
   FastLED.setBrightness(_currentBrightness);
+
+  // Overlay buttons default to set colors
+  _setLED(_leds, RGB_GREEN, HOME_LED);
+  _setLED(_leds, RGB_BLUE, EXTRA1_LED);
+}
+
+/**
+* Puts the zone in an idle state
+*/
+void Options::idle() {
+  if (currentAnimation != IDLE) {
+    _setLED(_leds, RGB_BLACK, HOME_LED);
+    _setLED(_leds, RGB_BLACK, EXTRA1_LED);
+    setAnimationType(IDLE);
+  }
+}
+
+/**
+* Puts the zone in a wake state
+*/
+void Options::wake() {
+  if (currentAnimation == IDLE) {
+    _setLED(_leds, RGB_GREEN, HOME_LED);
+    _setLED(_leds, RGB_BLUE, EXTRA1_LED);
+    setAnimationType(previousAnimation);
+  }
 }
 
 /**
@@ -55,7 +81,7 @@ void Options::cycleAnimationModifier() {
 */
 void Options::setAllZone(uint8_t rValue, uint8_t gValue, uint8_t bValue) {
   Serial.println("Setting Options LEDs");
-  for (int i = 0; i < OPTIONS_BUTTONS_LED_COUNT; i++) {
+  for (int i = 2; i < OPTIONS_BUTTONS_LED_COUNT; i++) { // Exclude HOME buttons
     _leds[i].r = rValue;
     _leds[i].g = gValue;
     _leds[i].b = bValue;

@@ -98,8 +98,6 @@ public:
   ANIMATION_TYPE previousAnimation;
 
   void reset();
-  void idle();
-  void wake();
   void startZoneSwitchAnimation();
   void cycleAnimationType();
   void setAnimationModifier(int modifierIndex);
@@ -109,6 +107,8 @@ public:
   void setMasterBrightness(int value);
 
   // Virtual functions to be overridden by children
+  virtual void idle();
+  virtual void wake();
   virtual void setup();
   virtual void process();
   virtual void setAnimationType(ANIMATION_TYPE animType);
@@ -139,6 +139,8 @@ class Options : public Zone {
     Options(int brightness);
 
     // Override Functions
+    void idle();
+    void wake();
     void setup();
     void process();
     void cycleAnimationModifier();
