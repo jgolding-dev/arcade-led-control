@@ -84,6 +84,8 @@ const unsigned long FADE_STEP_MS[] = {
   FADE_STEP_SLOW
 };
 
+const unsigned long ZONE_SWITCH_ANIMATION_STEP_MS = 350;
+
 // Parent Class
 class Zone {
 public:
@@ -99,36 +101,41 @@ public:
 
   void reset();
   void startZoneSwitchAnimation();
+  void endZoneSwitchAnimation();
+  bool isZoneSwitchActive();
   void cycleAnimationType();
+  void cycleAnimationModifier();
   void setAnimationModifier(int modifierIndex);
   void setAllZone(const RGB_t &color);
   void setLEDs(CRGB* leds, const RGB_t &color, int count);
   void setLEDs(CRGB* leds, const RGB_t &color, int* indexes, int size);
   void setMasterBrightness(int value);
+  void process();
 
   // Virtual functions to be overridden by children
   virtual void idle();
   virtual void wake();
   virtual void setup();
-  virtual void process();
   virtual void setAnimationType(ANIMATION_TYPE animType);
-  virtual void cycleAnimationModifier();
   virtual void setAllZone(uint8_t rValue, uint8_t gValue, uint8_t bValue);
 protected:
   bool _switchAnimationActive;
   int _staticColorIndex;
   int _customTypeIndex;
   int _currentBrightness;
-  int _lastAnimStepMs;
+  int _lastFadeAnimStepMs;
   int _fadeStepIndex;
   int _fadeColorIndex;
   int _fadePercent;
   int _fadeDir;
+  int _zoneSwitchBlinkDir;
+  unsigned long _lastZoneSwitchAnimStepMs;
   virtual void _animateCustom();
   virtual void _setCustom(const CustomType &type);
   virtual void _setSFTurbo();
   void _animateFadeRGB();
   void _setLED(CRGB* leds, const RGB_t &color, int index);
+  void _processZoneSwitchAnimation();
 };
 
 // -------- Child Classes -------- //
@@ -142,8 +149,6 @@ class Options : public Zone {
     void idle();
     void wake();
     void setup();
-    void process();
-    void cycleAnimationModifier();
     void setAllZone(uint8_t rValue, uint8_t gValue, uint8_t bValue);
   private:
     CRGB _leds[OPTIONS_BUTTONS_LED_COUNT];
@@ -157,8 +162,6 @@ public:
 
   // Override Functions
   void setup();
-  void process();
-  void cycleAnimationModifier();
   void setAllZone(uint8_t rValue, uint8_t gValue, uint8_t bValue);
 private:
   // Array to hold LED color data
@@ -175,8 +178,6 @@ public:
 
   // Override Functions
   void setup();
-  void process();
-  void cycleAnimationModifier();
   void setAllZone(uint8_t rValue, uint8_t gValue, uint8_t bValue);
 private:
   // Array to hold LED color data
@@ -192,8 +193,6 @@ public:
 
   // Override Functions
   void setup();
-  void process();
-  void cycleAnimationModifier();
   void setAllZone(uint8_t rValue, uint8_t gValue, uint8_t bValue);
 private:
   // Array to hold LED color data
@@ -207,8 +206,6 @@ public:
 
   // Override Functions
   void setup();
-  void process();
-  void cycleAnimationModifier();
   void setAnimationType(ANIMATION_TYPE animType);
   void setAllZone(uint8_t rValue, uint8_t gValue, uint8_t bValue);
 private:
@@ -230,8 +227,6 @@ class ControlPanel : public Zone {
 
     // Override Functions
     void setup(Player1* p1Zone, Player2* p2Zone, Options* opZone);
-    void process();
-    void cycleAnimationModifier();
     void setAllZone(uint8_t rValue, uint8_t gValue, uint8_t bValue);
   private:
     // sub-zones

@@ -51,39 +51,6 @@ void Full::setAnimationType(ANIMATION_TYPE animType) {
 }
 
 /**
- * Advances to the next frame of the current animation
- */
-void Full::process() {
-  for (uint8_t i = 0; i < ZONE_COUNT; i++) {
-    _subZones[i]->process();
-  }
-}
-
-/**
- * Cycles the currently selected animation to the the next modifier
- */
-void Full::cycleAnimationModifier() {
-  int animationModifier = -1;
-  switch (currentAnimation) {
-    case STATIC:
-      _staticColorIndex = (_staticColorIndex + 1) % (sizeof(COLORS) / sizeof(COLORS[0]));
-      animationModifier = _staticColorIndex;
-    case FADE:
-      _fadeStepIndex = (_fadeStepIndex + 1) % (sizeof(FADE_STEP_MS) / sizeof(FADE_STEP_MS[0]));
-      animationModifier = _fadeStepIndex;
-    default:
-      // No modifier for the currently selected animation
-      break;
-  }
-
-  if (animationModifier >= 0) {
-    for(uint8_t i = 0; i < ZONE_COUNT; i++) {
-      _subZones[i]->setAnimationModifier(animationModifier);
-    }
-  }
-}
-
-/**
 * Sets the brightness level (%) of all LED channels (R/G/B)
 * @param rValue the brightness value of the red channel
 * @param gValue the brightness value of the green channel

@@ -4,8 +4,8 @@
 enum LED_ZONE {
   FULL,
   PLAYER_1,
-  PLAYER_2,
   OPTIONS,
+  PLAYER_2,
   ACCENT
 };
 
@@ -33,10 +33,10 @@ AnimationController::AnimationController(unsigned long idleTimeoutMs)
   _zones[ACCENT] = &_accent;
 }
 
-
 void AnimationController::setup() {
-  _currentZone = PLAYER_1;
+  _currentZone = FULL;
   _currentBrightness = BRIGHTNESS_MAX;
+  _zoneSwitchAnimationStartTime = 0;
   _idleStatus = false;
   resetIndicators();
   for (uint8_t i = 0; i < ZONE_COUNT; i++) {
@@ -62,20 +62,32 @@ void AnimationController::setLEDPinBrightness(int ledPin, int percent) {
 }
 
 void AnimationController::cycleZone() {
-  _currentZone = (_currentZone + 1) % ZONE_COUNT;
+  if (_zones[_currentZone]->isZoneSwitchActive()) {
+    _endZoneSwitch(_currentZone);
+    _currentZone = (_currentZone + 1) % ZONE_COUNT;
+  }
   _zones[_currentZone]->startZoneSwitchAnimation();
+  _zoneSwitchAnimationStartTime = millis();
 }
 
 void AnimationController::setZone(int zoneIndex) {
+  if (_zones[_currentZone]->isZoneSwitchActive()) {
+    _endZoneSwitch(_currentZone);
+  }
   _currentZone = zoneIndex;
-  _zones[_currentZone]->startZoneSwitchAnimation();
 }
 
 void AnimationController::cycleAnimationType() {
+  if (_zones[_currentZone]->isZoneSwitchActive()) {
+    _endZoneSwitch(_currentZone);
+  }
   _zones[_currentZone]->cycleAnimationType();
 }
 
 void AnimationController::setAnimationType(ANIMATION_TYPE animType) {
+  if (_zones[_currentZone]->isZoneSwitchActive()) {
+    _endZoneSwitch(_currentZone);
+  }
   _zones[_currentZone]->setAnimationType(animType);
 }
 
@@ -83,6 +95,9 @@ void AnimationController::setAnimationType(ANIMATION_TYPE animType) {
  * Cycles the currently selected animation to the the next modifier
  */
 void AnimationController::cycleAnimationModifier() {
+  if (_zones[_currentZone]->isZoneSwitchActive()) {
+    _endZoneSwitch(_currentZone);
+  }
   _zones[_currentZone]->cycleAnimationModifier();
 }
 
@@ -106,7 +121,7 @@ void AnimationController::handleIdleState(bool systemActive) {
 }
 
 void AnimationController::setIdle(bool isIdle) {
-    switch (_currentZone) {
+  switch (_currentZone) {
     case FULL:
       if (isIdle) {
         _zones[FULL]->idle();
@@ -123,6 +138,9 @@ void AnimationController::setIdle(bool isIdle) {
     //   break;
     default:
       if (isIdle) {
+        if (_zones[_currentZone]->isZoneSwitchActive()) {
+          _endZoneSwitch(_currentZone);
+        }
         for (uint8_t i = 0; i < ZONE_COUNT; i++) {
           _zones[i]->idle();
         }
@@ -140,6 +158,10 @@ void AnimationController::setIdle(bool isIdle) {
  * Advances to the next frame of the currently selected animation for each zone
  */
 void AnimationController::processAnimations() {
+  if (_zones[_currentZone]->isZoneSwitchActive() && (millis() - _zoneSwitchAnimationStartTime) >= ZONE_SWITCH_TIMEOUT_MS) {
+    _endZoneSwitch(_currentZone);
+  }
+
   switch (_currentZone) {
     case FULL:
       _zones[FULL]->process();
@@ -163,6 +185,15 @@ void AnimationController::_reset() {
   for (uint8_t i = 0; i < ZONE_COUNT; i++) {
     _zones[i]->reset();
   }
+}
+
+/**
+ * Ends the zone switch animation for the provided zone, and resets timers
+ * @param zoneIndex the index of the zone to end the switch animation for
+ */
+void AnimationController::_endZoneSwitch(int zoneIndex) {
+  _zones[zoneIndex]->endZoneSwitchAnimation();
+  _zoneSwitchAnimationStartTime = 0;
 }
 
 /**

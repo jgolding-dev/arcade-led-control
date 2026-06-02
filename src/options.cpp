@@ -41,39 +41,6 @@ void Options::wake() {
 }
 
 /**
- * Advances to the next frame of the current animation
- */
-void Options::process() {
-  switch (currentAnimation) {
-    case FADE:
-      _animateFadeRGB();
-      break;
-    default:
-      // No animation
-      break;
-  }
-}
-
-/**
- * Cycles the currently selected animation to the the next modifier
- */
-void Options::cycleAnimationModifier() {
-  switch (currentAnimation) {
-    case STATIC:
-      _staticColorIndex = (_staticColorIndex + 1) % (sizeof(COLORS) / sizeof(COLORS[0]));
-      Zone::setAllZone(COLORS[_staticColorIndex]);
-      break;
-    case FADE:
-      _fadeStepIndex = (_fadeStepIndex + 1) % (sizeof(FADE_STEP_MS) / sizeof(FADE_STEP_MS[0]));
-      _lastAnimStepMs = 0;
-      break;
-    default:
-      // No modifier
-      break;
-  }
-}
-
-/**
 * Sets the RGB color value of all LEDs in this zone
 * @param rValue the brightness value of the red channel
 * @param gValue the brightness value of the green channel
@@ -82,9 +49,7 @@ void Options::cycleAnimationModifier() {
 void Options::setAllZone(uint8_t rValue, uint8_t gValue, uint8_t bValue) {
   Serial.println("Setting Options LEDs");
   for (int i = 2; i < OPTIONS_BUTTONS_LED_COUNT; i++) { // Exclude HOME buttons
-    _leds[i].r = rValue;
-    _leds[i].g = gValue;
-    _leds[i].b = bValue;
+    _leds[i].setRGB(rValue, gValue, bValue);
   }
   FastLED.show();
 }

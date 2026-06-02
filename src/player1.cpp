@@ -16,39 +16,6 @@ void Player1::setup() {
 }
 
 /**
- * Advances to the next frame of the current animation
- */
-void Player1::process() {
-  switch (currentAnimation) {
-    case FADE:
-      _animateFadeRGB();
-      break;
-    default:
-      // No animation
-      break;
-  }
-}
-
-/**
- * Cycles the currently selected animation to the the next modifier
- */
-void Player1::cycleAnimationModifier() {
-  switch (currentAnimation) {
-    case STATIC:
-      _staticColorIndex = (_staticColorIndex + 1) % (sizeof(COLORS) / sizeof(COLORS[0]));
-      Zone::setAllZone(COLORS[_staticColorIndex]);
-      break;
-    case FADE:
-      _fadeStepIndex = (_fadeStepIndex + 1) % (sizeof(FADE_STEP_MS) / sizeof(FADE_STEP_MS[0]));
-      _lastAnimStepMs = 0;
-      break;
-    default:
-      // No modifier
-      break;
-  }
-}
-
-/**
 * Sets the brightness level (%) of all LED channels (R/G/B)
 * @param rValue the brightness value of the red channel
 * @param gValue the brightness value of the green channel
@@ -57,14 +24,10 @@ void Player1::cycleAnimationModifier() {
 void Player1::setAllZone(uint8_t rValue, uint8_t gValue, uint8_t bValue) {
   Serial.println("Setting P1 LEDs");
   for (int i = 0; i < PLAYER1_BUTTONS_LED_COUNT; i++) {
-    _buttonLeds[i].r = rValue;
-    _buttonLeds[i].g = gValue;
-    _buttonLeds[i].b = bValue;
+    _buttonLeds[i].setRGB(rValue, gValue, bValue);
   }
   for (int i = 0; i < PLAYER1_JOYSTICK_LED_COUNT; i++) {
-    _joystickLeds[i].r = rValue;
-    _joystickLeds[i].g = gValue;
-    _joystickLeds[i].b = bValue;
+    _joystickLeds[i].setRGB(rValue, gValue, bValue);
   }
   FastLED.show();
 }

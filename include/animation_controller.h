@@ -4,6 +4,8 @@
 #include <brightness_levels.h>
 #include <zone.h>
 
+const unsigned long ZONE_SWITCH_TIMEOUT_MS = 3UL * 1000UL + 500UL; // 3.5 seconds
+
 class AnimationController {
     public:
         AnimationController(unsigned long idleTimeoutMs);
@@ -27,8 +29,10 @@ class AnimationController {
         void setAllZone(int rValue, int gValue, int bValue);
         void _animateFadeRGB();
         void _reset();
+        void _endZoneSwitch(int zoneIndex);
 
         unsigned long _idleTimeoutMs;
+        unsigned long _zoneSwitchAnimationStartTime;
 
         // Zones
         Full _full;

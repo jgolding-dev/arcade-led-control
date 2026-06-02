@@ -7,12 +7,19 @@ void Zone::setup() {
   previousAnimation = CUSTOM;
   currentAnimation = IDLE;
   _fadeStepIndex = 1;  // FADE_STEP_NORMAL
+  _zoneSwitchBlinkDir = 1;
+  _switchAnimationActive = false;
+  _lastZoneSwitchAnimStepMs = 0;
 }
 
 /**
  * Advances to the next frame of the current animation
  */
 void Zone::process() {
+  if (_switchAnimationActive) {
+    _processZoneSwitchAnimation();
+    return;
+  }
   switch (currentAnimation) {
     case FADE:
       _animateFadeRGB();
@@ -25,9 +32,30 @@ void Zone::process() {
   }
 }
 
+/**
+ * Display a white blinking LED animation to indicate a zone switch is occurring
+ */
+void Zone::_processZoneSwitchAnimation() {
+  unsigned long now = millis();
+  if (now - _lastZoneSwitchAnimStepMs < ZONE_SWITCH_ANIMATION_STEP_MS) {
+    return;
+  }
+  _lastZoneSwitchAnimStepMs = now;
+
+  // Blink white
+  if (_zoneSwitchBlinkDir == 1) {
+    setAllZone(RGB_WHITE);
+    _zoneSwitchBlinkDir = -1;
+  } else {
+    setAllZone(RGB_BLACK);
+    _zoneSwitchBlinkDir = 1;
+  }
+}
+
 void Zone::setMasterBrightness(int value) {
   _currentBrightness = value;
   FastLED.setBrightness(_currentBrightness);
+  FastLED.show();
 }
 
 /**
@@ -35,6 +63,26 @@ void Zone::setMasterBrightness(int value) {
 */
 void Zone::startZoneSwitchAnimation() {
   _switchAnimationActive = true;
+  setAllZone(RGB_BLACK);
+  _lastZoneSwitchAnimStepMs = millis();
+}
+
+/**
+ * Stop the zone switch animation
+ */
+void Zone::endZoneSwitchAnimation() {
+  _switchAnimationActive = false;
+  _zoneSwitchBlinkDir = 1;
+  _lastZoneSwitchAnimStepMs = 0;
+  setAnimationType(currentAnimation);
+}
+
+/**
+ * Whether the zone switch animation is currently active
+ * @returns true if the zone switch animation is active. Otherwise, false.
+ */
+bool Zone::isZoneSwitchActive() {
+  return _switchAnimationActive;
 }
 
 /**
@@ -126,10 +174,10 @@ void Zone::cycleAnimationModifier() {
 */
 void Zone::_animateFadeRGB() {
   unsigned long now = millis();
-  if (now - _lastAnimStepMs < FADE_STEP_MS[_fadeStepIndex]) {
+  if (now - _lastFadeAnimStepMs < FADE_STEP_MS[_fadeStepIndex]) {
     return;
   }
-  _lastAnimStepMs = now;
+  _lastFadeAnimStepMs = now;
   // Turn off all LEDs first
   setAllZone(0, 0, 0);
 
@@ -245,12 +293,14 @@ void Zone::_animateCustom() {
 }
 
 /**
- * Resets all animations to their initial state
+ * Resets animations to their initial state
  */
 void Zone::reset() {
-  _lastAnimStepMs = 0;
+  _lastFadeAnimStepMs = 0;
   _fadePercent = 0;
   _fadeDir = 1;
   _fadeColorIndex = 0;
   _switchAnimationActive = false;
+  _zoneSwitchBlinkDir = 1;
+  _lastZoneSwitchAnimStepMs = 0;
 }

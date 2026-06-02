@@ -16,39 +16,6 @@ void Player2::setup() {
 }
 
 /**
- * Advances to the next frame of the current animation
- */
-void Player2::process() {
-  switch (currentAnimation) {
-    case FADE:
-      _animateFadeRGB();
-      break;
-    default:
-      // No animation
-      break;
-  }
-}
-
-/**
- * Cycles the currently selected animation to the the next modifier
- */
-void Player2::cycleAnimationModifier() {
-  switch (currentAnimation) {
-    case STATIC:
-      _staticColorIndex = (_staticColorIndex + 1) % (sizeof(COLORS) / sizeof(COLORS[0]));
-      Zone::setAllZone(COLORS[_staticColorIndex]);
-      break;
-    case FADE:
-      _fadeStepIndex = (_fadeStepIndex + 1) % (sizeof(FADE_STEP_MS) / sizeof(FADE_STEP_MS[0]));
-      _lastAnimStepMs = 0;
-      break;
-    default:
-      // No modifier
-      break;
-  }
-}
-
-/**
 * Sets the brightness level (%) of all LED channels (R/G/B)
 * @param rValue the brightness value of the red channel
 * @param gValue the brightness value of the green channel
