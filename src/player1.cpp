@@ -5,11 +5,7 @@ Player1::Player1(int brightness)
 
 void Player1::setup() {
   animationTypes = PLAYER1_ANIMATION_TYPES;
-  previousAnimation = CUSTOM;
-  currentAnimation = IDLE;
-  _staticColorIndex = 0;
-  _fadeStepIndex = 1;  // FADE_STEP_NORMAL
-  _fadeColorIndex = 0;
+  currentAnimation = CUSTOM;
   FastLED.addLeds<PLAYER1_BUTTONS_LED_TYPE, PLAYER1_BUTTONS_DATA_PIN, GRB>(_buttonLeds, PLAYER1_BUTTONS_LED_COUNT);
   FastLED.addLeds<PLAYER1_JOYSTICK_LED_TYPE, PLAYER1_JOYSTICK_DATA_PIN, GRB>(_joystickLeds, PLAYER1_JOYSTICK_LED_COUNT);
   FastLED.setBrightness(_currentBrightness);
@@ -33,7 +29,7 @@ void Player1::setAllZone(uint8_t rValue, uint8_t gValue, uint8_t bValue) {
 }
 
 /**
-* Sets the brightness level (%) of all LED channels (R/G/B)
+* Applies the SF Turbo custom lighting pattern to the zone
 */
 void Player1::_setSFTurbo() {
   Serial.println("Setting Player 1 SF_Turbo");

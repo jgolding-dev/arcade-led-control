@@ -11,8 +11,6 @@ class AnimationController {
         AnimationController(unsigned long idleTimeoutMs);
 
         void setup();
-        void update();
-        void updateAnimationType(int animType);
         void handleIdleState(bool systemActive);
         void cycleZone();
         void cycleAnimationType();
@@ -26,9 +24,8 @@ class AnimationController {
         void setLEDPinBrightness(int ledPin, int percent);
         void resetIndicators();
     private:
-        void setAllZone(int rValue, int gValue, int bValue);
-        void _animateFadeRGB();
         void _reset();
+        void _resumeSubZones();
         void _endZoneSwitch(int zoneIndex);
 
         unsigned long _idleTimeoutMs;

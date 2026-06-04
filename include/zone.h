@@ -101,9 +101,9 @@ public:
 
   void reset();
   void startZoneSwitchAnimation();
-  void endZoneSwitchAnimation();
   bool isZoneSwitchActive();
   void cycleAnimationType();
+  void setAnimationType(ANIMATION_TYPE animType);
   void cycleAnimationModifier();
   void setAnimationModifier(int modifierIndex);
   void setAllZone(const RGB_t &color);
@@ -116,8 +116,10 @@ public:
   virtual void idle();
   virtual void wake();
   virtual void setup();
-  virtual void setAnimationType(ANIMATION_TYPE animType);
   virtual void setAllZone(uint8_t rValue, uint8_t gValue, uint8_t bValue);
+  virtual void applyCustom(const CustomType &type);
+  virtual void endZoneSwitchAnimation();
+  
 protected:
   bool _switchAnimationActive;
   int _staticColorIndex;
@@ -131,7 +133,6 @@ protected:
   int _zoneSwitchBlinkDir;
   unsigned long _lastZoneSwitchAnimStepMs;
   virtual void _animateCustom();
-  virtual void _setCustom(const CustomType &type);
   virtual void _setSFTurbo();
   void _animateFadeRGB();
   void _setLED(CRGB* leds, const RGB_t &color, int index);
@@ -206,8 +207,8 @@ public:
 
   // Override Functions
   void setup();
-  void setAnimationType(ANIMATION_TYPE animType);
   void setAllZone(uint8_t rValue, uint8_t gValue, uint8_t bValue);
+  void applyCustom(const CustomType &type);
 private:
   // sub-zones
   Player1* _player1Zone;

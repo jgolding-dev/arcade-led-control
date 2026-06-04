@@ -4,12 +4,13 @@ Zone::Zone(int brightness)
   : _currentBrightness(brightness) {}
 
 void Zone::setup() {
-  previousAnimation = CUSTOM;
-  currentAnimation = IDLE;
   _fadeStepIndex = 1;  // FADE_STEP_NORMAL
+  _fadeColorIndex = 0;
   _zoneSwitchBlinkDir = 1;
   _switchAnimationActive = false;
   _lastZoneSwitchAnimStepMs = 0;
+  _customTypeIndex = 0;
+  _staticColorIndex = 0;
 }
 
 /**
@@ -117,7 +118,7 @@ void Zone::setAnimationType(ANIMATION_TYPE animType) {
       setAllZone(COLORS[_staticColorIndex]);
       break;
     case CUSTOM:
-      _setCustom(CUSTOM_TYPES[_customTypeIndex]);
+      applyCustom(CUSTOM_TYPES[_customTypeIndex]);
     default:
       break;
   }
@@ -158,7 +159,7 @@ void Zone::cycleAnimationModifier() {
       break;
     case CUSTOM:
       _customTypeIndex = (_customTypeIndex + 1) % (sizeof(COLORS) / sizeof(COLORS[0]));
-      _setCustom(CUSTOM_TYPES[_customTypeIndex]);
+      applyCustom(CUSTOM_TYPES[_customTypeIndex]);
       break;
     case FADE:
       _fadeStepIndex = (_fadeStepIndex + 1) % (sizeof(FADE_STEP_MS) / sizeof(FADE_STEP_MS[0]));
@@ -207,6 +208,13 @@ void Zone::_animateFadeRGB() {
     _fadeDir = 1;
     _fadeColorIndex = (_fadeColorIndex + 1) % 3;
   }
+}
+
+/**
+* Applies the SF Turbo custom lighting pattern to the zone
+*/
+void Zone::_setSFTurbo() {
+  // Should be overridden
 }
 
 /**
@@ -267,7 +275,7 @@ void Zone::setLEDs(CRGB* leds, const RGB_t &color, int count) {
  * Sets the zone to the specified custom lighting pattern
  * @param type the custom type
  */
-void Zone::_setCustom(const CustomType &type) {
+void Zone::applyCustom(const CustomType &type) {
   switch (type) {
     case SF_TURBO:
       _setSFTurbo();
@@ -276,13 +284,6 @@ void Zone::_setCustom(const CustomType &type) {
       // No custom type
       break;
   }
-}
-
-/**
- * Sets the SF Turbo custom lighting pattern
- */
-void Zone::_setSFTurbo() {
-  // Should be overridden
 }
 
 /**

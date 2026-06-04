@@ -30,7 +30,7 @@ AnimationController::AnimationController(unsigned long idleTimeoutMs)
   _zones[PLAYER_1] = &_player1;
   _zones[PLAYER_2] = &_player2;
   _zones[OPTIONS] = &_options;
-  _zones[ACCENT] = &_accent;
+  // _zones[ACCENT] = &_accent;
 }
 
 void AnimationController::setup() {
@@ -42,7 +42,13 @@ void AnimationController::setup() {
   for (uint8_t i = 0; i < ZONE_COUNT; i++) {
     _zones[i]->setup();
   }
-  _zones[FULL]->wake();
+
+  if (_currentZone == FULL) {
+    _zones[FULL]->setAnimationType(_zones[FULL]->currentAnimation);
+  }
+  else {
+    _resumeSubZones();
+  }
 }
 
 /**
@@ -64,6 +70,9 @@ void AnimationController::setLEDPinBrightness(int ledPin, int percent) {
 void AnimationController::cycleZone() {
   if (_zones[_currentZone]->isZoneSwitchActive()) {
     _endZoneSwitch(_currentZone);
+    if (_currentZone == FULL) {
+      _resumeSubZones();
+    }
     _currentZone = (_currentZone + 1) % ZONE_COUNT;
   }
   _zones[_currentZone]->startZoneSwitchAnimation();
@@ -73,6 +82,9 @@ void AnimationController::cycleZone() {
 void AnimationController::setZone(int zoneIndex) {
   if (_zones[_currentZone]->isZoneSwitchActive()) {
     _endZoneSwitch(_currentZone);
+    if (_currentZone == FULL && zoneIndex != FULL) {
+      _resumeSubZones();
+    }
   }
   _currentZone = zoneIndex;
 }
@@ -195,6 +207,17 @@ void AnimationController::_endZoneSwitch(int zoneIndex) {
   _zones[zoneIndex]->endZoneSwitchAnimation();
   _zoneSwitchAnimationStartTime = 0;
 }
+
+/**
+ * Reverts the sub-zones to their previous lighting state after switching back from the full zone
+ */
+void AnimationController::_resumeSubZones() {
+  for (uint8_t i = 0; i < ZONE_COUNT; i++) {
+    if (i != FULL) {
+      _zones[i]->setAnimationType(_zones[i]->currentAnimation);
+    }
+  }
+} 
 
 /**
  * Resets the joystick mode indicator lights

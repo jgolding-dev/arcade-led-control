@@ -15,39 +15,7 @@ Full::Full(int brightness, Player1* p1Zone, Player2* p2Zone, Options* opZone, Ac
 
 void Full::setup() {
   animationTypes = FULL_ANIMATION_TYPES;
-  previousAnimation = CUSTOM;
-  currentAnimation = IDLE;
-  _staticColorIndex = 0;
-  _fadeStepIndex = 1;  // FADE_STEP_NORMAL
-  _fadeColorIndex = 0;
-}
-
-void Full::setAnimationType(ANIMATION_TYPE animType) {
-  previousAnimation = currentAnimation;
-  currentAnimation = animType;
-  reset();
-  for (uint8_t i = 0; i < ZONE_COUNT; i++) {
-    _subZones[i]->reset();
-  }
-  Zone::setAllZone(RGB_BLACK);
-
-  int animationModifier = -1;
-  switch (currentAnimation) {
-    case STATIC:
-      animationModifier = _staticColorIndex;
-    case FADE:
-      animationModifier = _fadeStepIndex;
-    default:
-      // No modifier for the currently selected animation
-      break;
-  }
-
-  for(uint8_t i = 0; i < ZONE_COUNT; i++) {
-    _subZones[i]->setAnimationType(animType);
-    if (animationModifier >= 0) {
-      _subZones[i]->setAnimationModifier(animationModifier);
-    }
-  }
+  currentAnimation = CUSTOM;
 }
 
 /**
@@ -59,5 +27,15 @@ void Full::setAnimationType(ANIMATION_TYPE animType) {
 void Full::setAllZone(uint8_t rValue, uint8_t gValue, uint8_t bValue) {
   for(uint8_t i = 0; i < ZONE_COUNT; i++) {
     _subZones[i]->setAllZone(rValue, gValue, bValue);
+  }
+}
+
+/**
+ * Applies the custom lighting pattern to the zone based on the specified custom type
+ * @param type the custom type to apply
+ */
+void Full::applyCustom(const CustomType &type) {
+  for(uint8_t i = 0; i < ZONE_COUNT; i++) {
+    _subZones[i]->applyCustom(type);
   }
 }

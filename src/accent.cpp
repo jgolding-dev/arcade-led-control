@@ -5,11 +5,7 @@ Accent::Accent(int brightness)
 
 void Accent::setup() {
   animationTypes = ACCENT_ANIMATION_TYPES;
-  previousAnimation = CUSTOM;
-  currentAnimation = IDLE;
-  _staticColorIndex = 0;
-  _fadeStepIndex = 1;  // FADE_STEP_NORMAL
-  _fadeColorIndex = 0;
+  currentAnimation = CUSTOM;
   FastLED.addLeds<ACCENT_LED_TYPE, ACCENT_DATA_PIN, GRB>(_leds, ACCENT_LED_COUNT);
   FastLED.setBrightness(_currentBrightness);
 }

@@ -5,11 +5,7 @@ Options::Options(int brightness)
 
 void Options::setup() {
   animationTypes = OPTIONS_ANIMATION_TYPES;
-  previousAnimation = CUSTOM;
-  currentAnimation = IDLE;
-  _staticColorIndex = 0;
-  _fadeStepIndex = 1;  // FADE_STEP_NORMAL
-  _fadeColorIndex = 0;
+  currentAnimation = CUSTOM;
   FastLED.addLeds<OPTIONS_BUTTONS_LED_TYPE, OPTIONS_BUTTONS_DATA_PIN, GRB>(_leds, OPTIONS_BUTTONS_LED_COUNT);
   FastLED.setBrightness(_currentBrightness);
 
@@ -55,12 +51,8 @@ void Options::setAllZone(uint8_t rValue, uint8_t gValue, uint8_t bValue) {
 }
 
 /**
-* Sets the brightness level (%) of all LED channels (R/G/B)
+* Applies the SF Turbo custom lighting pattern to the zone
 */
 void Options::_setSFTurbo() {
-  Serial.println("Setting Options SF_Turbo");
-
   Zone::setAllZone(RGB_WHITE);
-
-  FastLED.show();
 }
