@@ -1,7 +1,15 @@
 #include <zone.h>
 
 Zone::Zone(int brightness)
-  : _currentBrightness(brightness) {}
+  : _currentBrightness(brightness),
+    _staticColorAnimation(),
+    _fadeAnimation(),
+    _customAnimation() {
+
+  _animations[STATIC_COLOR] = &_staticColorAnimation;
+  _animations[FADE] = &_fadeAnimation;
+  _animations[CUSTOM] = &_customAnimation;
+}
 
 void Zone::setup() {
   previousAnimation = CUSTOM;
@@ -74,7 +82,7 @@ void Zone::endZoneSwitchAnimation() {
   _switchAnimationActive = false;
   _zoneSwitchBlinkDir = 1;
   _lastZoneSwitchAnimStepMs = 0;
-  setAnimationType(currentAnimation);
+  setAnimation(currentAnimation);
 }
 
 /**
@@ -90,7 +98,7 @@ bool Zone::isZoneSwitchActive() {
 */
 void Zone::idle() {
   if (currentAnimation != IDLE) {
-    setAnimationType(IDLE);
+    setAnimation(IDLE);
   }
 }
 
@@ -99,7 +107,7 @@ void Zone::idle() {
 */
 void Zone::wake() {
   if (currentAnimation == IDLE) {
-    setAnimationType(previousAnimation);
+    setAnimation(previousAnimation);
   }
 }
 
@@ -107,20 +115,23 @@ void Zone::wake() {
 * Updates the currently selected animation, and tracks the previous set animation.
 * @param animType The animation type to set.
 */
-void Zone::setAnimationType(ANIMATION_TYPE animType) {
+void Zone::setAnimation(ANIMATION_TYPE animType) {
   previousAnimation = currentAnimation;
   currentAnimation = animType;
   reset();
   setAllZone(RGB_BLACK);
-  switch (animType) {
-    case STATIC:
-      setAllZone(COLORS[_staticColorIndex]);
-      break;
-    case CUSTOM:
-      _setCustom(CUSTOM_TYPES[_customTypeIndex]);
-    default:
-      break;
+  if (_animations[currentAnimation]->isStatic()) {
+    _applyAnimation(currentAnimation);
   }
+  // switch (animType) {
+  //   case STATIC:
+  //     setAllZone(COLORS[_staticColorIndex]);
+  //     break;
+  //   case CUSTOM:
+  //     _setCustom(CUSTOM_TYPES[_customTypeIndex]);
+  //   default:
+  //     break;
+  // }
 }
 
 /**
@@ -144,7 +155,7 @@ void Zone::setAnimationModifier(int modifierIndex) {
 
 void Zone::cycleAnimationType() {
   ANIMATION_TYPE nextType = animationTypes[(currentAnimation + 1) % (sizeof(animationTypes) / sizeof(animationTypes[0]))];
-  setAnimationType(nextType);
+  setAnimation(nextType);
 }
 
 /**

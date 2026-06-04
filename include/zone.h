@@ -8,12 +8,13 @@
 #include <brightness_levels.h>
 #include <fastled_config.h>
 #include <FastLED.h>
+#include <animation.h>
 
 // -------- Animation Data Structures -------- //
 
 enum ANIMATION_TYPE {
   CUSTOM,
-  STATIC,
+  STATIC_COLOR,
   // COLOR_SHIFT,
   FADE,
   // PULSE,
@@ -21,45 +22,9 @@ enum ANIMATION_TYPE {
   IDLE
 };
 
-const ANIMATION_TYPE FULL_ANIMATION_TYPES[] = {
+const ANIMATION_TYPE ANIMATION_TYPES[] = {
   CUSTOM,
-  STATIC,
-  // COLOR_SHIFT,
-  FADE,
-  // PULSE,
-  // OFF
-};
-
-const ANIMATION_TYPE OPTIONS_ANIMATION_TYPES[] = {
-  CUSTOM,
-  STATIC,
-  // COLOR_SHIFT,
-  FADE,
-  // PULSE,
-  // OFF
-};
-
-const ANIMATION_TYPE PLAYER1_ANIMATION_TYPES[] = {
-  CUSTOM,
-  STATIC,
-  // COLOR_SHIFT,
-  FADE,
-  // PULSE,
-  // OFF
-};
-
-const ANIMATION_TYPE PLAYER2_ANIMATION_TYPES[] = {
-  CUSTOM,
-  STATIC,
-  // COLOR_SHIFT,
-  FADE,
-  // PULSE,
-  // OFF
-};
-
-const ANIMATION_TYPE ACCENT_ANIMATION_TYPES[] = {
-  CUSTOM,
-  STATIC,
+  STATIC_COLOR,
   // COLOR_SHIFT,
   FADE,
   // PULSE,
@@ -84,6 +49,8 @@ const unsigned long FADE_STEP_MS[] = {
   FADE_STEP_SLOW
 };
 
+const int ANIMATION_TYPE_COUNT = 3;
+
 const unsigned long ZONE_SWITCH_ANIMATION_STEP_MS = 350;
 
 // Parent Class
@@ -95,7 +62,6 @@ public:
   // Virtual Destructor
   virtual ~Zone() = default;
 
-  const ANIMATION_TYPE* animationTypes;
   ANIMATION_TYPE currentAnimation;
   ANIMATION_TYPE previousAnimation;
 
@@ -116,7 +82,7 @@ public:
   virtual void idle();
   virtual void wake();
   virtual void setup();
-  virtual void setAnimationType(ANIMATION_TYPE animType);
+  virtual void setAnimation(ANIMATION_TYPE animType);
   virtual void setAllZone(uint8_t rValue, uint8_t gValue, uint8_t bValue);
 protected:
   bool _switchAnimationActive;
@@ -130,9 +96,19 @@ protected:
   int _fadeDir;
   int _zoneSwitchBlinkDir;
   unsigned long _lastZoneSwitchAnimStepMs;
+
+  // Animations
+  StaticColorAnimation _staticColorAnimation;
+  FadeAnimation _fadeAnimation;
+  CustomAnimation _customAnimation;
+
+  Animation* _animations[ANIMATION_TYPE_COUNT];
+
+
   virtual void _animateCustom();
   virtual void _setCustom(const CustomType &type);
   virtual void _setSFTurbo();
+  virtual void _applyAnimation(ANIMATION_TYPE animType);
   void _animateFadeRGB();
   void _setLED(CRGB* leds, const RGB_t &color, int index);
   void _processZoneSwitchAnimation();
@@ -169,6 +145,7 @@ private:
   CRGB _buttonLeds[PLAYER1_BUTTONS_LED_COUNT];
   CRGB _joystickLeds[PLAYER1_JOYSTICK_LED_COUNT];
   void _setSFTurbo();
+  void _applyAnimation(ANIMATION_TYPE animType);
 };
 
 class Player2 : public Zone {
@@ -206,7 +183,7 @@ public:
 
   // Override Functions
   void setup();
-  void setAnimationType(ANIMATION_TYPE animType);
+  void setAnimation(ANIMATION_TYPE animType);
   void setAllZone(uint8_t rValue, uint8_t gValue, uint8_t bValue);
 private:
   // sub-zones

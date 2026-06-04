@@ -4,7 +4,6 @@ Player1::Player1(int brightness)
   : Zone(brightness) {}
 
 void Player1::setup() {
-  animationTypes = PLAYER1_ANIMATION_TYPES;
   previousAnimation = CUSTOM;
   currentAnimation = IDLE;
   _staticColorIndex = 0;
@@ -15,6 +14,12 @@ void Player1::setup() {
   FastLED.setBrightness(_currentBrightness);
 }
 
+void Player1::_applyAnimation(ANIMATION_TYPE animType) {
+  _animations[animType]->apply(_buttonLeds, PLAYER1_BUTTONS_LED_COUNT);
+  _animations[animType]->apply(_joystickLeds, PLAYER1_JOYSTICK_LED_COUNT);
+  FastLED.show();
+}
+
 /**
 * Sets the brightness level (%) of all LED channels (R/G/B)
 * @param rValue the brightness value of the red channel
@@ -22,7 +27,6 @@ void Player1::setup() {
 * @param bValue the brightness value of the blue channel
 */
 void Player1::setAllZone(uint8_t rValue, uint8_t gValue, uint8_t bValue) {
-  Serial.println("Setting P1 LEDs");
   for (int i = 0; i < PLAYER1_BUTTONS_LED_COUNT; i++) {
     _buttonLeds[i].setRGB(rValue, gValue, bValue);
   }
