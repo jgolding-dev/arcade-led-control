@@ -23,8 +23,8 @@ const uint8_t P1_START_LEDs[] = {P1_START_LED};
 const uint8_t P2_SELECT_LEDs[] = {P2_SELECT_LED};
 const uint8_t P2_START_LEDs[] = {P2_START_LED};
 const uint8_t HOME_LEDs[] = {HOME_LED};
-const uint8_t EXTRA1_LEDs[] = {EXTRA1_BIT};
-const uint8_t EXTRA2_LEDs[] = {EXTRA2_BIT};
+const uint8_t EXTRA1_LEDs[] = {EXTRA1_LED};
+// const uint8_t EXTRA2_LEDs[] = {EXTRA2_LED};
 
 const LedGroup buttonMap[15] = {
     {BTN1_LEDs, 2},

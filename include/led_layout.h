@@ -47,9 +47,9 @@ enum OptionsLedIndex: uint8_t {
 
 #define OPTIONS_BUTTONS_LED_COUNT         6
 #define PLAYER1_BUTTONS_LED_COUNT         16
-#define PLAYER1_JOYSTICK_LED_COUNT        9
+#define PLAYER1_JOYSTICK_LED_COUNT        17
 #define PLAYER2_BUTTONS_LED_COUNT         16
-#define PLAYER2_JOYSTICK_LED_COUNT        9
+#define PLAYER2_JOYSTICK_LED_COUNT        17
 #define ACCENT_LED_COUNT                  100  // We actually have 300 backlight LEDs, but they're
 //                                              split into 1 IC per 3 LEDs. So, as far as our
 //                                              program is concerned, we have 100.
