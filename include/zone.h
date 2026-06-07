@@ -8,6 +8,7 @@
 #include <brightness_levels.h>
 #include <fastled_config.h>
 #include <FastLED.h>
+#include <string.h>
 
 // -------- Animation Data Structures -------- //
 

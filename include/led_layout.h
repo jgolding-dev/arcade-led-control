@@ -3,37 +3,39 @@
 
 #include <Arduino.h>
 
-enum LedButtonIndex : uint8_t {
-  B1_LED              = 8,
-  B2_LED              = 10,
-  B3_LED              = 6,
-  B4_LED              = 4,
-  L1_LED              = 0,
-  R1_LED              = 2,
-  L2_LED              = 14,
-  R2_LED              = 12
-};
+#define SINGLE_BTN_LED_COUNT 2
+#define SINGLE_OPTIONS_BTN_LED_COUNT 1
+#define JOY_DIRECTION_LED_COUNT 4
+#define JOY_BALLTOP_LED_COUNT 1
 
-enum LedJoystickIndex : uint8_t {
-  JOY_UP_LED          = 0,
-  JOY_UP_RIGHT_LED    = 1,
-  JOY_RIGHT_LED       = 2,
-  JOY_DOWN_RIGHT_LED  = 3,
-  JOY_DOWN_LED        = 4,
-  JOY_DOWN_LEFT_LED   = 5,
-  JOY_LEFT_LED        = 6,
-  JOY_UP_LEFT_LED     = 7,
-  JOY_BALLTOP_LED     = 8
-};  
+// ----------------- Main Buttons ----------------- //
+const uint8_t BTN1_LEDs[] = {8, 9};
+const uint8_t BTN2_LEDs[] = {10, 11};
+const uint8_t BTN3_LEDs[] = {6, 7};
+const uint8_t BTN4_LEDs[] = {4, 5};
+const uint8_t L1_LEDs[] = {0, 1};
+const uint8_t R1_LEDs[] = {2, 3};
+const uint8_t L2_LEDs[] = {14, 15};
+const uint8_t R2_LEDs[] = {12, 13};
 
-enum OptionsLedIndex: uint8_t {
-  EXTRA1_LED          = 0,
-  HOME_LED            = 1,
-  P1_SELECT_LED       = 2,
-  P1_START_LED        = 3,
-  P2_SELECT_LED       = 4,
-  P2_START_LED        = 5
-};
+// ----------------- Options Buttons ----------------- //
+const uint8_t P1_SELECT_LEDs[] = {2};
+const uint8_t P1_START_LEDs[] = {3};
+const uint8_t P2_SELECT_LEDs[] = {4};
+const uint8_t P2_START_LEDs[] = {5};
+const uint8_t HOME_LEDs[] = {1};
+const uint8_t EXTRA1_LEDs[] = {0};
+
+// ----------------- Joystick ----------------- //
+const uint8_t JOY_UP_LEDs[] = {14, 15, 0, 1};
+const uint8_t JOY_UP_RIGHT_LEDs[] = {0, 1, 2, 3};
+const uint8_t JOY_RIGHT_LEDs[] = {2, 3, 4, 5};
+const uint8_t JOY_DOWN_RIGHT_LEDs[] = {4, 5, 6, 7};
+const uint8_t JOY_DOWN_LEDs[] = {6, 7, 8, 9};
+const uint8_t JOY_DOWN_LEFT_LEDs[] = {8, 9, 10, 11};
+const uint8_t JOY_LEFT_LEDs[] = {10, 11, 12, 13};
+const uint8_t JOY_UP_LEFT_LEDs[] = {12, 13, 14, 15};
+const uint8_t JOY_BALLTOP_LEDs[] = {16};
 
 // -------- LED Chip Types -------- //
 #define ACCENT_LED_TYPE                   WS2811
@@ -44,7 +46,6 @@ enum OptionsLedIndex: uint8_t {
 #define OPTIONS_BUTTONS_LED_TYPE          WS2812B
 
 // -------- Counts -------- //
-
 #define OPTIONS_BUTTONS_LED_COUNT         6
 #define PLAYER1_BUTTONS_LED_COUNT         16
 #define PLAYER1_JOYSTICK_LED_COUNT        17

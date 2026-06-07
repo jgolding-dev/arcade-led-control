@@ -46,15 +46,26 @@ void Player2::_setSFTurbo() {
   }
 
   // buttons
-  int light[] = {B1_LED, (B1_LED + 1), B3_LED, (B3_LED + 1) };
-  int medium[] = { B2_LED, (B2_LED + 1), B4_LED, (B4_LED + 1) };
-  int heavy[] = { R1_LED, (R1_LED + 1), R2_LED, (R2_LED + 1) };
-  int special[] = { L1_LED, (L1_LED + 1), L2_LED, (L2_LED + 1) };
+  int light[SINGLE_BTN_LED_COUNT * 2];
+  memcpy(light, BTN1_LEDs, SINGLE_BTN_LED_COUNT * sizeof(int));
+  memcpy(light + SINGLE_BTN_LED_COUNT, BTN3_LEDs, SINGLE_BTN_LED_COUNT * sizeof(int));
 
-  setLEDs(_buttonLeds, RGB_RED, light, 4);
-  setLEDs(_buttonLeds, RGB_BLUE, medium, 4);
-  setLEDs(_buttonLeds, RGB_GREEN, heavy, 4);
-  setLEDs(_buttonLeds, RGB_YELLOW, special, 4);
+  int medium[SINGLE_BTN_LED_COUNT * 2];
+  memcpy(medium, BTN2_LEDs, SINGLE_BTN_LED_COUNT * sizeof(int));
+  memcpy(medium + SINGLE_BTN_LED_COUNT, BTN4_LEDs, SINGLE_BTN_LED_COUNT * sizeof(int));
+  
+  int heavy[SINGLE_BTN_LED_COUNT * 2];
+  memcpy(heavy, R1_LEDs, SINGLE_BTN_LED_COUNT * sizeof(int));
+  memcpy(heavy + SINGLE_BTN_LED_COUNT, R2_LEDs, SINGLE_BTN_LED_COUNT * sizeof(int));
+  
+  int special[SINGLE_BTN_LED_COUNT * 2];
+  memcpy(special, L1_LEDs, SINGLE_BTN_LED_COUNT * sizeof(int));
+  memcpy(special + SINGLE_BTN_LED_COUNT, L2_LEDs, SINGLE_BTN_LED_COUNT * sizeof(int));
+
+  setLEDs(_buttonLeds, RGB_RED, light, SINGLE_BTN_LED_COUNT * 2);
+  setLEDs(_buttonLeds, RGB_BLUE, medium, SINGLE_BTN_LED_COUNT * 2);
+  setLEDs(_buttonLeds, RGB_GREEN, heavy, SINGLE_BTN_LED_COUNT * 2);
+  setLEDs(_buttonLeds, RGB_YELLOW, special, SINGLE_BTN_LED_COUNT * 2);
 
   FastLED.show();
 }
