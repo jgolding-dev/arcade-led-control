@@ -39,3 +39,13 @@ void Full::applyCustom(const CustomType &type) {
     _subZones[i]->applyCustom(type);
   }
 }
+
+/**
+ * Fill all sub-zones with a rainbow gradient
+ * @param gHueValue the gradient value for the rainbow
+ */
+void Full::fillRainbow(uint8_t gHueValue) {
+  for (int i = 0; i < ZONE_COUNT; i++) {
+    _subZones[i]->fillRainbow(gHueValue);
+  }
+}

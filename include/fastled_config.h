@@ -42,13 +42,14 @@ const RGB_t COLORS[NUM_COLORS] = {
 };
 
 const CRGBPalette16 COLOR_PALETTE = CRGBPalette16(
+  CRGB::Blue, CRGB::Blue,
+  CRGB::BlueViolet, CRGB::BlueViolet,
   CRGB::Red, CRGB::Red,
   CRGB::Orange, CRGB::Orange,
   CRGB::Yellow, CRGB::Yellow,
   CRGB::Green, CRGB::Green,
-  CRGB::Blue, CRGB::Blue,
-  CRGB::Purple, CRGB::Purple,
-  CRGB::Red, CRGB::Red  // Loops back to the beginning
+  CRGB::Cyan, CRGB::Cyan,
+  CRGB::Blue, CRGB::Blue  // Loops back to the beginning
 );
 
 #endif

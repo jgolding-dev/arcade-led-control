@@ -69,3 +69,13 @@ void Player2::_setSFTurbo() {
 
   FastLED.show();
 }
+
+/**
+ * Fill the zone with a rainbow gradient
+ * @param gHueValue the gradient value for the rainbow
+ */
+void Player2::fillRainbow(uint8_t gHueValue) {
+  // The '7' at the end defines the color difference between adjacent LEDs
+  fill_rainbow(_joystickLeds, PLAYER2_JOYSTICK_LED_COUNT, gHueValue, 7);
+  fill_rainbow(_buttonLeds, PLAYER2_BUTTONS_LED_COUNT, gHueValue, 7);
+}

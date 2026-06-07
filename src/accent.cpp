@@ -25,3 +25,12 @@ void Accent::setAllZone(uint8_t rValue, uint8_t gValue, uint8_t bValue) {
   }
   FastLED.show();
 }
+
+/**
+ * Fill the zone with a rainbow gradient
+ * @param gHueValue the gradient value for the rainbow
+ */
+void Accent::fillRainbow(uint8_t gHueValue) {
+  // The '7' at the end defines the color difference between adjacent LEDs
+  fill_rainbow(_leds, ACCENT_LED_COUNT, gHueValue, 7);
+}

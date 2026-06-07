@@ -13,6 +13,7 @@ void Zone::setup() {
   _staticColorIndex = 0;
   _blendType = LINEARBLEND;
   _blendIndex = 0;
+  _gHue = 0;
 }
 
 /**
@@ -29,6 +30,10 @@ void Zone::process() {
       break;
     case CUSTOM:
       _animateCustom();
+      break;
+    case COLOR_BLEND:
+      _animateColorBlend();
+      break;
     default:
       // No animation
       break;
@@ -121,6 +126,10 @@ void Zone::setAnimationType(ANIMATION_TYPE animType) {
       break;
     case CUSTOM:
       applyCustom(CUSTOM_TYPES[_customTypeIndex]);
+      break;
+    case COLOR_BLEND:
+      _animateColorBlend();
+      break;
     default:
       break;
   }
@@ -213,10 +222,19 @@ void Zone::_animateFadeRGB() {
 }
 
 /**
-* Applies the SF Turbo custom lighting pattern to the zone
-*/
-void Zone::_setSFTurbo() {
-  // Should be overridden
+ * animate the color blend animation for the zone
+ */
+void Zone::_animateColorBlend() {
+  // Fill the strip with a rainbow gradient that shifts over time
+  // The '7' at the end defines the color difference between adjacent LEDs
+  fillRainbow(_gHue);
+  
+  FastLED.show();  
+  
+  // Smoothly advance the starting color every 20 milliseconds
+  EVERY_N_MILLISECONDS(20) { 
+    _gHue++; 
+  }
 }
 
 /**
@@ -286,13 +304,6 @@ void Zone::applyCustom(const CustomType &type) {
       // No custom type
       break;
   }
-}
-
-/**
- * Processes the custom lighting animation
- */
-void Zone::_animateCustom() {
-  // Should be overridden
 }
 
 /**
