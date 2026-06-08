@@ -14,7 +14,7 @@ Full::Full(int brightness, Player1* p1Zone, Player2* p2Zone, Options* opZone, Ac
   }
 
 void Full::setup() {
-  animationTypes = FULL_ANIMATION_TYPES;
+  animationTypes = ANIMATION_TYPES;
   currentAnimation = CUSTOM;
 }
 
@@ -37,5 +37,15 @@ void Full::setAllZone(uint8_t rValue, uint8_t gValue, uint8_t bValue) {
 void Full::applyCustom(const CustomType &type) {
   for(uint8_t i = 0; i < ZONE_COUNT; i++) {
     _subZones[i]->applyCustom(type);
+  }
+}
+
+/**
+ * Fill all sub-zones with a rainbow gradient
+ * @param gHueValue the gradient value for the rainbow
+ */
+void Full::fillRainbow(uint8_t gHueValue) {
+  for (int i = 0; i < ZONE_COUNT; i++) {
+    _subZones[i]->fillRainbow(gHueValue);
   }
 }

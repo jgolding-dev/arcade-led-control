@@ -15,53 +15,17 @@
 enum ANIMATION_TYPE {
   CUSTOM,
   STATIC,
-  // COLOR_SHIFT,
+  COLOR_BLEND,
   FADE,
   // PULSE,
   OFF,
   IDLE
 };
 
-const ANIMATION_TYPE FULL_ANIMATION_TYPES[] = {
+const ANIMATION_TYPE ANIMATION_TYPES[] = {
   CUSTOM,
   STATIC,
-  // COLOR_SHIFT,
-  FADE,
-  // PULSE,
-  // OFF
-};
-
-const ANIMATION_TYPE OPTIONS_ANIMATION_TYPES[] = {
-  CUSTOM,
-  STATIC,
-  // COLOR_SHIFT,
-  FADE,
-  // PULSE,
-  // OFF
-};
-
-const ANIMATION_TYPE PLAYER1_ANIMATION_TYPES[] = {
-  CUSTOM,
-  STATIC,
-  // COLOR_SHIFT,
-  FADE,
-  // PULSE,
-  // OFF
-};
-
-const ANIMATION_TYPE PLAYER2_ANIMATION_TYPES[] = {
-  CUSTOM,
-  STATIC,
-  // COLOR_SHIFT,
-  FADE,
-  // PULSE,
-  // OFF
-};
-
-const ANIMATION_TYPE ACCENT_ANIMATION_TYPES[] = {
-  CUSTOM,
-  STATIC,
-  // COLOR_SHIFT,
+  COLOR_BLEND,
   FADE,
   // PULSE,
   // OFF
@@ -120,6 +84,7 @@ public:
   virtual void setAllZone(uint8_t rValue, uint8_t gValue, uint8_t bValue);
   virtual void applyCustom(const CustomType &type);
   virtual void endZoneSwitchAnimation();
+  virtual void fillRainbow(uint8_t gHueValue) {};
   
 protected:
   bool _switchAnimationActive;
@@ -132,10 +97,20 @@ protected:
   int _fadePercent;
   int _fadeDir;
   int _zoneSwitchBlinkDir;
+  uint8_t _gHue; // tracks starting hue for certain animations
   unsigned long _lastZoneSwitchAnimStepMs;
-  virtual void _animateCustom();
-  virtual void _setSFTurbo();
+
+  // blend animation data
+  CRGBPalette16 colorPalette;
+  TBlendType _blendType;
+  uint8_t _blendIndex;    // Tracks the current position in the blend color palette
+
+  // Virtual functions to be overridden by children
+  virtual void _animateCustom(){};
+  virtual void _setSFTurbo(){};
+  
   void _animateFadeRGB();
+  void _animateColorBlend();
   void _setLED(CRGB* leds, const RGB_t &color, int index);
   void _processZoneSwitchAnimation();
 };
@@ -152,8 +127,12 @@ class Options : public Zone {
     void wake();
     void setup();
     void setAllZone(uint8_t rValue, uint8_t gValue, uint8_t bValue);
+    void fillRainbow(uint8_t gHueValue);
   private:
+    // Array to hold LED color data
     CRGB _leds[OPTIONS_BUTTONS_LED_COUNT];
+
+    // override functions
     void _setSFTurbo();
 };
 
@@ -165,11 +144,13 @@ public:
   // Override Functions
   void setup();
   void setAllZone(uint8_t rValue, uint8_t gValue, uint8_t bValue);
+  void fillRainbow(uint8_t gHueValue);
 private:
   // Array to hold LED color data
-
   CRGB _buttonLeds[PLAYER1_BUTTONS_LED_COUNT];
   CRGB _joystickLeds[PLAYER1_JOYSTICK_LED_COUNT];
+
+  // override functions
   void _setSFTurbo();
 };
 
@@ -181,10 +162,13 @@ public:
   // Override Functions
   void setup();
   void setAllZone(uint8_t rValue, uint8_t gValue, uint8_t bValue);
+  void fillRainbow(uint8_t gHueValue);
 private:
   // Array to hold LED color data
   CRGB _buttonLeds[PLAYER2_BUTTONS_LED_COUNT];
   CRGB _joystickLeds[PLAYER2_JOYSTICK_LED_COUNT];
+
+  // override functions
   void _setSFTurbo();
 };
 
@@ -196,9 +180,13 @@ public:
   // Override Functions
   void setup();
   void setAllZone(uint8_t rValue, uint8_t gValue, uint8_t bValue);
+  void fillRainbow(uint8_t gHueValue);
 private:
   // Array to hold LED color data
   CRGB _leds[ACCENT_LED_COUNT];
+
+  // override functions
+  void _setSFTurbo();
 };
 
 class Full : public Zone {
@@ -210,6 +198,7 @@ public:
   void setup();
   void setAllZone(uint8_t rValue, uint8_t gValue, uint8_t bValue);
   void applyCustom(const CustomType &type);
+  void fillRainbow(uint8_t gHueValue);
 private:
   // sub-zones
   Player1* _player1Zone;
@@ -230,6 +219,7 @@ class ControlPanel : public Zone {
     // Override Functions
     void setup(Player1* p1Zone, Player2* p2Zone, Options* opZone);
     void setAllZone(uint8_t rValue, uint8_t gValue, uint8_t bValue);
+    void fillRainbow(uint8_t gHueValue);
   private:
     // sub-zones
     Player1* _player1Zone;

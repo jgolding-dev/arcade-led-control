@@ -4,7 +4,7 @@ Options::Options(int brightness)
   : Zone(brightness) {}
 
 void Options::setup() {
-  animationTypes = OPTIONS_ANIMATION_TYPES;
+  animationTypes = ANIMATION_TYPES;
   currentAnimation = CUSTOM;
   FastLED.addLeds<OPTIONS_BUTTONS_LED_TYPE, OPTIONS_BUTTONS_DATA_PIN, GRB>(_leds, OPTIONS_BUTTONS_LED_COUNT);
   FastLED.setBrightness(_currentBrightness);
@@ -55,4 +55,13 @@ void Options::setAllZone(uint8_t rValue, uint8_t gValue, uint8_t bValue) {
 */
 void Options::_setSFTurbo() {
   Zone::setAllZone(RGB_WHITE);
+}
+
+/**
+ * Fill the zone with a rainbow gradient
+ * @param gHueValue the gradient value for the rainbow
+ */
+void Options::fillRainbow(uint8_t gHueValue) {
+  // The '7' at the end defines the color difference between adjacent LEDs
+  fill_rainbow(_leds, OPTIONS_BUTTONS_LED_COUNT, gHueValue, 7);
 }

@@ -4,7 +4,7 @@ Player1::Player1(int brightness)
   : Zone(brightness) {}
 
 void Player1::setup() {
-  animationTypes = PLAYER1_ANIMATION_TYPES;
+  animationTypes = ANIMATION_TYPES;
   currentAnimation = CUSTOM;
   FastLED.addLeds<PLAYER1_BUTTONS_LED_TYPE, PLAYER1_BUTTONS_DATA_PIN, GRB>(_buttonLeds, PLAYER1_BUTTONS_LED_COUNT);
   FastLED.addLeds<PLAYER1_JOYSTICK_LED_TYPE, PLAYER1_JOYSTICK_DATA_PIN, GRB>(_joystickLeds, PLAYER1_JOYSTICK_LED_COUNT);
@@ -64,4 +64,14 @@ void Player1::_setSFTurbo() {
   setLEDs(_buttonLeds, RGB_YELLOW, special, SINGLE_BTN_LED_COUNT * 2);
 
   FastLED.show();
+}
+
+/**
+ * Fill the zone with a rainbow gradient
+ * @param gHueValue the gradient value for the rainbow
+ */
+void Player1::fillRainbow(uint8_t gHueValue) {
+  // The '7' at the end defines the color difference between adjacent LEDs
+  fill_rainbow(_joystickLeds, PLAYER1_JOYSTICK_LED_COUNT, gHueValue, 7);
+  fill_rainbow(_buttonLeds, PLAYER1_BUTTONS_LED_COUNT, gHueValue, 7);
 }
