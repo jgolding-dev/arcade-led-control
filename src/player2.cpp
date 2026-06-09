@@ -42,11 +42,11 @@ void Player2::_setSFTurbo() {
 
   // joystick ring
   for (int i = 0; i < JOYSTICK_RING_LED_COUNT; i++) {
-    Zone::_setLED(_joystickLeds, RGB_BLUE, i);
+    Zone::_setLED(_joystickLeds, RGB_RED, i);
   }
   // balltop
   for (int i = 0; i < JOYSTICK_BALLTOP_LED_COUNT; i++) {
-    _setLED(_balltopLeds, RGB_BLUE, i);
+    _setLED(_balltopLeds, RGB_RED, i);
   }
 
   // buttons

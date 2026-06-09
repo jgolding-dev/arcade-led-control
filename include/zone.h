@@ -209,7 +209,7 @@ private:
   CRGB _leds[ACCENT_LED_COUNT];
 
   // override functions
-  void _setSFTurbo();
+  // void _setSFTurbo();
 };
 
 class Full : public Zone {
