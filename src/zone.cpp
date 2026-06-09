@@ -9,6 +9,8 @@ void Zone::setup() {
   _zoneSwitchBlinkDir = 1;
   _switchAnimationActive = false;
   _lastZoneSwitchAnimStepMs = 0;
+  _colorShiftSpeedIndex = 1; // COLOR_SHIFT_SPEED_NORMAL
+  _rainbowShiftSpeedIndex = 1; // COLOR_SHIFT_SPEED_NORMAL
   _customTypeIndex = 0;
   _staticColorIndex = 0;
   _blendType = LINEARBLEND;
@@ -28,9 +30,9 @@ void Zone::process() {
     case FADE:
       _animateFadeRGB();
       break;
-    case CUSTOM:
-      _animateCustom();
-      break;
+    // case CUSTOM:
+    //   _animateCustom();
+    //   break;
     case COLOR_SHIFT:
       _animateColorShift();
       break;
@@ -130,9 +132,6 @@ void Zone::setAnimationType(ANIMATION_TYPE animType) {
     case CUSTOM:
       applyCustom(CUSTOM_TYPES[_customTypeIndex]);
       break;
-    case RAINBOW:
-      _animateRainbow();
-      break;
     default:
       break;
   }
@@ -148,8 +147,18 @@ void Zone::setAnimationModifier(int modifierIndex) {
       _staticColorIndex = modifierIndex;
       setAllZone(COLORS[_staticColorIndex]);
       break;
+    case CUSTOM:
+      _customTypeIndex = modifierIndex;
+      applyCustom(CUSTOM_TYPES[_customTypeIndex]);
+      break;
     case FADE:
       _fadeStepIndex = modifierIndex;
+      break;
+    case COLOR_SHIFT:
+      _colorShiftSpeedIndex = modifierIndex;
+      break;
+    case RAINBOW:
+      _rainbowShiftSpeedIndex = modifierIndex;
       break;
     default:
       // No modifier for the currently selected animation
@@ -172,8 +181,14 @@ void Zone::cycleAnimationModifier() {
       setAllZone(COLORS[_staticColorIndex]);
       break;
     case CUSTOM:
-      _customTypeIndex = (_customTypeIndex + 1) % (sizeof(COLORS) / sizeof(COLORS[0]));
+      _customTypeIndex = (_customTypeIndex + 1) % (sizeof(CUSTOM_TYPES) / sizeof(CUSTOM_TYPES[0]));
       applyCustom(CUSTOM_TYPES[_customTypeIndex]);
+      break;
+    case COLOR_SHIFT:
+      _colorShiftSpeedIndex = (_colorShiftSpeedIndex + 1) % (sizeof(COLOR_SHIFT_SPEEDS) / sizeof(COLOR_SHIFT_SPEEDS[0]));
+      break;
+    case RAINBOW:
+      _rainbowShiftSpeedIndex = (_rainbowShiftSpeedIndex + 1) % (sizeof(COLOR_SHIFT_SPEEDS) / sizeof(COLOR_SHIFT_SPEEDS[0]));
       break;
     case FADE:
       _fadeStepIndex = (_fadeStepIndex + 1) % (sizeof(FADE_STEP_MS) / sizeof(FADE_STEP_MS[0]));
@@ -230,7 +245,7 @@ void Zone::_animateFadeRGB() {
 void Zone::_animateColorShift() {
   // Fill the strip with a solid color that shifts over time
   
-  uint8_t hue = beat8(15); // Adjust the speed of the color shift by changing the argument to beat8()
+  uint8_t hue = beat8(COLOR_SHIFT_SPEEDS[_colorShiftSpeedIndex]); // speed (bpm) of the color shift animation
 
   fillSolid(hue);
   
@@ -242,15 +257,12 @@ void Zone::_animateColorShift() {
  */
 void Zone::_animateRainbow() {
   // Fill the strip with a rainbow gradient that shifts over time
-  // The '7' at the end defines the color difference between adjacent LEDs
-  fillRainbow(_gHue);
+  
+  uint8_t hue = beat8(COLOR_SHIFT_SPEEDS[_rainbowShiftSpeedIndex]); // speed (bpm) of the rainbow color shift animation
+
+  fillRainbow(hue);
   
   FastLED.show();  
-  
-  // Smoothly advance the starting color every 20 milliseconds
-  EVERY_N_MILLISECONDS(20) { 
-    _gHue++; 
-  }
 }
 
 /**

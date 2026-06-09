@@ -51,6 +51,17 @@ const unsigned long FADE_STEP_MS[] = {
   FADE_STEP_SLOW
 };
 
+// These values are accumulators for the color shift animation. Higher values will result in faster color shifts.
+const fl::accum88 COLOR_SHIFT_SPEED_FAST = 10.0;
+const fl::accum88 COLOR_SHIFT_SPEED_NORMAL = 20.0;
+const fl::accum88 COLOR_SHIFT_SPEED_SLOW = 30.0;
+
+const fl::accum88 COLOR_SHIFT_SPEEDS[] = {
+  COLOR_SHIFT_SPEED_FAST,
+  COLOR_SHIFT_SPEED_NORMAL,
+  COLOR_SHIFT_SPEED_SLOW
+};
+
 const unsigned long ZONE_SWITCH_ANIMATION_STEP_MS = 350;
 
 // Parent Class
@@ -100,6 +111,8 @@ protected:
   int _fadePercent;
   int _fadeDir;
   int _zoneSwitchBlinkDir;
+  int _colorShiftSpeedIndex;
+  int _rainbowShiftSpeedIndex;
   uint8_t _gHue; // tracks starting hue for certain animations
   unsigned long _lastZoneSwitchAnimStepMs;
 
