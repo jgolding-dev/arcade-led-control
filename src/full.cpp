@@ -41,6 +41,16 @@ void Full::applyCustom(const CustomType &type) {
 }
 
 /**
+ * Fill the zone with the same hue, saturation, and brightness
+ * @param hue the hue value for the color to fill the zone with
+ */
+void Full::fillSolid(uint8_t hue) {
+  for (int i = 0; i < ZONE_COUNT; i++) {
+    _subZones[i]->fillSolid(hue);
+  }
+}
+
+/**
  * Fill all sub-zones with a rainbow gradient
  * @param gHueValue the gradient value for the rainbow
  */

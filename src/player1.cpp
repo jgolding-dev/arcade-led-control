@@ -6,8 +6,12 @@ Player1::Player1(int brightness)
 void Player1::setup() {
   animationTypes = ANIMATION_TYPES;
   currentAnimation = CUSTOM;
-  FastLED.addLeds<PLAYER1_BUTTONS_LED_TYPE, PLAYER1_BUTTONS_DATA_PIN, GRB>(_buttonLeds, PLAYER1_BUTTONS_LED_COUNT);
-  FastLED.addLeds<PLAYER1_JOYSTICK_LED_TYPE, PLAYER1_JOYSTICK_DATA_PIN, GRB>(_joystickLeds, PLAYER1_JOYSTICK_LED_COUNT);
+  FastLED.addLeds<ACTION_BUTTONS_LED_TYPE, PLAYER1_BUTTONS_DATA_PIN, ACTION_BUTTONS_LED_COLOR_ORDER>(_buttonLeds, ACTION_BUTTONS_LED_COUNT);
+  FastLED.addLeds<JOYSTICK_RING_LED_TYPE, PLAYER1_JOYSTICK_DATA_PIN, JOYSTICK_RING_LED_COLOR_ORDER>(_joystickLeds, 0, JOYSTICK_RING_LED_COUNT);
+
+  // The balltop LEDs are connected in series after the joystick ring LEDs, so we start the data at the end of the joystick ring LED data
+  FastLED.addLeds<JOYSTICK_BALLTOP_LED_TYPE, PLAYER1_JOYSTICK_DATA_PIN, JOYSTICK_BALLTOP_LED_COLOR_ORDER>(_balltopLeds, JOYSTICK_RING_LED_COUNT, JOYSTICK_BALLTOP_LED_COUNT);
+
   FastLED.setBrightness(_currentBrightness);
 }
 
@@ -18,12 +22,14 @@ void Player1::setup() {
 * @param bValue the brightness value of the blue channel
 */
 void Player1::setAllZone(uint8_t rValue, uint8_t gValue, uint8_t bValue) {
-  Serial.println("Setting P1 LEDs");
-  for (int i = 0; i < PLAYER1_BUTTONS_LED_COUNT; i++) {
+  for (int i = 0; i < ACTION_BUTTONS_LED_COUNT; i++) {
     _buttonLeds[i].setRGB(rValue, gValue, bValue);
   }
-  for (int i = 0; i < PLAYER1_JOYSTICK_LED_COUNT; i++) {
+  for (int i = 0; i < JOYSTICK_RING_LED_COUNT; i++) {
     _joystickLeds[i].setRGB(rValue, gValue, bValue);
+  }
+  for (int i = 0; i < JOYSTICK_BALLTOP_LED_COUNT; i++) {
+    _balltopLeds[i].setRGB(rValue, gValue, bValue);
   }
   FastLED.show();
 }
@@ -36,9 +42,13 @@ void Player1::_setSFTurbo() {
 
   Zone::setAllZone(RGB_BLACK);
 
-  // joystick
-  for (int i = 0; i < PLAYER1_JOYSTICK_LED_COUNT; i++) {
+  // joystick ring
+  for (int i = 0; i < JOYSTICK_RING_LED_COUNT; i++) {
     _setLED(_joystickLeds, RGB_BLUE, i);
+  }
+  // balltop
+  for (int i = 0; i < JOYSTICK_BALLTOP_LED_COUNT; i++) {
+    _setLED(_balltopLeds, RGB_BLUE, i);
   }
 
   // buttons
@@ -67,11 +77,22 @@ void Player1::_setSFTurbo() {
 }
 
 /**
+ * Fill the zone with the same hue and maximum saturation/brightness
+ * @param hue the hue value for the color to fill the zone with
+ */
+void Player1::fillSolid(uint8_t hue) {
+  fill_solid(_joystickLeds, JOYSTICK_RING_LED_COUNT, CHSV(hue, 255, 255));
+  fill_solid(_balltopLeds, JOYSTICK_BALLTOP_LED_COUNT, CHSV(hue, 255, 255));
+  fill_solid(_buttonLeds, ACTION_BUTTONS_LED_COUNT, CHSV(hue, 255, 255));
+}
+
+/**
  * Fill the zone with a rainbow gradient
  * @param gHueValue the gradient value for the rainbow
  */
 void Player1::fillRainbow(uint8_t gHueValue) {
   // The '7' at the end defines the color difference between adjacent LEDs
-  fill_rainbow(_joystickLeds, PLAYER1_JOYSTICK_LED_COUNT, gHueValue, 7);
-  fill_rainbow(_buttonLeds, PLAYER1_BUTTONS_LED_COUNT, gHueValue, 7);
+  fill_rainbow(_joystickLeds, JOYSTICK_RING_LED_COUNT, gHueValue, 7);
+  fill_rainbow(_balltopLeds, JOYSTICK_BALLTOP_LED_COUNT, gHueValue, 7);
+  fill_rainbow(_buttonLeds, ACTION_BUTTONS_LED_COUNT, gHueValue, 7);
 }

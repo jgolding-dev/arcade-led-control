@@ -15,7 +15,8 @@
 enum ANIMATION_TYPE {
   CUSTOM,
   STATIC,
-  COLOR_BLEND,
+  COLOR_SHIFT,
+  RAINBOW,
   FADE,
   // PULSE,
   OFF,
@@ -25,7 +26,8 @@ enum ANIMATION_TYPE {
 const ANIMATION_TYPE ANIMATION_TYPES[] = {
   CUSTOM,
   STATIC,
-  COLOR_BLEND,
+  COLOR_SHIFT,
+  RAINBOW,
   FADE,
   // PULSE,
   // OFF
@@ -85,6 +87,7 @@ public:
   virtual void applyCustom(const CustomType &type);
   virtual void endZoneSwitchAnimation();
   virtual void fillRainbow(uint8_t gHueValue) {};
+  virtual void fillSolid(uint8_t hue) {};
   
 protected:
   bool _switchAnimationActive;
@@ -110,7 +113,8 @@ protected:
   virtual void _setSFTurbo(){};
   
   void _animateFadeRGB();
-  void _animateColorBlend();
+  void _animateRainbow();
+  void _animateColorShift();
   void _setLED(CRGB* leds, const RGB_t &color, int index);
   void _processZoneSwitchAnimation();
 };
@@ -128,6 +132,7 @@ class Options : public Zone {
     void setup();
     void setAllZone(uint8_t rValue, uint8_t gValue, uint8_t bValue);
     void fillRainbow(uint8_t gHueValue);
+    void fillSolid(uint8_t hue);
   private:
     // Array to hold LED color data
     CRGB _leds[OPTIONS_BUTTONS_LED_COUNT];
@@ -145,10 +150,12 @@ public:
   void setup();
   void setAllZone(uint8_t rValue, uint8_t gValue, uint8_t bValue);
   void fillRainbow(uint8_t gHueValue);
+  void fillSolid(uint8_t hue);
 private:
   // Array to hold LED color data
-  CRGB _buttonLeds[PLAYER1_BUTTONS_LED_COUNT];
-  CRGB _joystickLeds[PLAYER1_JOYSTICK_LED_COUNT];
+  CRGB _buttonLeds[ACTION_BUTTONS_LED_COUNT];
+  CRGB _joystickLeds[JOYSTICK_RING_LED_COUNT];
+  CRGB _balltopLeds[JOYSTICK_BALLTOP_LED_COUNT];
 
   // override functions
   void _setSFTurbo();
@@ -163,10 +170,12 @@ public:
   void setup();
   void setAllZone(uint8_t rValue, uint8_t gValue, uint8_t bValue);
   void fillRainbow(uint8_t gHueValue);
+  void fillSolid(uint8_t hue);
 private:
   // Array to hold LED color data
-  CRGB _buttonLeds[PLAYER2_BUTTONS_LED_COUNT];
-  CRGB _joystickLeds[PLAYER2_JOYSTICK_LED_COUNT];
+  CRGB _buttonLeds[ACTION_BUTTONS_LED_COUNT];
+  CRGB _joystickLeds[JOYSTICK_RING_LED_COUNT];
+  CRGB _balltopLeds[JOYSTICK_BALLTOP_LED_COUNT];
 
   // override functions
   void _setSFTurbo();
@@ -181,6 +190,7 @@ public:
   void setup();
   void setAllZone(uint8_t rValue, uint8_t gValue, uint8_t bValue);
   void fillRainbow(uint8_t gHueValue);
+  void fillSolid(uint8_t hue);
 private:
   // Array to hold LED color data
   CRGB _leds[ACCENT_LED_COUNT];
@@ -199,6 +209,7 @@ public:
   void setAllZone(uint8_t rValue, uint8_t gValue, uint8_t bValue);
   void applyCustom(const CustomType &type);
   void fillRainbow(uint8_t gHueValue);
+  void fillSolid(uint8_t hue);
 private:
   // sub-zones
   Player1* _player1Zone;
@@ -220,6 +231,7 @@ class ControlPanel : public Zone {
     void setup(Player1* p1Zone, Player2* p2Zone, Options* opZone);
     void setAllZone(uint8_t rValue, uint8_t gValue, uint8_t bValue);
     void fillRainbow(uint8_t gHueValue);
+    void fillSolid(uint8_t hue);
   private:
     // sub-zones
     Player1* _player1Zone;

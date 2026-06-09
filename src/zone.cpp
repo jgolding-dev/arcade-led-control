@@ -31,8 +31,11 @@ void Zone::process() {
     case CUSTOM:
       _animateCustom();
       break;
-    case COLOR_BLEND:
-      _animateColorBlend();
+    case COLOR_SHIFT:
+      _animateColorShift();
+      break;
+    case RAINBOW:
+      _animateRainbow();
       break;
     default:
       // No animation
@@ -127,8 +130,8 @@ void Zone::setAnimationType(ANIMATION_TYPE animType) {
     case CUSTOM:
       applyCustom(CUSTOM_TYPES[_customTypeIndex]);
       break;
-    case COLOR_BLEND:
-      _animateColorBlend();
+    case RAINBOW:
+      _animateRainbow();
       break;
     default:
       break;
@@ -222,9 +225,22 @@ void Zone::_animateFadeRGB() {
 }
 
 /**
+ * animate the color shift animation for the zone
+ */
+void Zone::_animateColorShift() {
+  // Fill the strip with a solid color that shifts over time
+  
+  uint8_t hue = beat8(15); // Adjust the speed of the color shift by changing the argument to beat8()
+
+  fillSolid(hue);
+  
+  FastLED.show();
+}
+
+/**
  * animate the color blend animation for the zone
  */
-void Zone::_animateColorBlend() {
+void Zone::_animateRainbow() {
   // Fill the strip with a rainbow gradient that shifts over time
   // The '7' at the end defines the color difference between adjacent LEDs
   fillRainbow(_gHue);

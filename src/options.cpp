@@ -6,12 +6,8 @@ Options::Options(int brightness)
 void Options::setup() {
   animationTypes = ANIMATION_TYPES;
   currentAnimation = CUSTOM;
-  FastLED.addLeds<OPTIONS_BUTTONS_LED_TYPE, OPTIONS_BUTTONS_DATA_PIN, GRB>(_leds, OPTIONS_BUTTONS_LED_COUNT);
+  FastLED.addLeds<OPTIONS_BUTTONS_LED_TYPE, OPTIONS_BUTTONS_DATA_PIN, OPTIONS_BUTTONS_LED_COLOR_ORDER>(_leds, OPTIONS_BUTTONS_LED_COUNT);
   FastLED.setBrightness(_currentBrightness);
-
-  // Overlay buttons default to set colors
-  _setLED(_leds, RGB_GREEN, HOME_LEDs[0]);
-  _setLED(_leds, RGB_BLUE, EXTRA1_LEDs[0]);
 }
 
 /**
@@ -19,8 +15,6 @@ void Options::setup() {
 */
 void Options::idle() {
   if (currentAnimation != IDLE) {
-    _setLED(_leds, RGB_BLACK, HOME_LEDs[0]);
-    _setLED(_leds, RGB_BLACK, EXTRA1_LEDs[0]);
     setAnimationType(IDLE);
   }
 }
@@ -30,8 +24,6 @@ void Options::idle() {
 */
 void Options::wake() {
   if (currentAnimation == IDLE) {
-    _setLED(_leds, RGB_GREEN, HOME_LEDs[0]);
-    _setLED(_leds, RGB_BLUE, EXTRA1_LEDs[0]);
     setAnimationType(previousAnimation);
   }
 }
@@ -44,7 +36,7 @@ void Options::wake() {
 */
 void Options::setAllZone(uint8_t rValue, uint8_t gValue, uint8_t bValue) {
   Serial.println("Setting Options LEDs");
-  for (int i = 2; i < OPTIONS_BUTTONS_LED_COUNT; i++) { // Exclude HOME buttons
+  for (int i = 0; i < OPTIONS_BUTTONS_LED_COUNT; i++) {
     _leds[i].setRGB(rValue, gValue, bValue);
   }
   FastLED.show();
@@ -55,6 +47,14 @@ void Options::setAllZone(uint8_t rValue, uint8_t gValue, uint8_t bValue) {
 */
 void Options::_setSFTurbo() {
   Zone::setAllZone(RGB_WHITE);
+}
+
+/**
+ * Fill the zone with the same hue, saturation, and brightness
+ * @param hue the hue value for the color to fill the zone with
+ */
+void Options::fillSolid(uint8_t hue) {
+  fill_solid(_leds, OPTIONS_BUTTONS_LED_COUNT, CHSV(hue, 255, 255));
 }
 
 /**

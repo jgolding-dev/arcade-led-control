@@ -6,7 +6,7 @@ Accent::Accent(int brightness)
 void Accent::setup() {
   animationTypes = ANIMATION_TYPES;
   currentAnimation = CUSTOM;
-  FastLED.addLeds<ACCENT_LED_TYPE, ACCENT_DATA_PIN, GRB>(_leds, ACCENT_LED_COUNT);
+  FastLED.addLeds<ACCENT_LED_TYPE, ACCENT_DATA_PIN, ACCENT_LED_COLOR_ORDER>(_leds, ACCENT_LED_COUNT);
   FastLED.setBrightness(_currentBrightness);
 }
 
@@ -24,6 +24,14 @@ void Accent::setAllZone(uint8_t rValue, uint8_t gValue, uint8_t bValue) {
     _leds[i].b = bValue;
   }
   FastLED.show();
+}
+
+/**
+ * Fill the zone with the same hue, saturation, and brightness
+ * @param hue the hue value for the color to fill the zone with
+ */
+void Accent::fillSolid(uint8_t hue) {
+  fill_solid(_leds, ACCENT_LED_COUNT, CHSV(hue, 255, 255));
 }
 
 /**
