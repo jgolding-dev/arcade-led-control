@@ -10,8 +10,8 @@ void Options::setup() {
   FastLED.setBrightness(_currentBrightness);
 
   // Overlay buttons default to set colors
-  _setLED(_leds, RGB_GREEN, HOME_LED);
-  _setLED(_leds, RGB_BLUE, EXTRA1_LED);
+  _setLED(_leds, RGB_GREEN, HOME_LEDs[0]);
+  _setLED(_leds, RGB_BLUE, EXTRA1_LEDs[0]);
 }
 
 /**
@@ -19,8 +19,8 @@ void Options::setup() {
 */
 void Options::idle() {
   if (currentAnimation != IDLE) {
-    _setLED(_leds, RGB_BLACK, HOME_LED);
-    _setLED(_leds, RGB_BLACK, EXTRA1_LED);
+    _setLED(_leds, RGB_BLACK, HOME_LEDs[0]);
+    _setLED(_leds, RGB_BLACK, EXTRA1_LEDs[0]);
     setAnimationType(IDLE);
   }
 }
@@ -30,8 +30,8 @@ void Options::idle() {
 */
 void Options::wake() {
   if (currentAnimation == IDLE) {
-    _setLED(_leds, RGB_GREEN, HOME_LED);
-    _setLED(_leds, RGB_BLUE, EXTRA1_LED);
+    _setLED(_leds, RGB_GREEN, HOME_LEDs[0]);
+    _setLED(_leds, RGB_BLUE, EXTRA1_LEDs[0]);
     setAnimationType(previousAnimation);
   }
 }

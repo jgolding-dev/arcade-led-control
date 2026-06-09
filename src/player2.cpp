@@ -46,26 +46,26 @@ void Player2::_setSFTurbo() {
   }
 
   // buttons
-  int light[SINGLE_BTN_LED_COUNT * 2];
-  memcpy(light, BTN1_LEDs, SINGLE_BTN_LED_COUNT * sizeof(int));
-  memcpy(light + SINGLE_BTN_LED_COUNT, BTN3_LEDs, SINGLE_BTN_LED_COUNT * sizeof(int));
+  uint8_t light[SINGLE_BTN_LED_COUNT * 2];
+  memcpy(light, BTN1_LEDs, SINGLE_BTN_LED_COUNT * sizeof(uint8_t));
+  memcpy(light + SINGLE_BTN_LED_COUNT, BTN3_LEDs, SINGLE_BTN_LED_COUNT * sizeof(uint8_t));
 
-  int medium[SINGLE_BTN_LED_COUNT * 2];
-  memcpy(medium, BTN2_LEDs, SINGLE_BTN_LED_COUNT * sizeof(int));
-  memcpy(medium + SINGLE_BTN_LED_COUNT, BTN4_LEDs, SINGLE_BTN_LED_COUNT * sizeof(int));
+  uint8_t medium[SINGLE_BTN_LED_COUNT * 2];
+  memcpy(medium, BTN2_LEDs, SINGLE_BTN_LED_COUNT * sizeof(uint8_t));
+  memcpy(medium + SINGLE_BTN_LED_COUNT, BTN4_LEDs, SINGLE_BTN_LED_COUNT * sizeof(uint8_t));
   
-  int heavy[SINGLE_BTN_LED_COUNT * 2];
-  memcpy(heavy, R1_LEDs, SINGLE_BTN_LED_COUNT * sizeof(int));
-  memcpy(heavy + SINGLE_BTN_LED_COUNT, R2_LEDs, SINGLE_BTN_LED_COUNT * sizeof(int));
+  uint8_t heavy[SINGLE_BTN_LED_COUNT * 2];
+  memcpy(heavy, R1_LEDs, SINGLE_BTN_LED_COUNT * sizeof(uint8_t));
+  memcpy(heavy + SINGLE_BTN_LED_COUNT, R2_LEDs, SINGLE_BTN_LED_COUNT * sizeof(uint8_t));
   
-  int special[SINGLE_BTN_LED_COUNT * 2];
-  memcpy(special, L1_LEDs, SINGLE_BTN_LED_COUNT * sizeof(int));
-  memcpy(special + SINGLE_BTN_LED_COUNT, L2_LEDs, SINGLE_BTN_LED_COUNT * sizeof(int));
+  uint8_t special[SINGLE_BTN_LED_COUNT * 2];
+  memcpy(special, L1_LEDs, SINGLE_BTN_LED_COUNT * sizeof(uint8_t));
+  memcpy(special + SINGLE_BTN_LED_COUNT, L2_LEDs, SINGLE_BTN_LED_COUNT * sizeof(uint8_t));
 
-  setLEDs(_buttonLeds, RGB_RED, light, SINGLE_BTN_LED_COUNT * 2);
-  setLEDs(_buttonLeds, RGB_BLUE, medium, SINGLE_BTN_LED_COUNT * 2);
-  setLEDs(_buttonLeds, RGB_GREEN, heavy, SINGLE_BTN_LED_COUNT * 2);
-  setLEDs(_buttonLeds, RGB_YELLOW, special, SINGLE_BTN_LED_COUNT * 2);
+  Zone::setLEDs(_buttonLeds, RGB_RED, light, SINGLE_BTN_LED_COUNT * 2);
+  Zone::setLEDs(_buttonLeds, RGB_BLUE, medium, SINGLE_BTN_LED_COUNT * 2);
+  Zone::setLEDs(_buttonLeds, RGB_GREEN, heavy, SINGLE_BTN_LED_COUNT * 2);
+  Zone::setLEDs(_buttonLeds, RGB_YELLOW, special, SINGLE_BTN_LED_COUNT * 2);
 
   FastLED.show();
 }

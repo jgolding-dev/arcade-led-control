@@ -73,7 +73,7 @@ public:
   void setAnimationModifier(int modifierIndex);
   void setAllZone(const RGB_t &color);
   void setLEDs(CRGB* leds, const RGB_t &color, int count);
-  void setLEDs(CRGB* leds, const RGB_t &color, int* indexes, int size);
+  void setLEDs(CRGB* leds, const RGB_t &color, uint8_t* indexes, int size);
   void setMasterBrightness(int value);
   void process();
 

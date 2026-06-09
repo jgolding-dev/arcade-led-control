@@ -272,7 +272,7 @@ void Zone::_setLED(CRGB* leds, const RGB_t &color, int index) {
  * @param indexes the indexes of the CRGB array corresponding to the LEDs
  * @param size the size of the CRGB array
  */
-void Zone::setLEDs(CRGB* leds, const RGB_t &color, int* indexes, int size) {
+void Zone::setLEDs(CRGB* leds, const RGB_t &color, uint8_t* indexes, int size) {
   for (int i = 0; i < size; i++) {
     int index = indexes[i];
     _setLED(leds, color, index);
