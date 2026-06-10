@@ -5,35 +5,28 @@
 #include <led_layout.h>
 
 struct LedGroup {
-    const uint8_t* indices;
-    uint8_t count;
+    const uint16_t buttonBit;
+    const uint8_t* ledIndices;
 };
 
-const LedGroup buttonMap[15] = {
-    {BTN1_LEDs, 2},
-    {BTN2_LEDs, 2},
-    {BTN3_LEDs, 2},
-    {BTN4_LEDs, 2},
-    {L1_LEDs, 2},
-    {R1_LEDs, 2},
-    {L2_LEDs, 2},
-    {R2_LEDs, 2},
-    {P1_SELECT_LEDs, 1},
-    {P1_START_LEDs, 1},
-    {P2_SELECT_LEDs, 1},
-    {P2_START_LEDs, 1},
-    {HOME_LEDs, 1},
-    {EXTRA1_LEDs, 1}
+const LedGroup buttonMap[12] = {
+    {B1_BIT, BTN1_LEDs},
+    {B2_BIT, BTN2_LEDs},
+    {B3_BIT, BTN3_LEDs},
+    {B4_BIT, BTN4_LEDs},
+    {L1_BIT, L1_LEDs},
+    {R1_BIT, R1_LEDs},
+    {L2_BIT, L2_LEDs},
+    {R2_BIT, R2_LEDs},
+    {SELECT_BIT, P1_SELECT_LEDs},
+    {START_BIT, P1_START_LEDs},
+    {HOME_BIT, HOME_LEDs},
+    {EXTRA1_BIT, EXTRA1_LEDs}
 };
 
-const LedGroup joystickMap[9] = {
-    {JOY_UP_LEDs, 4},
-    {JOY_UP_RIGHT_LEDs, 4},
-    {JOY_RIGHT_LEDs, 4},
-    {JOY_DOWN_RIGHT_LEDs, 4},
-    {JOY_DOWN_LEDs, 4},
-    {JOY_DOWN_LEFT_LEDs, 4},
-    {JOY_LEFT_LEDs, 4},
-    {JOY_UP_LEFT_LEDs, 4},
-    {JOY_BALLTOP_LEDs, 1}
+const LedGroup joystickMap[4] = {
+    {JOY_UP_BIT, JOY_UP_LEDs},
+    {JOY_RIGHT_BIT, JOY_RIGHT_LEDs},
+    {JOY_DOWN_BIT, JOY_DOWN_LEDs},
+    {JOY_LEFT_BIT, JOY_LEFT_LEDs}
 };
