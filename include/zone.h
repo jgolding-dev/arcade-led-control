@@ -124,6 +124,7 @@ protected:
   // Virtual functions to be overridden by children
   virtual void _animateCustom(){};
   virtual void _setSFTurbo(){};
+  virtual void _showLEDs();
   
   void _animateFadeRGB();
   void _animateRainbow();
@@ -167,11 +168,12 @@ public:
 private:
   // Array to hold LED color data
   CRGB _buttonLeds[ACTION_BUTTONS_LED_COUNT];
-  CRGB _joystickLeds[JOYSTICK_RING_LED_COUNT];
-  CRGB _balltopLeds[JOYSTICK_BALLTOP_LED_COUNT];
+  CRGB _joystickLogicalLeds[JOYSTICK_LED_COUNT];
+  CRGB _joystickOutputLeds[JOYSTICK_LED_COUNT];
 
   // override functions
   void _setSFTurbo();
+  void _showLEDs();
 };
 
 class Player2 : public Zone {
@@ -187,11 +189,12 @@ public:
 private:
   // Array to hold LED color data
   CRGB _buttonLeds[ACTION_BUTTONS_LED_COUNT];
-  CRGB _joystickLeds[JOYSTICK_RING_LED_COUNT];
-  CRGB _balltopLeds[JOYSTICK_BALLTOP_LED_COUNT];
+  CRGB _joystickLogicalLeds[JOYSTICK_LED_COUNT];
+  CRGB _joystickOutputLeds[JOYSTICK_LED_COUNT];
 
   // override functions
   void _setSFTurbo();
+  void _showLEDs();
 };
 
 class Accent : public Zone {
