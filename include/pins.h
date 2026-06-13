@@ -66,16 +66,17 @@ public:
     // Accent Lighting
     pinMode(ACCENT_DATA_PIN, OUTPUT);
 
-    // Inputs
-    pinMode(DISPLAY_SCK_PIN, INPUT_PULLDOWN);
-    pinMode(DISPLAY_MOSI_PIN, INPUT_PULLDOWN);
-    pinMode(DISPLAY_CS_PIN, INPUT_PULLDOWN);
-    pinMode(DISPLAY_DC_PIN, INPUT_PULLDOWN);
+    // Display Output
+    pinMode(DISPLAY_SCK_PIN, OUTPUT);
+    pinMode(DISPLAY_MOSI_PIN, OUTPUT);
+    pinMode(DISPLAY_CS_PIN, OUTPUT);
+    pinMode(DISPLAY_DC_PIN, OUTPUT);
+    pinMode(DISPLAY_RST_PIN, OUTPUT);
 
-    pinMode(ROTARY_SW_PIN, INPUT_PULLDOWN);
-    pinMode(ROTARY_DT_PIN, INPUT_PULLDOWN);
-    pinMode(ROTARY_CLK_PIN, INPUT_PULLDOWN);
-    pinMode(DISPLAY_RST_PIN, INPUT_PULLDOWN);
+    // Rotary Input
+    pinMode(ROTARY_SW_PIN, INPUT_PULLUP);
+    pinMode(ROTARY_DT_PIN, INPUT_PULLUP);
+    pinMode(ROTARY_CLK_PIN, INPUT_PULLUP);
   }
 };
 
