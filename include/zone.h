@@ -99,6 +99,7 @@ public:
   virtual void endZoneSwitchAnimation();
   virtual void fillRainbow(uint8_t gHueValue) {};
   virtual void fillSolid(uint8_t hue) {};
+  virtual void showLEDs();
   
 protected:
   bool _switchAnimationActive;
@@ -124,7 +125,6 @@ protected:
   // Virtual functions to be overridden by children
   virtual void _animateCustom(){};
   virtual void _setSFTurbo(){};
-  virtual void _showLEDs();
   
   void _animateFadeRGB();
   void _animateRainbow();
@@ -165,6 +165,7 @@ public:
   void setAllZone(uint8_t rValue, uint8_t gValue, uint8_t bValue);
   void fillRainbow(uint8_t gHueValue);
   void fillSolid(uint8_t hue);
+  void showLEDs();
 private:
   // Array to hold LED color data
   CRGB _buttonLeds[ACTION_BUTTONS_LED_COUNT];
@@ -173,7 +174,6 @@ private:
 
   // override functions
   void _setSFTurbo();
-  void _showLEDs();
 };
 
 class Player2 : public Zone {
@@ -186,6 +186,7 @@ public:
   void setAllZone(uint8_t rValue, uint8_t gValue, uint8_t bValue);
   void fillRainbow(uint8_t gHueValue);
   void fillSolid(uint8_t hue);
+  void showLEDs();
 private:
   // Array to hold LED color data
   CRGB _buttonLeds[ACTION_BUTTONS_LED_COUNT];
@@ -194,7 +195,6 @@ private:
 
   // override functions
   void _setSFTurbo();
-  void _showLEDs();
 };
 
 class Accent : public Zone {
@@ -226,6 +226,7 @@ public:
   void applyCustom(const CustomType &type);
   void fillRainbow(uint8_t gHueValue);
   void fillSolid(uint8_t hue);
+  void showLEDs();
 private:
   // sub-zones
   Player1* _player1Zone;

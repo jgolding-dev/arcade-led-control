@@ -68,7 +68,7 @@ void Zone::_processZoneSwitchAnimation() {
 void Zone::setMasterBrightness(int value) {
   _currentBrightness = value;
   FastLED.setBrightness(_currentBrightness);
-  _showLEDs();
+  showLEDs();
 }
 
 /**
@@ -249,7 +249,7 @@ void Zone::_animateColorShift() {
 
   fillSolid(hue);
   
-  _showLEDs();
+  showLEDs();
 }
 
 /**
@@ -262,7 +262,7 @@ void Zone::_animateRainbow() {
 
   fillRainbow(hue);
   
-  _showLEDs();  
+  showLEDs();  
 }
 
 /**
@@ -337,7 +337,7 @@ void Zone::applyCustom(const CustomType &type) {
 /**
  * Directs FastLED to update its controllers with the current LED states
  */
-void Zone::_showLEDs() {
+void Zone::showLEDs() {
   FastLED.show();
 }
 

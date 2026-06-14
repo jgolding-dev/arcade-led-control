@@ -39,7 +39,7 @@ void Options::setAllZone(uint8_t rValue, uint8_t gValue, uint8_t bValue) {
   for (int i = 0; i < OPTIONS_BUTTONS_LED_COUNT; i++) {
     _leds[i].setRGB(rValue, gValue, bValue);
   }
-  _showLEDs();
+  showLEDs();
 }
 
 /**

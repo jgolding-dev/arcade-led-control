@@ -23,7 +23,7 @@ void Accent::setAllZone(uint8_t rValue, uint8_t gValue, uint8_t bValue) {
     _leds[i].g = gValue;
     _leds[i].b = bValue;
   }
-  _showLEDs();
+  showLEDs();
 }
 
 /**

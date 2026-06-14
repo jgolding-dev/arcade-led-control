@@ -23,7 +23,7 @@ void Player2::setAllZone(uint8_t rValue, uint8_t gValue, uint8_t bValue) {
   for (int i = 0; i < JOYSTICK_LED_COUNT; i++) {
     _joystickLogicalLeds[i].setRGB(rValue, gValue, bValue);
   }
-  _showLEDs();
+  showLEDs();
 }
 
 /**
@@ -61,7 +61,7 @@ void Player2::_setSFTurbo() {
   Zone::setLEDs(_buttonLeds, RGB_GREEN, heavy, ACTION_BTN_LED_COUNT * 2);
   Zone::setLEDs(_buttonLeds, RGB_YELLOW, special, ACTION_BTN_LED_COUNT * 2);
 
-  _showLEDs();
+  showLEDs();
 }
 
 /**
@@ -87,7 +87,7 @@ void Player2::fillRainbow(uint8_t gHueValue) {
  * Directs FastLED to update its controllers with the current LED states.
  * Corrects for color order mismatches
  */
-void Player2::_showLEDs() {
+void Player2::showLEDs() {
   memcpy(_joystickOutputLeds, _joystickLogicalLeds, sizeof(_joystickLogicalLeds));
 
   // The balltop LED uses R,G,B order, unlike the rest of the LEDs in the array, which use G,R,B.
