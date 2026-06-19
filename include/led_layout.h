@@ -35,32 +35,33 @@ const uint8_t ACCENT_LED_ZONE_COUNT         = 100;      // We actually have 300 
 //                                                         program is concerned, we have 100.
 
 // ----------------- Main Buttons ----------------- //
-const uint8_t BTN1_LEDs[] = {28, 29, 30, 31};
-const uint8_t BTN2_LEDs[] = {20, 21, 22, 23};
-const uint8_t BTN3_LEDs[] = {24, 25, 26, 27};
-const uint8_t BTN4_LEDs[] = {16, 17, 18, 19};
-const uint8_t L1_LEDs[] = {0, 1, 2, 3};
-const uint8_t R1_LEDs[] = {8, 9, 10, 11};
-const uint8_t L2_LEDs[] = {4, 5, 6, 7};
-const uint8_t R2_LEDs[] = {12, 13, 14, 15};
+const uint8_t BTN1_LEDs[ACTION_BTN_LED_COUNT] = {28, 29, 30, 31};
+const uint8_t BTN2_LEDs[ACTION_BTN_LED_COUNT] = {20, 21, 22, 23};
+const uint8_t BTN3_LEDs[ACTION_BTN_LED_COUNT] = {24, 25, 26, 27};
+const uint8_t BTN4_LEDs[ACTION_BTN_LED_COUNT] = {16, 17, 18, 19};
+const uint8_t L1_LEDs[ACTION_BTN_LED_COUNT] = {0, 1, 2, 3};
+const uint8_t R1_LEDs[ACTION_BTN_LED_COUNT] = {8, 9, 10, 11};
+
+const uint8_t L2_LEDs[ACTION_BTN_LED_COUNT] = {4, 5, 6, 7};
+const uint8_t R2_LEDs[ACTION_BTN_LED_COUNT] = {12, 13, 14, 15};
 
 // ----------------- Options Buttons ----------------- //
-const uint8_t P1_SELECT_LEDs[] = {2};
-const uint8_t P1_START_LEDs[] = {3};
-const uint8_t P2_SELECT_LEDs[] = {4};
-const uint8_t P2_START_LEDs[] = {5};
-const uint8_t HOME_LEDs[] = {1};
-const uint8_t EXTRA1_LEDs[] = {0};
+const uint8_t P1_SELECT_LEDs[OPTIONS_BTN_LED_COUNT] = {2};
+const uint8_t P1_START_LEDs[OPTIONS_BTN_LED_COUNT] = {3};
+const uint8_t P2_SELECT_LEDs[OPTIONS_BTN_LED_COUNT] = {4};
+const uint8_t P2_START_LEDs[OPTIONS_BTN_LED_COUNT] = {5};
+const uint8_t HOME_LEDs[OPTIONS_BTN_LED_COUNT] = {1};
+const uint8_t EXTRA1_LEDs[OPTIONS_BTN_LED_COUNT] = {0};
 
 // ----------------- Joystick ----------------- //
-const uint8_t JOY_UP_LEDs[] = {14, 15, 0, 1};
-const uint8_t JOY_UP_RIGHT_LEDs[] = {0, 1, 2, 3};
-const uint8_t JOY_RIGHT_LEDs[] = {2, 3, 4, 5};
-const uint8_t JOY_DOWN_RIGHT_LEDs[] = {4, 5, 6, 7};
-const uint8_t JOY_DOWN_LEDs[] = {6, 7, 8, 9};
-const uint8_t JOY_DOWN_LEFT_LEDs[] = {8, 9, 10, 11};
-const uint8_t JOY_LEFT_LEDs[] = {10, 11, 12, 13};
-const uint8_t JOY_UP_LEFT_LEDs[] = {12, 13, 14, 15};
-const uint8_t JOY_BALLTOP_LEDs[] = {16};
+const uint8_t JOY_UP_LEDs[JOY_DIRECTION_LED_COUNT] = {14, 15, 0, 1};
+const uint8_t JOY_UP_RIGHT_LEDs[JOY_DIRECTION_LED_COUNT] = {0, 1, 2, 3};
+const uint8_t JOY_RIGHT_LEDs[JOY_DIRECTION_LED_COUNT] = {2, 3, 4, 5};
+const uint8_t JOY_DOWN_RIGHT_LEDs[JOY_DIRECTION_LED_COUNT] = {4, 5, 6, 7};
+const uint8_t JOY_DOWN_LEDs[JOY_DIRECTION_LED_COUNT] = {6, 7, 8, 9};
+const uint8_t JOY_DOWN_LEFT_LEDs[JOY_DIRECTION_LED_COUNT] = {8, 9, 10, 11};
+const uint8_t JOY_LEFT_LEDs[JOY_DIRECTION_LED_COUNT] = {10, 11, 12, 13};
+const uint8_t JOY_UP_LEFT_LEDs[JOY_DIRECTION_LED_COUNT] = {12, 13, 14, 15};
+const uint8_t JOY_BALLTOP_LEDs[JOY_BALLTOP_LED_COUNT] = {16};
 
 #endif
