@@ -3,39 +3,40 @@
 
 #include <Arduino.h>
 
+// LEDs per physical button/input
 #define ACTION_BTN_LED_COUNT 2 // Each action button has 2 LEDs
 #define SINGLE_OPTIONS_BTN_LED_COUNT 1
 #define JOY_DIRECTION_LED_COUNT 4
 #define JOY_BALLTOP_LED_COUNT 1
 
 // ----------------- Main Buttons ----------------- //
-const uint8_t BTN1_LEDs[] = {8, 9};
-const uint8_t BTN2_LEDs[] = {10, 11};
-const uint8_t BTN3_LEDs[] = {6, 7};
-const uint8_t BTN4_LEDs[] = {4, 5};
-const uint8_t L1_LEDs[] = {0, 1};
-const uint8_t R1_LEDs[] = {2, 3};
-const uint8_t L2_LEDs[] = {14, 15};
-const uint8_t R2_LEDs[] = {12, 13};
+const uint8_t BTN1_LEDs[ACTION_BTN_LED_COUNT] = {8, 9};
+const uint8_t BTN2_LEDs[ACTION_BTN_LED_COUNT] = {10, 11};
+const uint8_t BTN3_LEDs[ACTION_BTN_LED_COUNT] = {6, 7};
+const uint8_t BTN4_LEDs[ACTION_BTN_LED_COUNT] = {4, 5};
+const uint8_t L1_LEDs[ACTION_BTN_LED_COUNT] = {0, 1};
+const uint8_t R1_LEDs[ACTION_BTN_LED_COUNT] = {2, 3};
+const uint8_t L2_LEDs[ACTION_BTN_LED_COUNT] = {14, 15};
+const uint8_t R2_LEDs[ACTION_BTN_LED_COUNT] = {12, 13};
 
 // ----------------- Options Buttons ----------------- //
-const uint8_t P1_SELECT_LEDs[] = {2};
-const uint8_t P1_START_LEDs[] = {3};
-const uint8_t P2_SELECT_LEDs[] = {4};
-const uint8_t P2_START_LEDs[] = {5};
-const uint8_t HOME_LEDs[] = {1};
-const uint8_t EXTRA1_LEDs[] = {0};
+const uint8_t P1_SELECT_LEDs[SINGLE_OPTIONS_BTN_LED_COUNT] = {2};
+const uint8_t P1_START_LEDs[SINGLE_OPTIONS_BTN_LED_COUNT] = {3};
+const uint8_t P2_SELECT_LEDs[SINGLE_OPTIONS_BTN_LED_COUNT] = {4};
+const uint8_t P2_START_LEDs[SINGLE_OPTIONS_BTN_LED_COUNT] = {5};
+const uint8_t HOME_LEDs[SINGLE_OPTIONS_BTN_LED_COUNT] = {1};
+const uint8_t EXTRA1_LEDs[SINGLE_OPTIONS_BTN_LED_COUNT] = {0};
 
 // ----------------- Joystick ----------------- //
-const uint8_t JOY_UP_LEDs[] = {14, 15, 0, 1};
-const uint8_t JOY_UP_RIGHT_LEDs[] = {0, 1, 2, 3};
-const uint8_t JOY_RIGHT_LEDs[] = {2, 3, 4, 5};
-const uint8_t JOY_DOWN_RIGHT_LEDs[] = {4, 5, 6, 7};
-const uint8_t JOY_DOWN_LEDs[] = {6, 7, 8, 9};
-const uint8_t JOY_DOWN_LEFT_LEDs[] = {8, 9, 10, 11};
-const uint8_t JOY_LEFT_LEDs[] = {10, 11, 12, 13};
-const uint8_t JOY_UP_LEFT_LEDs[] = {12, 13, 14, 15};
-const uint8_t JOY_BALLTOP_LEDs[] = {16};
+const uint8_t JOY_UP_LEDs[JOY_DIRECTION_LED_COUNT] = {14, 15, 0, 1};
+const uint8_t JOY_UP_RIGHT_LEDs[JOY_DIRECTION_LED_COUNT] = {0, 1, 2, 3};
+const uint8_t JOY_RIGHT_LEDs[JOY_DIRECTION_LED_COUNT] = {2, 3, 4, 5};
+const uint8_t JOY_DOWN_RIGHT_LEDs[JOY_DIRECTION_LED_COUNT] = {4, 5, 6, 7};
+const uint8_t JOY_DOWN_LEDs[JOY_DIRECTION_LED_COUNT] = {6, 7, 8, 9};
+const uint8_t JOY_DOWN_LEFT_LEDs[JOY_DIRECTION_LED_COUNT] = {8, 9, 10, 11};
+const uint8_t JOY_LEFT_LEDs[JOY_DIRECTION_LED_COUNT] = {10, 11, 12, 13};
+const uint8_t JOY_UP_LEFT_LEDs[JOY_DIRECTION_LED_COUNT] = {12, 13, 14, 15};
+const uint8_t JOY_BALLTOP_LEDs[JOY_BALLTOP_LED_COUNT] = {16};
 
 // -------- LED Chip Types -------- //
 #define ACCENT_LED_TYPE                   WS2811

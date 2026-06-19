@@ -2,24 +2,36 @@
 
 InputProcessor::InputProcessor(){}
 
-void updateP1Packet(InputPacket packet) {
-    lastP1Packet = p1Packet;
-    p1Packet = packet;
+void InputProcessor::updatePacket(InputPacket* packet) {
+    _lastPacket = _currentPacket;
+    _currentPacket = packet;
+
+    _processInputs();
 }
 
-void updateP2Packet(InputPacket packet) {
-    lastP2Packet = p2Packet;
-    p2Packet = packet;
+void InputProcessor::_updatePressedState(ActionInputState* input, uint16_t input16Bit) {
+    if (input->data.buttonBit && input16Bit) {
+        input->pressed = true;
+    }
+    else {
+        input->pressed = false;
+    }
 }
 
-ActiveInputLEDs InputProcessor::getP1ActiveInputs() {
-    ActiveInputLEDs active;
+void InputProcessor::_updatePressedState(OptionsInputState* input, uint16_t input16Bit) {
+    if (input->data.buttonBit && input16Bit) {
+        input->pressed = true;
+    }
+    else {
+        input->pressed = false;
+    }
+}
 
-    uint16_t buttonByte = p1Packet.buttons_l | (p1Packet.buttons_h << 8)
-    for(int i = 0; i < 12; i++) {
-        uint16_t bit = (1 << i);
-        if (buttonByte && bit) {
-            active.buttons.add(buttonMap[bit])
-        }
+void InputProcessor::_updatePressedState(JoystickInputState* input, uint8_t inputByte) {
+    if (input->data.buttonBit && inputByte) {
+        input->pressed = true;
+    }
+    else {
+        input->pressed = false;
     }
 }
