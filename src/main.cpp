@@ -4,6 +4,7 @@
 #include <animation_controller.h>
 #include <input_parser.h>
 #include <input_protocol.h>
+#include <rotary_volume_controller.h>
 
 #define BAUD_RATE 115200
 
@@ -35,7 +36,14 @@ bool p2Connected              = false; // Whether player 2 is connected to the s
 bool p1Active                 = false; // Whether player 1 is currently actuating an input
 bool p2Active                 = false; // Whether player 2 is currently actuating an input
 
+
+// ------ Volume Control ------
+RotaryVolumeController volumeCtrl(ROTARY_CLK_PIN, ROTARY_DT_PIN, ROTARY_SW_PIN);
+
+// ------ Animation Control ------
 AnimationController animController(IDLE_TIMEOUT_MS);
+
+// ------ Player Input Parsing ------
 InputParser p1Parser;
 InputParser p2Parser;
 InputPacket p1Packet;
@@ -59,6 +67,9 @@ void setup() {
 
   // Initialize I/O
   Pins::initPins();
+
+  // Initialize volume module
+  volumeCtrl.setup();
 
   // Debug Serial Initialization
   Serial.begin(BAUD_RATE);
@@ -85,6 +96,8 @@ void setup() {
 }
 
 void loop() {
+  volumeCtrl.tick();
+
   handleActivity();
   handleJoyIndicators();
   animController.handleIdleState(systemActive);
@@ -100,6 +113,9 @@ void loop() {
 void handleActivity() {
   p1Active = readP1Input();
   p2Active = readP2Input();
+
+  // Run the non-blocking volume update check
+  bool volumeActive = volumeCtrl.update();
 
   // Controller connection state:
   // If we haven't received any communication from the gamepad for the duration of
@@ -125,13 +141,13 @@ void handleActivity() {
   // System activity state:
   // If neither player has pressed an input for the duration of our idle timeout,
   // then set the system to an idle state (shut off LEDs)
-  if ((p1Active || p2Active) && !lastActivityState) {
+  if ((p1Active || p2Active || volumeActive) && !lastActivityState) {
     updateActivityState(true);
   } else if (systemActive && (millis() - lastActivityMs) > IDLE_TIMEOUT_MS) {
     updateActivityState(false);
   }
 
-  lastActivityState = p1Active || p2Active ? true : false;
+  lastActivityState = p1Active || p2Active || volumeActive ? true : false;
 }
 
 /**
