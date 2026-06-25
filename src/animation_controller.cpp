@@ -18,8 +18,11 @@ const int MASTER_BRIGHTNESS_LIST[] = {
   BRIGHTNESS_MAX
 };
 
-AnimationController::AnimationController(unsigned long idleTimeoutMs)
-  : _idleTimeoutMs(idleTimeoutMs),
+AnimationController::AnimationController(InputPacket& p1Packet, InputPacket& p2Packet, const unsigned long idleTimeoutMs)
+  : _player1Input(p1Packet),
+    _player2Input(p2Packet),
+    _optionsInput(p1Packet, p2Packet),
+    _idleTimeoutMs(idleTimeoutMs),
     _player1(BRIGHTNESS_MAX),
     _player2(BRIGHTNESS_MAX),
     _options(BRIGHTNESS_MAX),
@@ -39,6 +42,11 @@ void AnimationController::setup() {
   _zoneSwitchAnimationStartTime = 0;
   _idleStatus = false;
   resetIndicators();
+
+  _player1Input.setup();
+  _player2Input.setup();
+  _optionsInput.setup();
+
   for (uint8_t i = 0; i < ZONE_COUNT; i++) {
     _zones[i]->setup();
   }

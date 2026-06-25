@@ -4,20 +4,21 @@
 #include <input_protocol.h>
 #include <led_layout.h>
 
-struct OptionsInputLEDGroup {
-    const uint16_t buttonBit;
+
+typedef struct __attribute__ ((__packed__)) {
+    uint16_t buttonBit;
     const uint8_t* ledIndices[SINGLE_OPTIONS_BTN_LED_COUNT];
-};
+} OptionsInputLEDGroup;
 
-struct ActionInputLEDGroup {
-    const uint16_t buttonBit;
+typedef struct __attribute__ ((__packed__)) {
+    uint16_t buttonBit;
     const uint8_t* ledIndices[ACTION_BTN_LED_COUNT];
-};
+} ActionInputLEDGroup;
 
-struct JoystickInputLEDGroup {
-    const uint8_t buttonBit;
+typedef struct __attribute__ ((__packed__)) {
+    uint8_t buttonBit;
     const uint8_t* ledIndices[JOY_DIRECTION_LED_COUNT];
-};
+} JoystickInputLEDGroup;
 
 const ActionInputLEDGroup buttonMap[8] = {
     {B1_BIT, BTN1_LEDs},
@@ -50,5 +51,5 @@ const int BUTTON_INPUT_COUNT = sizeof(buttonMap) / sizeof(buttonMap[0]);
 const int OPTIONS_INPUT_COUNT = sizeof(optionsMap) / sizeof(optionsMap[0]);
 const int JOYSTICK_INPUT_COUNT = sizeof(joystickMap) / sizeof(joystickMap[0]);
 
-
-const int PLAYER_INPUT_COUNT = BUTTON_INPUT_COUNT + OPTIONS_INPUT_COUNT + JOYSTICK_INPUT_COUNT;
+const int PLAYER2_SELECT_GROUP_INDEX = 4;
+const int PLAYER2_START_GROUP_INDEX = 5;

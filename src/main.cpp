@@ -37,12 +37,6 @@ bool p1Active                 = false; // Whether player 1 is currently actuatin
 bool p2Active                 = false; // Whether player 2 is currently actuating an input
 
 
-// ------ Volume Control ------
-RotaryVolumeController volumeCtrl(ROTARY_CLK_PIN, ROTARY_DT_PIN, ROTARY_SW_PIN);
-
-// ------ Animation Control ------
-AnimationController animController(IDLE_TIMEOUT_MS);
-
 // ------ Player Input Parsing ------
 InputParser p1Parser;
 InputParser p2Parser;
@@ -50,6 +44,12 @@ InputPacket p1Packet;
 InputPacket lastP1Packet;
 InputPacket p2Packet;
 InputPacket lastP2Packet;
+
+// ------ Volume Control ------
+RotaryVolumeController volumeCtrl(ROTARY_CLK_PIN, ROTARY_DT_PIN, ROTARY_SW_PIN);
+
+// ------ Animation Control ------
+AnimationController animController(p1Packet, p2Packet, IDLE_TIMEOUT_MS);
 
 
 // local function declarations
