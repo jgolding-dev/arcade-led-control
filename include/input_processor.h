@@ -4,20 +4,20 @@
 #include <input_parser.h>
 #include <input_bit_to_led_config.h>
 
-struct ActionInputState {
+typedef struct __attribute__ ((__packed__)) {
     ActionInputLEDGroup data;
     bool pressed;
-};
+} ActionInputState;
 
-struct OptionsInputState {
+typedef struct __attribute__ ((__packed__)) {
     OptionsInputLEDGroup data;
     bool pressed;
-};
+} OptionsInputState;
 
-struct JoystickInputState {
+typedef struct __attribute__ ((__packed__)) {
     JoystickInputLEDGroup data;
     bool pressed;
-};
+} JoystickInputState;
 
 class InputProcessor {
     public:
@@ -27,47 +27,61 @@ class InputProcessor {
         // Virtual Destructor
         virtual ~InputProcessor() = default;
 
-        void setup();
+        // virtual functions to be overridden
+        virtual void updatePacket(InputPacket& packet){};
+        virtual void updatePackets(InputPacket& packet1, InputPacket& packet2){};
+        virtual void setup(){};
+
         bool isPressed(uint8_t button);
-        void updatePacket(InputPacket* packet);
 
     protected:
         // virtual functions to be overridden
         virtual void _processInputs(){};
 
-        void _updatePressedState(OptionsInputState* input, uint16_t input16Bit);
-        void _updatePressedState(ActionInputState* input, uint16_t input16Bit);
-        void _updatePressedState(JoystickInputState* input, uint8_t inputByte);
-
-        InputPacket* _currentPacket;
-        InputPacket* _lastPacket;
+        void _updatePressedState(OptionsInputState &input, uint16_t input16Bit);
+        void _updatePressedState(ActionInputState &input, uint16_t input16Bit);
+        void _updatePressedState(JoystickInputState &input, uint8_t inputByte);
 };
 
 class PlayerInputProcessor : public InputProcessor {
     public:
         // Constructor
-        PlayerInputProcessor();
+        PlayerInputProcessor(InputPacket& packet);
+
+        void setup();
+        void updatePacket(InputPacket& packet);
     private:
         // Override functions
         void _processInputs();
         
-        ActionInputState* _buttonInputs[ACTION_BUTTONS_LED_COUNT];
-        JoystickInputState* _joystickInputs[JOYSTICK_INPUT_COUNT];
-        ActionInputState* _lastButtonInputs[ACTION_BUTTONS_LED_COUNT];
-        JoystickInputState* _lastJoystickInputs[JOYSTICK_INPUT_COUNT];
+        ActionInputState _buttonInputs[ACTION_BUTTONS_LED_COUNT];
+        JoystickInputState _joystickInputs[JOYSTICK_INPUT_COUNT];
+        ActionInputState _lastButtonInputs[ACTION_BUTTONS_LED_COUNT];
+        JoystickInputState _lastJoystickInputs[JOYSTICK_INPUT_COUNT];
 
+        InputPacket* _currentPacket;
+        InputPacket* _lastPacket;
 };
 
 class OptionsInputProcessor : public InputProcessor {
     public:
         // Constructor
-        OptionsInputProcessor();
+        OptionsInputProcessor(InputPacket& p1Packet, InputPacket& p2Packet);
+
+        // Overridden functions
+        void setup();
+        void updatePackets(InputPacket &p1Packet, InputPacket &p2Packet);
     private:
         // Override functions
         void _processInputs();
 
-        OptionsInputState* _optionsInputs[OPTIONS_INPUT_COUNT];
-        OptionsInputState* _lastOptionsInputs[OPTIONS_INPUT_COUNT];
+        OptionsInputState _optionsInputs[OPTIONS_INPUT_COUNT];
+        OptionsInputState _lastOptionsInputs[OPTIONS_INPUT_COUNT];
+
+        InputPacket* _currentP1Packet;
+        InputPacket* _currentP2Packet;
+        InputPacket* _lastP1Packet;
+        InputPacket* _lastP2Packet;
 };
 
 #endif

@@ -3,12 +3,16 @@
 
 #include <brightness_levels.h>
 #include <zone.h>
+#include <input_protocol.h>
+#include <input_processor.h>
 
 const unsigned long ZONE_SWITCH_TIMEOUT_MS = 3UL * 1000UL + 500UL; // 3.5 seconds
 
 class AnimationController {
     public:
-        AnimationController(unsigned long idleTimeoutMs);
+        AnimationController(InputPacket &p1Packet,
+            InputPacket &p2Packet,
+            const unsigned long idleTimeoutMs);
 
         void setup();
         void handleIdleState(bool systemActive);
@@ -37,6 +41,11 @@ class AnimationController {
         Player2 _player2;
         Options _options;
         Accent _accent;
+
+        // Input Processors
+        PlayerInputProcessor _player1Input;
+        PlayerInputProcessor _player2Input;
+        OptionsInputProcessor _optionsInput;
 
         // Pointer table for iteration
         static constexpr uint8_t ZONE_COUNT = 4;
