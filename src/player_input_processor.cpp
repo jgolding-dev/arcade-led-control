@@ -8,10 +8,10 @@ PlayerInputProcessor::PlayerInputProcessor(InputPacket& packet)
 
 void PlayerInputProcessor::setup() {
     for (int i = 0; i < BUTTON_INPUT_COUNT; i++) {
-        _buttonInputs[i] = {buttonMap[i], false};
+        _buttonInputs[i] = {BUTTON_MAP[i], false};
     }
     for (int i = 0; i < JOYSTICK_INPUT_COUNT; i++) {
-        _joystickInputs[i] = {joystickMap[i], false};
+        _joystickInputs[i] = {JOYSTICK_MAP[i], false};
     }
 }
 
@@ -38,4 +38,8 @@ void PlayerInputProcessor::_processInputs() {
         _lastJoystickInputs[i].pressed = input.pressed;
         _updatePressedState(input, _currentPacket->joystick);
     }
+}
+
+bool PlayerInputProcessor::isButtonPressed(int buttonIndex) {
+    return BUTTON_MAP[buttonIndex] _buttonInputs[buttonIndex].pressed;
 }

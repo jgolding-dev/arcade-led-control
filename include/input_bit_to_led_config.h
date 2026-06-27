@@ -20,7 +20,7 @@ typedef struct __attribute__ ((__packed__)) {
     const uint8_t* ledIndices[JOY_DIRECTION_LED_COUNT];
 } JoystickInputLEDGroup;
 
-const ActionInputLEDGroup buttonMap[8] = {
+const ActionInputLEDGroup BUTTON_MAP[8] = {
     {B1_BIT, BTN1_LEDs},
     {B2_BIT, BTN2_LEDs},
     {B3_BIT, BTN3_LEDs},
@@ -31,7 +31,7 @@ const ActionInputLEDGroup buttonMap[8] = {
     {R2_BIT, R2_LEDs}
 };
 
-const OptionsInputLEDGroup optionsMap[6] = {
+const OptionsInputLEDGroup OPTIONS_MAP[6] = {
     {EXTRA1_BIT, EXTRA1_LEDs},
     {HOME_BIT, HOME_LEDs},
     {SELECT_BIT, P1_SELECT_LEDs},
@@ -40,16 +40,16 @@ const OptionsInputLEDGroup optionsMap[6] = {
     {START_BIT, P2_START_LEDs}
 };
 
-const JoystickInputLEDGroup joystickMap[4] = {
+const JoystickInputLEDGroup JOYSTICK_MAP[4] = {
     {JOY_UP_BIT, JOY_UP_LEDs},
     {JOY_RIGHT_BIT, JOY_RIGHT_LEDs},
     {JOY_DOWN_BIT, JOY_DOWN_LEDs},
     {JOY_LEFT_BIT, JOY_LEFT_LEDs}
 };
 
-const int BUTTON_INPUT_COUNT = sizeof(buttonMap) / sizeof(buttonMap[0]);
-const int OPTIONS_INPUT_COUNT = sizeof(optionsMap) / sizeof(optionsMap[0]);
-const int JOYSTICK_INPUT_COUNT = sizeof(joystickMap) / sizeof(joystickMap[0]);
+const int BUTTON_INPUT_COUNT = sizeof(BUTTON_MAP) / sizeof(BUTTON_MAP[0]);
+const int OPTIONS_INPUT_COUNT = sizeof(OPTIONS_MAP) / sizeof(OPTIONS_MAP[0]);
+const int JOYSTICK_INPUT_COUNT = sizeof(JOYSTICK_MAP) / sizeof(JOYSTICK_MAP[0]);
 
 const int PLAYER2_SELECT_GROUP_INDEX = 4;
 const int PLAYER2_START_GROUP_INDEX = 5;
