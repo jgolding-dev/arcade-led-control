@@ -26,13 +26,13 @@ class InputProcessor {
 
         // Virtual Destructor
         virtual ~InputProcessor() = default;
+        virtual bool isButtonPressed(int buttonIndex){return false;};
+        virtual bool isJoystickPressed(int joystickIndex){return false;};
 
         // virtual functions to be overridden
         virtual void updatePacket(InputPacket& packet){};
         virtual void updatePackets(InputPacket& packet1, InputPacket& packet2){};
         virtual void setup(){};
-
-        bool isPressed(uint8_t button);
 
     protected:
         // virtual functions to be overridden
@@ -48,8 +48,11 @@ class PlayerInputProcessor : public InputProcessor {
         // Constructor
         PlayerInputProcessor(InputPacket& packet);
 
+        // Override functions
         void setup();
         void updatePacket(InputPacket& packet);
+        bool isButtonPressed(int buttonIndex);
+        bool isJoystickPressed(int joystickIndex);
     private:
         // Override functions
         void _processInputs();
@@ -68,9 +71,10 @@ class OptionsInputProcessor : public InputProcessor {
         // Constructor
         OptionsInputProcessor(InputPacket& p1Packet, InputPacket& p2Packet);
 
-        // Overridden functions
+        // Override functions
         void setup();
         void updatePackets(InputPacket &p1Packet, InputPacket &p2Packet);
+        bool isButtonPressed(int buttonIndex);
     private:
         // Override functions
         void _processInputs();

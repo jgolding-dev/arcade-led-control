@@ -10,7 +10,7 @@ OptionsInputProcessor::OptionsInputProcessor(InputPacket& p1Packet, InputPacket&
 
 void OptionsInputProcessor::setup() {
     for (int i = 0; i < OPTIONS_INPUT_COUNT; i++) {
-        _optionsInputs[i] = {optionsMap[i], false};
+        _optionsInputs[i] = {OPTIONS_MAP[i], false};
     }
 }
 
