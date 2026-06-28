@@ -23,9 +23,9 @@ AnimationController::AnimationController(InputPacket& p1Packet, InputPacket& p2P
     _player2Input(p2Packet),
     _optionsInput(p1Packet, p2Packet),
     _idleTimeoutMs(idleTimeoutMs),
-    _player1(BRIGHTNESS_MAX),
-    _player2(BRIGHTNESS_MAX),
-    _options(BRIGHTNESS_MAX),
+    _player1(BRIGHTNESS_MAX, &_player1Input),
+    _player2(BRIGHTNESS_MAX, &_player2Input),
+    _options(BRIGHTNESS_MAX, &_optionsInput),
     _accent(BRIGHTNESS_MAX),
     _full(BRIGHTNESS_MAX, &_player1, &_player2, &_options, &_accent) {
   
@@ -42,10 +42,6 @@ void AnimationController::setup() {
   _zoneSwitchAnimationStartTime = 0;
   _idleStatus = false;
   resetIndicators();
-
-  _player1Input.setup();
-  _player2Input.setup();
-  _optionsInput.setup();
 
   for (uint8_t i = 0; i < ZONE_COUNT; i++) {
     _zones[i]->setup();

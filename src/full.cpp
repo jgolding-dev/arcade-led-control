@@ -61,6 +61,16 @@ void Full::fillRainbow(uint8_t gHueValue) {
 }
 
 /**
+ * Fill all sub-zones with a rainbow gradient
+ * @param gHueValue the gradient value for the rainbow
+ */
+void Full::animateReactive() {
+  for (int i = 0; i < ZONE_COUNT; i++) {
+    _subZones[i]->animateReactive();
+  }
+}
+
+/**
  * 
  */
 void Full::showLEDs() {

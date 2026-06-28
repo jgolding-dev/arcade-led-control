@@ -39,6 +39,8 @@ void Zone::process() {
     case RAINBOW:
       _animateRainbow();
       break;
+    case REACTIVE:
+      animateReactive();
     default:
       // No animation
       break;
@@ -300,7 +302,7 @@ void Zone::setLED(CRGB* leds, const RGB_t &color, int index) {
  * @param indexes the indexes of the CRGB array corresponding to the LEDs
  * @param size the size of the CRGB array
  */
-void Zone::setLEDs(CRGB* leds, const RGB_t &color, uint8_t* indexes, int size) {
+void Zone::setLEDs(CRGB* leds, const RGB_t &color, const uint8_t* indexes, int size) {
   for (int i = 0; i < size; i++) {
     int index = indexes[i];
     setLED(leds, color, index);

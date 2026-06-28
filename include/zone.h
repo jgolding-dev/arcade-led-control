@@ -9,6 +9,8 @@
 #include <fastled_config.h>
 #include <FastLED.h>
 #include <string.h>
+#include <input_processor.h>
+#include <input_bit_to_led_config.h>
 
 // -------- Animation Data Structures -------- //
 
@@ -17,6 +19,7 @@ enum ANIMATION_TYPE {
   STATIC,
   COLOR_SHIFT,
   RAINBOW,
+  REACTIVE,
   FADE,
   // PULSE,
   OFF,
@@ -27,8 +30,8 @@ const ANIMATION_TYPE ANIMATION_TYPES[] = {
   CUSTOM,
   STATIC,
   COLOR_SHIFT,
-  RAINBOW,
-  FADE,
+  REACTIVE,
+  // FADE,
   // PULSE,
   // OFF
 };
@@ -102,6 +105,7 @@ public:
   virtual void endZoneSwitchAnimation();
   virtual void fillRainbow(uint8_t gHueValue) {};
   virtual void fillSolid(uint8_t hue) {};
+  virtual void animateReactive(){};
   virtual void showLEDs();
   
 protected:
@@ -142,7 +146,7 @@ protected:
 class Options : public Zone {
   public:
     // Constructor
-    Options(int brightness);
+    Options(int brightness, OptionsInputProcessor& inputProcessor);
 
     // Override Functions
     void idle();
@@ -151,9 +155,13 @@ class Options : public Zone {
     void setAllZone(uint8_t rValue, uint8_t gValue, uint8_t bValue);
     void fillRainbow(uint8_t gHueValue);
     void fillSolid(uint8_t hue);
+    void animateReactive();
   private:
     // Array to hold LED color data
     CRGB _leds[OPTIONS_LED_ZONE_COUNT];
+
+    // Input processor
+    OptionsInputProcessor* _inputProcessor;
 
     // override functions
     void _setSFTurbo();
@@ -163,19 +171,23 @@ class Options : public Zone {
 class Player1 : public Zone {
 public:
   // Constructor
-  Player1(int brightness);
+  Player1(int brightness, PlayerInputProcessor& inputProcessor);
 
   // Override Functions
   void setup();
   void setAllZone(uint8_t rValue, uint8_t gValue, uint8_t bValue);
   void fillRainbow(uint8_t gHueValue);
   void fillSolid(uint8_t hue);
+  void animateReactive();
   void showLEDs();
 private:
   // Array to hold LED color data
   CRGB _buttonLeds[ACTION_LED_ZONE_COUNT];
   CRGB _joystickLogicalLeds[JOY_LED_ZONE_COUNT];
   CRGB _joystickOutputLeds[JOY_LED_ZONE_COUNT];
+
+  // Input processor
+  PlayerInputProcessor* _inputProcessor;
 
   // override functions
   void _setSFTurbo();
@@ -185,19 +197,23 @@ private:
 class Player2 : public Zone {
 public:
   // Constructor
-  Player2(int brightness);
+  Player2(int brightness, PlayerInputProcessor& inputProcessor);
 
   // Override Functions
   void setup();
   void setAllZone(uint8_t rValue, uint8_t gValue, uint8_t bValue);
   void fillRainbow(uint8_t gHueValue);
   void fillSolid(uint8_t hue);
+  void animateReactive();
   void showLEDs();
 private:
   // Array to hold LED color data
   CRGB _buttonLeds[ACTION_LED_ZONE_COUNT];
   CRGB _joystickLogicalLeds[JOY_LED_ZONE_COUNT];
   CRGB _joystickOutputLeds[JOY_LED_ZONE_COUNT];
+
+  // Input processor
+  PlayerInputProcessor* _inputProcessor;
 
   // override functions
   void _setSFTurbo();
@@ -234,6 +250,7 @@ public:
   void applyCustom(const CustomType &type);
   void fillRainbow(uint8_t gHueValue);
   void fillSolid(uint8_t hue);
+  void animateReactive();
   void showLEDs();
 private:
   // sub-zones

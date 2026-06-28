@@ -98,3 +98,16 @@ void Options::fillRainbow(uint8_t gHueValue) {
   // The '7' at the end defines the color difference between adjacent LEDs
   fill_rainbow(_leds, OPTIONS_LED_ZONE_COUNT, gHueValue, 7);
 }
+
+/**
+ * Process the reactive animation for the zone
+ */
+void Options::animateReactive() {
+  Zone::setAllZone(RGB_BLACK);
+  for (uint8_t i = 0; i < OPTIONS_INPUT_COUNT; i++) {
+    if (_inputProcessor->isButtonActive(i)) {
+      Zone::setLEDs(_leds, RGB_RED, OPTIONS_MAP[i].ledIndices, OPTIONS_BTN_LED_COUNT);
+    }
+  }
+  showLEDs();
+}

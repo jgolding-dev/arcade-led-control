@@ -94,6 +94,64 @@ void Player2::fillRainbow(uint8_t gHueValue) {
 }
 
 /**
+ * Process the reactive animation for the zone
+ */
+void Player2::animateReactive() {
+  Zone::setAllZone(RGB_BLACK);
+  for (uint8_t i = 0; i < BUTTON_INPUT_COUNT; i++) {
+    if (_inputProcessor->isButtonActive(i)) {
+      Zone::setLEDs(_buttonLeds, RGB_RED, BUTTON_MAP[i].ledIndices, ACTION_BTN_LED_COUNT);
+    }
+  }
+
+  for (uint8_t i = 0; i < JOYSTICK_INPUT_COUNT; i++) {
+    if (_inputProcessor->isJoystickActive(i)) {
+      uint8_t nextDirection = (i + 1) % JOYSTICK_INPUT_COUNT;
+      uint8_t prevDirection = (i - 1) % JOYSTICK_INPUT_COUNT;
+      if (_inputProcessor->isJoystickActive(nextDirection)) {
+        switch(i) {
+          case JOY_UP_GROUP_INDEX:
+            Zone::setLEDs(_joystickLogicalLeds, RGB_RED, JOY_UP_RIGHT_LEDs, JOY_DIRECTION_LED_COUNT);
+            break;
+          case JOY_RIGHT_GROUP_INDEX:
+            Zone::setLEDs(_joystickLogicalLeds, RGB_RED, JOY_DOWN_RIGHT_LEDs, JOY_DIRECTION_LED_COUNT);
+            break;
+          case JOY_DOWN_GROUP_INDEX:
+            Zone::setLEDs(_joystickLogicalLeds, RGB_RED, JOY_DOWN_LEFT_LEDs, JOY_DIRECTION_LED_COUNT);
+            break;
+          case JOY_LEFT_GROUP_INDEX:
+            Zone::setLEDs(_joystickLogicalLeds, RGB_RED, JOY_UP_LEFT_LEDs, JOY_DIRECTION_LED_COUNT);
+            break;
+        }
+        break;
+      }
+      else if (_inputProcessor->isJoystickActive(prevDirection)) {
+        switch (i) {
+          case JOY_UP_GROUP_INDEX:
+            Zone::setLEDs(_joystickLogicalLeds, RGB_RED, JOY_UP_LEFT_LEDs, JOY_DIRECTION_LED_COUNT);
+            break;
+          case JOY_RIGHT_GROUP_INDEX:
+            Zone::setLEDs(_joystickLogicalLeds, RGB_RED, JOY_UP_RIGHT_LEDs, JOY_DIRECTION_LED_COUNT);
+            break;
+          case JOY_DOWN_GROUP_INDEX:
+            Zone::setLEDs(_joystickLogicalLeds, RGB_RED, JOY_DOWN_RIGHT_LEDs, JOY_DIRECTION_LED_COUNT);
+            break;
+          case JOY_LEFT_GROUP_INDEX:
+            Zone::setLEDs(_joystickLogicalLeds, RGB_RED, JOY_DOWN_LEFT_LEDs, JOY_DIRECTION_LED_COUNT);
+            break;
+        }
+        break;
+      }
+      else {
+        Zone::setLEDs(_joystickLogicalLeds, RGB_RED, JOYSTICK_MAP[i].ledIndices, JOY_DIRECTION_LED_COUNT);
+        break;
+      }
+    }
+  }
+  showLEDs();
+}
+
+/**
  * Directs FastLED to update its controllers with the current LED states.
  * Corrects for color order mismatches
  */
