@@ -183,7 +183,8 @@ void AnimationController::processAnimations() {
     //   _zones[ACCENT]->process();
     //   break;
     default:
-      for (uint8_t i = 0; i < ZONE_COUNT; i++) {
+      // Move or copy target zones to a proper subZones array
+      for (uint8_t i = FULL + 1; i != FULL; i = (i+1) % ZONE_COUNT) {
         _zones[i]->process();
       }
       break;
