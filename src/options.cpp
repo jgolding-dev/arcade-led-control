@@ -46,7 +46,44 @@ void Options::setAllZone(uint8_t rValue, uint8_t gValue, uint8_t bValue) {
 * Applies the SF Turbo custom lighting pattern to the zone
 */
 void Options::_setSFTurbo() {
-  Zone::setAllZone(RGB_WHITE);
+  int i = 0;
+  while (i < OPTIONS_BUTTONS_LED_COUNT) {
+    if (i == HOME_LEDs[0]) {
+      Zone::setLEDs(_leds, RGB_GREEN, HOME_LEDs, SINGLE_OPTIONS_BTN_LED_COUNT);
+      i += SINGLE_OPTIONS_BTN_LED_COUNT;
+    }
+    else if (i == EXTRA1_LEDs[0]) {
+      Zone::setLEDs(_leds, RGB_BLUE, EXTRA1_LEDs, SINGLE_OPTIONS_BTN_LED_COUNT);
+      i += SINGLE_OPTIONS_BTN_LED_COUNT;
+    }
+    else {
+      Zone::setLED(_leds, RGB_WHITE, i);
+      i++;
+    }
+  }
+  showLEDs();
+}
+
+/**
+* Applies the Red_vs_Blue custom lighting pattern to the zone
+*/
+void Options::_setRedVsBlue() {
+  int i = 0;
+  while (i < OPTIONS_BUTTONS_LED_COUNT) {
+    if (i == HOME_LEDs[0]) {
+      Zone::setLEDs(_leds, RGB_GREEN, HOME_LEDs, SINGLE_OPTIONS_BTN_LED_COUNT);
+      i += SINGLE_OPTIONS_BTN_LED_COUNT;
+    }
+    else if (i == EXTRA1_LEDs[0]) {
+      Zone::setLEDs(_leds, RGB_BLUE, EXTRA1_LEDs, SINGLE_OPTIONS_BTN_LED_COUNT);
+      i += SINGLE_OPTIONS_BTN_LED_COUNT;
+    }
+    else {
+      Zone::setLED(_leds, RGB_WHITE, i);
+      i++;
+    }
+  }
+  showLEDs();
 }
 
 /**
@@ -58,7 +95,7 @@ void Options::fillSolid(uint8_t hue) {
 }
 
 /**
- * Fill the zone with a rainbow gradient
+ * Fill the zone with a rainbow gradient=
  * @param gHueValue the gradient value for the rainbow
  */
 void Options::fillRainbow(uint8_t gHueValue) {

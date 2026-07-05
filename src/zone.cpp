@@ -289,7 +289,7 @@ void Zone::setAllZone(const RGB_t &color) {
  * @param color the color to set for the LED
  * @param index the index of the CRGB array corresponding to the LED
  */
-void Zone::_setLED(CRGB* leds, const RGB_t &color, int index) {
+void Zone::setLED(CRGB* leds, const RGB_t &color, int index) {
   leds[index].setRGB(color.r, color.g, color.b);
 }
 
@@ -303,7 +303,21 @@ void Zone::_setLED(CRGB* leds, const RGB_t &color, int index) {
 void Zone::setLEDs(CRGB* leds, const RGB_t &color, uint8_t* indexes, int size) {
   for (int i = 0; i < size; i++) {
     int index = indexes[i];
-    _setLED(leds, color, index);
+    setLED(leds, color, index);
+  }
+}
+
+/**
+ * Set the color for the specefied addressable RGB LEDs
+ * @param led the FastLED CRGB array
+ * @param color the color to set for the LEDs
+ * @param indexes the indexes of the CRGB array corresponding to the LEDs
+ * @param size the size of the CRGB array
+ */
+void Zone::setLEDs(CRGB* leds, const RGB_t &color, const uint8_t* indexes, int size) {
+  for (int i = 0; i < size; i++) {
+    int index = indexes[i];
+    setLED(leds, color, index);
   }
 }
 
@@ -315,7 +329,7 @@ void Zone::setLEDs(CRGB* leds, const RGB_t &color, uint8_t* indexes, int size) {
  */
 void Zone::setLEDs(CRGB* leds, const RGB_t &color, int count) {
   for (int i = 0; i < count; i++) {
-    _setLED(leds, color, i);
+    setLED(leds, color, i);
   }
 }
 
@@ -328,6 +342,8 @@ void Zone::applyCustom(const CustomType &type) {
     case SF_TURBO:
       _setSFTurbo();
       break;
+    case RED_VS_BLUE:
+      _setRedVsBlue();
     default:
       // No custom type
       break;

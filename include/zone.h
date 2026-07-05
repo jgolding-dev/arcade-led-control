@@ -34,10 +34,12 @@ const ANIMATION_TYPE ANIMATION_TYPES[] = {
 };
 
 enum CustomType : uint8_t {
-  SF_TURBO = 0
+  RED_VS_BLUE = 0,
+  SF_TURBO = 1
 };
 
 const CustomType CUSTOM_TYPES[] = {
+  RED_VS_BLUE,
   SF_TURBO
 };
 
@@ -87,6 +89,7 @@ public:
   void setAllZone(const RGB_t &color);
   void setLEDs(CRGB* leds, const RGB_t &color, int count);
   void setLEDs(CRGB* leds, const RGB_t &color, uint8_t* indexes, int size);
+  void setLEDs(CRGB* leds, const RGB_t &color, const uint8_t* indexes, int size);
   void setMasterBrightness(int value);
   void process();
 
@@ -125,11 +128,12 @@ protected:
   // Virtual functions to be overridden by children
   virtual void _animateCustom(){};
   virtual void _setSFTurbo(){};
+  virtual void _setRedVsBlue(){};
   
   void _animateFadeRGB();
   void _animateRainbow();
   void _animateColorShift();
-  void _setLED(CRGB* leds, const RGB_t &color, int index);
+  void setLED(CRGB* leds, const RGB_t &color, int index);
   void _processZoneSwitchAnimation();
 };
 
@@ -153,6 +157,7 @@ class Options : public Zone {
 
     // override functions
     void _setSFTurbo();
+    void _setRedVsBlue();
 };
 
 class Player1 : public Zone {
@@ -174,6 +179,7 @@ private:
 
   // override functions
   void _setSFTurbo();
+  void _setRedVsBlue();
 };
 
 class Player2 : public Zone {
@@ -195,6 +201,7 @@ private:
 
   // override functions
   void _setSFTurbo();
+  void _setRedVsBlue();
 };
 
 class Accent : public Zone {
@@ -213,6 +220,7 @@ private:
 
   // override functions
   // void _setSFTurbo();
+  // void _setRedVsBlue();
 };
 
 class Full : public Zone {

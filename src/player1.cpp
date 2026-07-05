@@ -38,7 +38,7 @@ void Player1::_setSFTurbo() {
 
   // joystick ring and balltop
   for (int i = 0; i < JOYSTICK_LED_COUNT; i++) {
-    _setLED(_joystickLogicalLeds, RGB_BLUE, i);
+    setLED(_joystickLogicalLeds, RGB_BLUE, i);
   }
 
   // buttons
@@ -63,6 +63,16 @@ void Player1::_setSFTurbo() {
   Zone::setLEDs(_buttonLeds, RGB_GREEN, heavy, ACTION_BTN_LED_COUNT * 2);
   Zone::setLEDs(_buttonLeds, RGB_YELLOW, special, ACTION_BTN_LED_COUNT * 2);
 
+  showLEDs();
+}
+
+/**
+* Applies the Red_vs_Blue custom lighting pattern to the zone
+*/
+void Player1::_setRedVsBlue() {
+  Serial.println("Setting Player 1 Red_vs_Blue");
+
+  Zone::setAllZone(RGB_BLUE);
   showLEDs();
 }
 
