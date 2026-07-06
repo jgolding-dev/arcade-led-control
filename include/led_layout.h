@@ -6,13 +6,13 @@
 // -------- LED Chip Types -------- //
 #define ACCENT_LED_TYPE                   WS2811
 #define ACTION_BUTTONS_LED_TYPE           WS2812B
-#define JOYSTICK_LED_TYPE                 WS2812B
+#define JOY_LED_TYPE                 WS2812B
 #define OPTIONS_BUTTONS_LED_TYPE          WS2812B
 
 // -------- LED Color Order -------- //
 #define ACCENT_LED_COLOR_ORDER            GRB
 #define ACTION_BUTTONS_LED_COLOR_ORDER    GRB
-#define JOYSTICK_LED_COLOR_ORDER          GRB
+#define JOY_LED_COLOR_ORDER          GRB
 #define OPTIONS_BUTTONS_LED_COLOR_ORDER   GRB
 
 // -------- LED Counts Per Button -------- //
@@ -27,9 +27,9 @@ const uint8_t OPTIONS_BTN_COUNT             = 6;
 // -------- Total LED Counts (Per Zone) -------- //
 const uint8_t ACTION_LED_ZONE_COUNT         = ACTION_BTN_LED_COUNT * ACTION_BTN_COUNT;
 const uint8_t OPTIONS_LED_ZONE_COUNT        = OPTIONS_BTN_LED_COUNT * OPTIONS_BTN_COUNT;
-const uint8_t JOYSTICK_RING_LED_COUNT       = (JOY_DIRECTION_LED_COUNT * 4); // A joystick has 4 directions
-const uint8_t JOYSTICK_BALLTOP_LED_COUNT    = 1;
-const uint8_t JOYSTICK_LED_ZONE_COUNT       = JOYSTICK_RING_LED_COUNT + JOYSTICK_BALLTOP_LED_COUNT;
+const uint8_t JOY_RING_LED_COUNT       = (JOY_DIRECTION_LED_COUNT * 4); // A joystick has 4 directions
+const uint8_t JOY_BALLTOP_LED_COUNT    = 1;
+const uint8_t JOY_LED_ZONE_COUNT       = JOY_RING_LED_COUNT + JOY_BALLTOP_LED_COUNT;
 const uint8_t ACCENT_LED_ZONE_COUNT         = 100;      // We actually have 300 backlight LEDs, but they're
 //                                                         split into 1 IC per 3 LEDs. So, as far as our
 //                                                         program is concerned, we have 100.

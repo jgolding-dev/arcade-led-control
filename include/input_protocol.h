@@ -11,8 +11,8 @@
 #define MAX_PAYLOAD 16  // safety cap
 #define INPUT_PACKET_SIZE 8
 
-const uint8_t MAX_JOYSTICK_VALUE = 0x0F; // Assuming all 4 directions are pressed simultaneously
-const uint8_t MAX_JOYSTICK_MODE_VALUE = 0x02;
+const uint8_t MAX_JOY_VALUE = 0x0F; // Assuming all 4 directions are pressed simultaneously
+const uint8_t MAX_JOY_MODE_VALUE = 0x02;
 
 // -----------------------------
 // Packet struct

@@ -174,8 +174,8 @@ public:
 private:
   // Array to hold LED color data
   CRGB _buttonLeds[ACTION_LED_ZONE_COUNT];
-  CRGB _joystickLogicalLeds[JOYSTICK_LED_ZONE_COUNT];
-  CRGB _joystickOutputLeds[JOYSTICK_LED_ZONE_COUNT];
+  CRGB _joystickLogicalLeds[JOY_LED_ZONE_COUNT];
+  CRGB _joystickOutputLeds[JOY_LED_ZONE_COUNT];
 
   // override functions
   void _setSFTurbo();
@@ -196,8 +196,8 @@ public:
 private:
   // Array to hold LED color data
   CRGB _buttonLeds[ACTION_LED_ZONE_COUNT];
-  CRGB _joystickLogicalLeds[JOYSTICK_LED_ZONE_COUNT];
-  CRGB _joystickOutputLeds[JOYSTICK_LED_ZONE_COUNT];
+  CRGB _joystickLogicalLeds[JOY_LED_ZONE_COUNT];
+  CRGB _joystickOutputLeds[JOY_LED_ZONE_COUNT];
 
   // override functions
   void _setSFTurbo();

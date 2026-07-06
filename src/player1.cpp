@@ -7,7 +7,7 @@ void Player1::setup() {
   animationTypes = ANIMATION_TYPES;
   currentAnimation = CUSTOM;
   FastLED.addLeds<ACTION_BUTTONS_LED_TYPE, PLAYER1_BUTTONS_DATA_PIN, ACTION_BUTTONS_LED_COLOR_ORDER>(_buttonLeds, ACTION_LED_ZONE_COUNT);
-  FastLED.addLeds<JOYSTICK_LED_TYPE, PLAYER1_JOYSTICK_DATA_PIN, JOYSTICK_LED_COLOR_ORDER>(_joystickOutputLeds, JOYSTICK_LED_ZONE_COUNT);
+  FastLED.addLeds<JOY_LED_TYPE, PLAYER1_JOY_DATA_PIN, JOY_LED_COLOR_ORDER>(_joystickOutputLeds, JOY_LED_ZONE_COUNT);
 
   FastLED.setBrightness(_currentBrightness);
 }
@@ -22,7 +22,7 @@ void Player1::setAllZone(uint8_t rValue, uint8_t gValue, uint8_t bValue) {
   for (int i = 0; i < ACTION_LED_ZONE_COUNT; i++) {
     _buttonLeds[i].setRGB(rValue, gValue, bValue);
   }
-  for (int i = 0; i < JOYSTICK_LED_ZONE_COUNT; i++) {
+  for (int i = 0; i < JOY_LED_ZONE_COUNT; i++) {
     _joystickLogicalLeds[i].setRGB(rValue, gValue, bValue);
   }
   showLEDs();
@@ -37,7 +37,7 @@ void Player1::_setSFTurbo() {
   Zone::setAllZone(RGB_BLACK);
 
   // joystick ring and balltop
-  for (int i = 0; i < JOYSTICK_LED_ZONE_COUNT; i++) {
+  for (int i = 0; i < JOY_LED_ZONE_COUNT; i++) {
     setLED(_joystickLogicalLeds, RGB_BLUE, i);
   }
 
@@ -81,7 +81,7 @@ void Player1::_setRedVsBlue() {
  * @param hue the hue value for the color to fill the zone with
  */
 void Player1::fillSolid(uint8_t hue) {
-  fill_solid(_joystickLogicalLeds, JOYSTICK_LED_ZONE_COUNT, CHSV(hue, 255, 255));
+  fill_solid(_joystickLogicalLeds, JOY_LED_ZONE_COUNT, CHSV(hue, 255, 255));
   fill_solid(_buttonLeds, ACTION_LED_ZONE_COUNT, CHSV(hue, 255, 255));
 }
 
@@ -91,7 +91,7 @@ void Player1::fillSolid(uint8_t hue) {
  */
 void Player1::fillRainbow(uint8_t gHueValue) {
   // The '7' at the end defines the color difference between adjacent LEDs
-  fill_rainbow(_joystickLogicalLeds, JOYSTICK_LED_ZONE_COUNT, gHueValue, 7);
+  fill_rainbow(_joystickLogicalLeds, JOY_LED_ZONE_COUNT, gHueValue, 7);
   fill_rainbow(_buttonLeds, ACTION_LED_ZONE_COUNT, gHueValue, 7);
 }
 
@@ -104,7 +104,7 @@ void Player1::showLEDs() {
 
   // The balltop LED uses R,G,B order, unlike the rest of the LEDs in the array, which use G,R,B.
   // Correct for this by swapping R/B before sending the LED state to the controller
-  for (int i = 0; i < JOYSTICK_BALLTOP_LED_COUNT; i++) {
+  for (int i = 0; i < JOY_BALLTOP_LED_COUNT; i++) {
     uint8_t balltopIndex = JOY_BALLTOP_LEDs[i];
     _joystickOutputLeds[balltopIndex] = CRGB(
       _joystickLogicalLeds[balltopIndex].g,

@@ -123,7 +123,7 @@ bool InputParser::validate(const InputPacket &packet) {
     if (calc != packet.checksum)
         return false; // checksum mismatch
 
-    if (packet.joystick > MAX_JOYSTICK_VALUE || packet.joystick_mode > MAX_JOYSTICK_MODE_VALUE)
+    if (packet.joystick > MAX_JOY_VALUE || packet.joystick_mode > MAX_JOY_MODE_VALUE)
         return false; // invalid joystick values
     
     // if (invalidDirectionCombination(packet.joystick))

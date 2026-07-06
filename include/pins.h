@@ -9,14 +9,14 @@
 #define OPTIONS_BUTTONS_DATA_PIN          19
 
 #define PLAYER1_BUTTONS_DATA_PIN          16
-#define PLAYER1_JOYSTICK_DATA_PIN         17
+#define PLAYER1_JOY_DATA_PIN         17
 
 #define P1_LS_MODE_PIN                    20
 #define P1_DP_MODE_PIN                    22
 #define P1_RS_MODE_PIN                    26
 
 #define PLAYER2_BUTTONS_DATA_PIN          28
-#define PLAYER2_JOYSTICK_DATA_PIN         27     
+#define PLAYER2_JOY_DATA_PIN         27     
 
 #define REC_BUTTON_LED_PIN                6
 #define P2_LS_MODE_PIN                    7
@@ -49,11 +49,11 @@ public:
 
     // Player 1
     pinMode(PLAYER1_BUTTONS_DATA_PIN, OUTPUT);
-    pinMode(PLAYER1_JOYSTICK_DATA_PIN, OUTPUT);
+    pinMode(PLAYER1_JOY_DATA_PIN, OUTPUT);
 
     // Player 2
     pinMode(PLAYER2_BUTTONS_DATA_PIN, OUTPUT);
-    pinMode(PLAYER2_JOYSTICK_DATA_PIN, OUTPUT);
+    pinMode(PLAYER2_JOY_DATA_PIN, OUTPUT);
 
     // Joystick Modes
     pinMode(P1_LS_MODE_PIN, OUTPUT);
