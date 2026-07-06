@@ -23,9 +23,9 @@ AnimationController::AnimationController(InputPacket& p1Packet, InputPacket& p2P
     _player2Input(p2Packet),
     _optionsInput(p1Packet, p2Packet),
     _idleTimeoutMs(idleTimeoutMs),
-    _player1(BRIGHTNESS_MAX, &_player1Input),
-    _player2(BRIGHTNESS_MAX, &_player2Input),
-    _options(BRIGHTNESS_MAX, &_optionsInput),
+    _player1(BRIGHTNESS_MAX, _player1Input),
+    _player2(BRIGHTNESS_MAX, _player2Input),
+    _options(BRIGHTNESS_MAX, _optionsInput),
     _accent(BRIGHTNESS_MAX),
     _full(BRIGHTNESS_MAX, &_player1, &_player2, &_options, &_accent) {
   

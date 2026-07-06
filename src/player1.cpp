@@ -1,7 +1,8 @@
 #include <zone.h>
 
-Player1::Player1(int brightness)
-  : Zone(brightness) {}
+Player1::Player1(int brightness, PlayerInputProcessor& inputProcessor)
+  : Zone(brightness),
+    _inputProcessor(&inputProcessor) {}
 
 void Player1::setup() {
   animationTypes = ANIMATION_TYPES;

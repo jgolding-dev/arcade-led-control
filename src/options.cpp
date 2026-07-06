@@ -1,7 +1,8 @@
 #include <zone.h>
 
-Options::Options(int brightness)
-  : Zone(brightness) {}
+Options::Options(int brightness, OptionsInputProcessor& inputProcessor)
+  : Zone(brightness),
+    _inputProcessor(&inputProcessor) {}
 
 void Options::setup() {
   animationTypes = ANIMATION_TYPES;
