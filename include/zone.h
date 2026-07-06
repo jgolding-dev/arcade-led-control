@@ -153,7 +153,7 @@ class Options : public Zone {
     void fillSolid(uint8_t hue);
   private:
     // Array to hold LED color data
-    CRGB _leds[OPTIONS_BUTTONS_LED_COUNT];
+    CRGB _leds[OPTIONS_LED_ZONE_COUNT];
 
     // override functions
     void _setSFTurbo();
@@ -173,9 +173,9 @@ public:
   void showLEDs();
 private:
   // Array to hold LED color data
-  CRGB _buttonLeds[ACTION_BUTTONS_LED_COUNT];
-  CRGB _joystickLogicalLeds[JOYSTICK_LED_COUNT];
-  CRGB _joystickOutputLeds[JOYSTICK_LED_COUNT];
+  CRGB _buttonLeds[ACTION_LED_ZONE_COUNT];
+  CRGB _joystickLogicalLeds[JOYSTICK_LED_ZONE_COUNT];
+  CRGB _joystickOutputLeds[JOYSTICK_LED_ZONE_COUNT];
 
   // override functions
   void _setSFTurbo();
@@ -195,9 +195,9 @@ public:
   void showLEDs();
 private:
   // Array to hold LED color data
-  CRGB _buttonLeds[ACTION_BUTTONS_LED_COUNT];
-  CRGB _joystickLogicalLeds[JOYSTICK_LED_COUNT];
-  CRGB _joystickOutputLeds[JOYSTICK_LED_COUNT];
+  CRGB _buttonLeds[ACTION_LED_ZONE_COUNT];
+  CRGB _joystickLogicalLeds[JOYSTICK_LED_ZONE_COUNT];
+  CRGB _joystickOutputLeds[JOYSTICK_LED_ZONE_COUNT];
 
   // override functions
   void _setSFTurbo();
@@ -216,7 +216,7 @@ public:
   void fillSolid(uint8_t hue);
 private:
   // Array to hold LED color data
-  CRGB _leds[ACCENT_LED_COUNT];
+  CRGB _leds[ACCENT_LED_ZONE_COUNT];
 
   // override functions
   // void _setSFTurbo();

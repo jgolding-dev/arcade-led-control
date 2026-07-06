@@ -6,7 +6,7 @@ Options::Options(int brightness)
 void Options::setup() {
   animationTypes = ANIMATION_TYPES;
   currentAnimation = CUSTOM;
-  FastLED.addLeds<OPTIONS_BUTTONS_LED_TYPE, OPTIONS_BUTTONS_DATA_PIN, OPTIONS_BUTTONS_LED_COLOR_ORDER>(_leds, OPTIONS_BUTTONS_LED_COUNT);
+  FastLED.addLeds<OPTIONS_BUTTONS_LED_TYPE, OPTIONS_BUTTONS_DATA_PIN, OPTIONS_BUTTONS_LED_COLOR_ORDER>(_leds, OPTIONS_LED_ZONE_COUNT);
   FastLED.setBrightness(_currentBrightness);
 }
 
@@ -36,7 +36,7 @@ void Options::wake() {
 */
 void Options::setAllZone(uint8_t rValue, uint8_t gValue, uint8_t bValue) {
   Serial.println("Setting Options LEDs");
-  for (int i = 0; i < OPTIONS_BUTTONS_LED_COUNT; i++) {
+  for (int i = 0; i < OPTIONS_LED_ZONE_COUNT; i++) {
     _leds[i].setRGB(rValue, gValue, bValue);
   }
   showLEDs();
@@ -47,14 +47,14 @@ void Options::setAllZone(uint8_t rValue, uint8_t gValue, uint8_t bValue) {
 */
 void Options::_setSFTurbo() {
   int i = 0;
-  while (i < OPTIONS_BUTTONS_LED_COUNT) {
+  while (i < OPTIONS_LED_ZONE_COUNT) {
     if (i == HOME_LEDs[0]) {
-      Zone::setLEDs(_leds, RGB_GREEN, HOME_LEDs, SINGLE_OPTIONS_BTN_LED_COUNT);
-      i += SINGLE_OPTIONS_BTN_LED_COUNT;
+      Zone::setLEDs(_leds, RGB_GREEN, HOME_LEDs, OPTIONS_BTN_LED_COUNT);
+      i += OPTIONS_BTN_LED_COUNT;
     }
     else if (i == EXTRA1_LEDs[0]) {
-      Zone::setLEDs(_leds, RGB_BLUE, EXTRA1_LEDs, SINGLE_OPTIONS_BTN_LED_COUNT);
-      i += SINGLE_OPTIONS_BTN_LED_COUNT;
+      Zone::setLEDs(_leds, RGB_BLUE, EXTRA1_LEDs, OPTIONS_BTN_LED_COUNT);
+      i += OPTIONS_BTN_LED_COUNT;
     }
     else {
       Zone::setLED(_leds, RGB_WHITE, i);
@@ -69,14 +69,14 @@ void Options::_setSFTurbo() {
 */
 void Options::_setRedVsBlue() {
   int i = 0;
-  while (i < OPTIONS_BUTTONS_LED_COUNT) {
+  while (i < OPTIONS_LED_ZONE_COUNT) {
     if (i == HOME_LEDs[0]) {
-      Zone::setLEDs(_leds, RGB_GREEN, HOME_LEDs, SINGLE_OPTIONS_BTN_LED_COUNT);
-      i += SINGLE_OPTIONS_BTN_LED_COUNT;
+      Zone::setLEDs(_leds, RGB_GREEN, HOME_LEDs, OPTIONS_BTN_LED_COUNT);
+      i += OPTIONS_BTN_LED_COUNT;
     }
     else if (i == EXTRA1_LEDs[0]) {
-      Zone::setLEDs(_leds, RGB_BLUE, EXTRA1_LEDs, SINGLE_OPTIONS_BTN_LED_COUNT);
-      i += SINGLE_OPTIONS_BTN_LED_COUNT;
+      Zone::setLEDs(_leds, RGB_BLUE, EXTRA1_LEDs, OPTIONS_BTN_LED_COUNT);
+      i += OPTIONS_BTN_LED_COUNT;
     }
     else {
       Zone::setLED(_leds, RGB_WHITE, i);
@@ -91,7 +91,7 @@ void Options::_setRedVsBlue() {
  * @param hue the hue value for the color to fill the zone with
  */
 void Options::fillSolid(uint8_t hue) {
-  fill_solid(_leds, OPTIONS_BUTTONS_LED_COUNT, CHSV(hue, 255, 255));
+  fill_solid(_leds, OPTIONS_LED_ZONE_COUNT, CHSV(hue, 255, 255));
 }
 
 /**
@@ -100,5 +100,5 @@ void Options::fillSolid(uint8_t hue) {
  */
 void Options::fillRainbow(uint8_t gHueValue) {
   // The '7' at the end defines the color difference between adjacent LEDs
-  fill_rainbow(_leds, OPTIONS_BUTTONS_LED_COUNT, gHueValue, 7);
+  fill_rainbow(_leds, OPTIONS_LED_ZONE_COUNT, gHueValue, 7);
 }

@@ -6,7 +6,7 @@ Accent::Accent(int brightness)
 void Accent::setup() {
   animationTypes = ANIMATION_TYPES;
   currentAnimation = CUSTOM;
-  FastLED.addLeds<ACCENT_LED_TYPE, ACCENT_DATA_PIN, ACCENT_LED_COLOR_ORDER>(_leds, ACCENT_LED_COUNT);
+  FastLED.addLeds<ACCENT_LED_TYPE, ACCENT_DATA_PIN, ACCENT_LED_COLOR_ORDER>(_leds, ACCENT_LED_ZONE_COUNT);
   FastLED.setBrightness(_currentBrightness);
 }
 
@@ -18,7 +18,7 @@ void Accent::setup() {
 */
 void Accent::setAllZone(uint8_t rValue, uint8_t gValue, uint8_t bValue) {
   Serial.println("Setting Accent LEDs");
-  for (int i = 0; i < ACCENT_LED_COUNT; i++) {
+  for (int i = 0; i < ACCENT_LED_ZONE_COUNT; i++) {
     _leds[i].r = rValue;
     _leds[i].g = gValue;
     _leds[i].b = bValue;
@@ -31,7 +31,7 @@ void Accent::setAllZone(uint8_t rValue, uint8_t gValue, uint8_t bValue) {
  * @param hue the hue value for the color to fill the zone with
  */
 void Accent::fillSolid(uint8_t hue) {
-  fill_solid(_leds, ACCENT_LED_COUNT, CHSV(hue, 255, 255));
+  fill_solid(_leds, ACCENT_LED_ZONE_COUNT, CHSV(hue, 255, 255));
 }
 
 /**
@@ -40,5 +40,5 @@ void Accent::fillSolid(uint8_t hue) {
  */
 void Accent::fillRainbow(uint8_t gHueValue) {
   // The '7' at the end defines the color difference between adjacent LEDs
-  fill_rainbow(_leds, ACCENT_LED_COUNT, gHueValue, 7);
+  fill_rainbow(_leds, ACCENT_LED_ZONE_COUNT, gHueValue, 7);
 }
