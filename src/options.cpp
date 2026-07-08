@@ -68,22 +68,17 @@ void Options::_setSFTurbo() {
 * Applies the Red_vs_Blue custom lighting pattern to the zone
 */
 void Options::_setRedVsBlue() {
-  int i = 0;
-  while (i < OPTIONS_LED_ZONE_COUNT) {
-    if (i == HOME_LEDs[0]) {
-      Zone::setLEDs(_leds, RGB_GREEN, HOME_LEDs, OPTIONS_BTN_LED_COUNT);
-      i += OPTIONS_BTN_LED_COUNT;
-    }
-    else if (i == EXTRA1_LEDs[0]) {
-      Zone::setLEDs(_leds, RGB_BLUE, EXTRA1_LEDs, OPTIONS_BTN_LED_COUNT);
-      i += OPTIONS_BTN_LED_COUNT;
-    }
-    else {
-      Zone::setLED(_leds, RGB_WHITE, i);
-      i++;
-    }
-  }
-  showLEDs();
+  // Player 1
+  Zone::setLEDs(_leds, RGB_BLUE, P1_SELECT_LEDs, OPTIONS_BTN_LED_COUNT);
+  Zone::setLEDs(_leds, RGB_BLUE, P1_START_LEDs, OPTIONS_BTN_LED_COUNT);
+  
+  // Player 2
+  Zone::setLEDs(_leds, RGB_RED, P2_SELECT_LEDs, OPTIONS_BTN_LED_COUNT);
+  Zone::setLEDs(_leds, RGB_RED, P2_START_LEDs, OPTIONS_BTN_LED_COUNT);
+
+  // Guide
+  Zone::setLEDs(_leds, RGB_WHITE, HOME_LEDs, OPTIONS_BTN_LED_COUNT);
+  Zone::setLEDs(_leds, RGB_WHITE, EXTRA1_LEDs, OPTIONS_BTN_LED_COUNT);
 }
 
 /**
