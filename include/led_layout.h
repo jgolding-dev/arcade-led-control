@@ -35,14 +35,14 @@ const uint8_t ACCENT_LED_ZONE_COUNT         = 100;      // We actually have 300 
 //                                                         program is concerned, we have 100.
 
 // ----------------- Main Buttons ----------------- //
-const uint8_t BTN1_LEDs[] = {8, 9};
-const uint8_t BTN2_LEDs[] = {10, 11};
-const uint8_t BTN3_LEDs[] = {6, 7};
-const uint8_t BTN4_LEDs[] = {4, 5};
-const uint8_t L1_LEDs[] = {0, 1};
-const uint8_t R1_LEDs[] = {2, 3};
-const uint8_t L2_LEDs[] = {14, 15};
-const uint8_t R2_LEDs[] = {12, 13};
+const uint8_t BTN1_LEDs[] = {28, 29, 30, 31};
+const uint8_t BTN2_LEDs[] = {20, 21, 22, 23};
+const uint8_t BTN3_LEDs[] = {24, 25, 26, 27};
+const uint8_t BTN4_LEDs[] = {16, 17, 18, 19};
+const uint8_t L1_LEDs[] = {0, 1, 2, 3};
+const uint8_t R1_LEDs[] = {8, 9, 10, 11};
+const uint8_t L2_LEDs[] = {4, 5, 6, 7};
+const uint8_t R2_LEDs[] = {12, 13, 14, 15};
 
 // ----------------- Options Buttons ----------------- //
 const uint8_t P1_SELECT_LEDs[] = {2};
