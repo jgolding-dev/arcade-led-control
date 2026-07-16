@@ -79,6 +79,7 @@ void Options::_setRedVsBlue() {
   // Guide
   Zone::setLEDs(_leds, RGB_WHITE, HOME_LEDs, OPTIONS_BTN_LED_COUNT);
   Zone::setLEDs(_leds, RGB_WHITE, EXTRA1_LEDs, OPTIONS_BTN_LED_COUNT);
+  showLEDs();
 }
 
 /**
