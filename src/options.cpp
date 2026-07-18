@@ -107,7 +107,7 @@ void Options::animateReactive() {
   Zone::setAllZone(RGB_BLACK);
   for (uint8_t i = 0; i < OPTIONS_INPUT_COUNT; i++) {
     if (_inputProcessor->isButtonActive(i)) {
-      Zone::setLEDs(_leds, RGB_RED, OPTIONS_MAP[i].ledIndices, OPTIONS_BTN_LED_COUNT);
+      Zone::setLEDs(_leds, RGB_WHITE, OPTIONS_MAP[i].ledIndices, OPTIONS_BTN_LED_COUNT);
     }
   }
   showLEDs();
