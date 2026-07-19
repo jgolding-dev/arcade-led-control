@@ -42,6 +42,7 @@ bool RotaryVolumeController::update() {
     // Track rotations
     if (pos > _lastPosition) {
         userInteracted = true;
+        Serial.println("Volume Up");
         long delta = pos - _lastPosition;
         for (int i = 0; i < delta; i++) {
             // sendReport16 passes the 1-byte Report ID and 2-byte usage code 
@@ -51,6 +52,7 @@ bool RotaryVolumeController::update() {
         }
     } else if (_lastPosition > pos) {
         userInteracted = true;
+        Serial.println("Volume Down");
         long delta = _lastPosition - pos;
         for (int i = 0; i < delta; i++) {
             _usb_hid.sendReport16(1, HID_USAGE_CONSUMER_VOLUME_DECREMENT);
@@ -64,6 +66,7 @@ bool RotaryVolumeController::update() {
     bool currentButtonState = digitalRead(_swPin);
     if (currentButtonState == LOW && _lastButtonState == HIGH) {
         userInteracted = true;
+        Serial.println("Mute");
         _usb_hid.sendReport16(1, HID_USAGE_CONSUMER_MUTE);
         delay(5); // Window processing buffer
         _usb_hid.sendReport16(1, 0);

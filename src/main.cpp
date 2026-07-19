@@ -8,7 +8,7 @@
 
 #define BAUD_RATE 115200
 
-const bool DEBUG_MODE = true;
+const bool DEBUG_MODE = false;
 
 enum PlayerIndex : uint8_t {
   P1_INDEX    = 0,
