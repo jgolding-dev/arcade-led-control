@@ -19,7 +19,7 @@ void PlayerInputProcessor::updatePacket(InputPacket& packet) {
     _lastPacket = _currentPacket;
     _currentPacket = &packet;
 
-    _processInputs();
+    // _processInputs();
 }
 
 // void PlayerInputProcessor::_processInputs() {

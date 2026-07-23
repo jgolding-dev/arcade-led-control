@@ -32,15 +32,6 @@ class InputProcessor {
         // virtual functions to be overridden
         virtual void updatePacket(InputPacket& packet){};
         virtual void updatePackets(InputPacket& packet1, InputPacket& packet2){};
-        // virtual void setup(){};
-
-    protected:
-        // virtual functions to be overridden
-        virtual void _processInputs(){};
-
-        // void _updatePressedState(OptionsInputState &input, uint16_t input16Bit);
-        // void _updatePressedState(ActionInputState &input, uint16_t input16Bit);
-        // void _updatePressedState(JoystickInputState &input, uint8_t inputByte);
 };
 
 class PlayerInputProcessor : public InputProcessor {
@@ -49,19 +40,10 @@ class PlayerInputProcessor : public InputProcessor {
         PlayerInputProcessor(InputPacket& packet);
 
         // Override functions
-        // void setup();
         void updatePacket(InputPacket& packet);
         bool isButtonActive(uint8_t buttonIndex);
         bool isJoystickActive(uint8_t joystickIndex);
     private:
-        // Override functions
-        void _processInputs();
-        
-        // ActionInputState _buttonInputs[ACTION_BUTTONS_LED_COUNT];
-        // JoystickInputState _joystickInputs[JOYSTICK_INPUT_COUNT];
-        // ActionInputState _lastButtonInputs[ACTION_BUTTONS_LED_COUNT];
-        // JoystickInputState _lastJoystickInputs[JOYSTICK_INPUT_COUNT];
-
         InputPacket* _currentPacket;
         InputPacket* _lastPacket;
 };
@@ -72,16 +54,9 @@ class OptionsInputProcessor : public InputProcessor {
         OptionsInputProcessor(InputPacket& p1Packet, InputPacket& p2Packet);
 
         // Override functions
-        // void setup();
         void updatePackets(InputPacket &p1Packet, InputPacket &p2Packet);
         bool isButtonActive(uint8_t buttonIndex);
     private:
-        // Override functions
-        void _processInputs();
-
-        // OptionsInputState _optionsInputs[OPTIONS_INPUT_COUNT];
-        // OptionsInputState _lastOptionsInputs[OPTIONS_INPUT_COUNT];
-
         InputPacket* _currentP1Packet;
         InputPacket* _currentP2Packet;
         InputPacket* _lastP1Packet;
