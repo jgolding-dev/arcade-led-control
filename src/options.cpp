@@ -104,10 +104,13 @@ void Options::fillRainbow(uint8_t gHueValue) {
  * Process the reactive animation for the zone
  */
 void Options::animateReactive() {
-  Zone::setAllZone(RGB_BLACK);
+  RGB_t baseColor = REACTIVE_COLOR_PAIRS[_reactiveModifierIndex].base;
+  RGB_t reactiveColor = REACTIVE_COLOR_PAIRS[_reactiveModifierIndex].reactive;
+
+  Zone::setAllZone(baseColor);
   for (uint8_t i = 0; i < OPTIONS_INPUT_COUNT; i++) {
     if (_inputProcessor->isButtonActive(i)) {
-      Zone::setLEDs(_leds, RGB_WHITE, OPTIONS_MAP[i].ledIndices, OPTIONS_BTN_LED_COUNT);
+      Zone::setLEDs(_leds, reactiveColor, OPTIONS_MAP[i].ledIndices, OPTIONS_BTN_LED_COUNT);
     }
   }
   showLEDs();

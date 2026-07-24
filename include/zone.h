@@ -36,6 +36,9 @@ const ANIMATION_TYPE ANIMATION_TYPES[] = {
   // OFF
 };
 
+// -------- Animation Type Modifiers -------- //
+
+// CUSTOM
 enum CustomType : uint8_t {
   RED_VS_BLUE = 0,
   SF_TURBO = 1
@@ -46,6 +49,7 @@ const CustomType CUSTOM_TYPES[] = {
   SF_TURBO
 };
 
+// FADE
 const unsigned long FADE_STEP_FAST = 15;
 const unsigned long FADE_STEP_NORMAL = 25;
 const unsigned long FADE_STEP_SLOW = 40;
@@ -56,7 +60,7 @@ const unsigned long FADE_STEP_MS[] = {
   FADE_STEP_SLOW
 };
 
-// These values are accumulators for the color shift animation. Higher values will result in faster color shifts.
+// COLOR_SHIFT
 const fl::accum88 COLOR_SHIFT_SPEED_FAST = 10.0;
 const fl::accum88 COLOR_SHIFT_SPEED_NORMAL = 20.0;
 const fl::accum88 COLOR_SHIFT_SPEED_SLOW = 30.0;
@@ -65,6 +69,24 @@ const fl::accum88 COLOR_SHIFT_SPEEDS[] = {
   COLOR_SHIFT_SPEED_FAST,
   COLOR_SHIFT_SPEED_NORMAL,
   COLOR_SHIFT_SPEED_SLOW
+};
+
+// REACTIVE
+typedef struct __attribute__ ((__packed__)) {
+    RGB_t base;
+    RGB_t reactive;
+} ReactiveColorPair;
+
+const ReactiveColorPair REACTIVE_COLOR_PAIRS[] = {
+  {RGB_BLACK, RGB_BLUE},
+  {RGB_BLACK, RGB_RED},
+  {RGB_BLACK, RGB_WHITE},
+  {RGB_WHITE, RGB_BLUE},
+  {RGB_WHITE, RGB_RED},
+  {RGB_BLUE, RGB_WHITE},
+  {RGB_RED, RGB_WHITE},
+  {RGB_BLUE_VIOLET, RGB_YELLOW},
+  {RGB_ORANGE, RGB_YELLOW}
 };
 
 const unsigned long ZONE_SWITCH_ANIMATION_STEP_MS = 350;
@@ -121,6 +143,7 @@ protected:
   int _zoneSwitchBlinkDir;
   int _colorShiftSpeedIndex;
   int _rainbowShiftSpeedIndex;
+  int _reactiveModifierIndex;
   uint8_t _gHue; // tracks starting hue for certain animations
   unsigned long _lastZoneSwitchAnimStepMs;
 

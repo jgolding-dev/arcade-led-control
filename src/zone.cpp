@@ -11,6 +11,7 @@ void Zone::setup() {
   _lastZoneSwitchAnimStepMs = 0;
   _colorShiftSpeedIndex = 1; // COLOR_SHIFT_SPEED_NORMAL
   _rainbowShiftSpeedIndex = 1; // COLOR_SHIFT_SPEED_NORMAL
+  _reactiveModifierIndex = 0;
   _customTypeIndex = 0;
   _staticColorIndex = 0;
   _blendType = LINEARBLEND;
@@ -162,6 +163,9 @@ void Zone::setAnimationModifier(int modifierIndex) {
     case RAINBOW:
       _rainbowShiftSpeedIndex = modifierIndex;
       break;
+    case REACTIVE:
+      _reactiveModifierIndex = modifierIndex;
+      break;
     default:
       // No modifier for the currently selected animation
       break;
@@ -191,6 +195,9 @@ void Zone::cycleAnimationModifier() {
       break;
     case RAINBOW:
       _rainbowShiftSpeedIndex = (_rainbowShiftSpeedIndex + 1) % (sizeof(COLOR_SHIFT_SPEEDS) / sizeof(COLOR_SHIFT_SPEEDS[0]));
+      break;
+    case REACTIVE:
+      _reactiveModifierIndex = (_reactiveModifierIndex + 1) % (sizeof(REACTIVE_COLOR_PAIRS) / sizeof(REACTIVE_COLOR_PAIRS[0]));
       break;
     case FADE:
       _fadeStepIndex = (_fadeStepIndex + 1) % (sizeof(FADE_STEP_MS) / sizeof(FADE_STEP_MS[0]));

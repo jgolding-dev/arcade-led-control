@@ -4,7 +4,6 @@
 #include <input_protocol.h>
 #include <led_layout.h>
 
-
 typedef struct __attribute__ ((__packed__)) {
     uint16_t buttonBit;
     const uint8_t* ledIndices;
