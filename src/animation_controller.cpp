@@ -56,6 +56,17 @@ void AnimationController::setup() {
 }
 
 /**
+ * Updates the input packets for the player and options input processors
+ * @param p1Packet The input packet for player 1
+ * @param p2Packet The input packet for player 2
+ */
+void AnimationController::updatePackets(InputPacket &p1Packet, InputPacket &p2Packet) {
+  _player1Input.updatePacket(p1Packet);
+  _player2Input.updatePacket(p2Packet);
+  _optionsInput.updatePackets(p1Packet, p2Packet);
+}
+
+/**
 * Sets the brightness value of single LED pin to the specified percentage value
 * @param ledPin The pin number of the LED to set the brightness of
 * @param percent The brightness percentage value (0-100)

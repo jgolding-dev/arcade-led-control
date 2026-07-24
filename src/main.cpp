@@ -101,6 +101,7 @@ void loop() {
   handleActivity();
   handleJoyIndicators();
   animController.handleIdleState(systemActive);
+  animController.updatePackets(p1Packet, p2Packet);
   handleMacroEvent(p1Active, p1Packet);
   animController.processAnimations();
 

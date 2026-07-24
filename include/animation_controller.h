@@ -27,6 +27,7 @@ class AnimationController {
         void setIdle(bool isIdle);
         void setLEDPinBrightness(int ledPin, int percent);
         void resetIndicators();
+        void updatePackets(InputPacket &p1Packet, InputPacket &p2Packet);
     private:
         void _reset();
         void _resumeSubZones();
