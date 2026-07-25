@@ -103,56 +103,97 @@ void Player1::animateReactive() {
   RGB_t baseColor = REACTIVE_COLOR_PAIRS[_reactiveModifierIndex].base;
   RGB_t reactiveColor = REACTIVE_COLOR_PAIRS[_reactiveModifierIndex].reactive;
 
-  Zone::setAllZone(baseColor);
   for (uint8_t i = 0; i < BUTTON_INPUT_COUNT; i++) {
     if (_inputProcessor->isButtonActive(i)) {
       Zone::setLEDs(_buttonLeds, reactiveColor, BUTTON_MAP[i].ledIndices, ACTION_BTN_LED_COUNT);
     }
+    else {
+      Zone::setLEDs(_buttonLeds, baseColor, BUTTON_MAP[i].ledIndices, ACTION_BTN_LED_COUNT);
+    }
   }
 
-  for (uint8_t i = 0; i < JOYSTICK_INPUT_COUNT; i++) {
-    if (_inputProcessor->isJoystickActive(i)) {
-      uint8_t nextDirection = (i + 1) % JOYSTICK_INPUT_COUNT;
-      uint8_t prevDirection = (i - 1) % JOYSTICK_INPUT_COUNT;
-      if (_inputProcessor->isJoystickActive(nextDirection)) {
-        switch(i) {
-          case JOY_UP_GROUP_INDEX:
-            Zone::setLEDs(_joystickLogicalLeds, reactiveColor, JOY_UP_RIGHT_LEDs, JOY_DIRECTION_LED_COUNT);
-            break;
-          case JOY_RIGHT_GROUP_INDEX:
-            Zone::setLEDs(_joystickLogicalLeds, reactiveColor, JOY_DOWN_RIGHT_LEDs, JOY_DIRECTION_LED_COUNT);
-            break;
-          case JOY_DOWN_GROUP_INDEX:
-            Zone::setLEDs(_joystickLogicalLeds, reactiveColor, JOY_DOWN_LEFT_LEDs, JOY_DIRECTION_LED_COUNT);
-            break;
-          case JOY_LEFT_GROUP_INDEX:
-            Zone::setLEDs(_joystickLogicalLeds, reactiveColor, JOY_UP_LEFT_LEDs, JOY_DIRECTION_LED_COUNT);
-            break;
-        }
-        break;
-      }
-      else if (_inputProcessor->isJoystickActive(prevDirection)) {
-        switch (i) {
-          case JOY_UP_GROUP_INDEX:
-            Zone::setLEDs(_joystickLogicalLeds, reactiveColor, JOY_UP_LEFT_LEDs, JOY_DIRECTION_LED_COUNT);
-            break;
-          case JOY_RIGHT_GROUP_INDEX:
-            Zone::setLEDs(_joystickLogicalLeds, reactiveColor, JOY_UP_RIGHT_LEDs, JOY_DIRECTION_LED_COUNT);
-            break;
-          case JOY_DOWN_GROUP_INDEX:
-            Zone::setLEDs(_joystickLogicalLeds, reactiveColor, JOY_DOWN_RIGHT_LEDs, JOY_DIRECTION_LED_COUNT);
-            break;
-          case JOY_LEFT_GROUP_INDEX:
-            Zone::setLEDs(_joystickLogicalLeds, reactiveColor, JOY_DOWN_LEFT_LEDs, JOY_DIRECTION_LED_COUNT);
-            break;
-        }
-        break;
-      }
-      else {
-        Zone::setLEDs(_joystickLogicalLeds, reactiveColor, JOYSTICK_MAP[i].ledIndices, JOY_DIRECTION_LED_COUNT);
-        break;
+  // Find the active directional input, if any
+  uint8_t joyIndex = 0;
+  bool inputFound = false;
+  while (!inputFound && joyIndex < JOYSTICK_INPUT_COUNT) {
+    if (_inputProcessor->isJoystickActive(joyIndex)) {
+      inputFound = true;
+    }
+    else {
+      joyIndex++;
+    }
+  }
+
+  if (inputFound) {
+    uint8_t nextDirection = (joyIndex + 1) % JOYSTICK_INPUT_COUNT;
+    uint8_t prevDirection = (joyIndex - 1) % JOYSTICK_INPUT_COUNT;
+    if (_inputProcessor->isJoystickActive(nextDirection)) { // diagonal is pressed (Ex: Up+Right)
+      switch(joyIndex) {
+        case JOY_UP_GROUP_INDEX:
+          Zone::setLEDs(_joystickLogicalLeds, reactiveColor, JOY_UP_RIGHT_LEDs, JOY_DIRECTION_LED_COUNT);
+          Zone::setLEDs(_joystickLogicalLeds, baseColor, JOY_DOWN_RIGHT_LEDs, JOY_DIRECTION_LED_COUNT);
+          Zone::setLEDs(_joystickLogicalLeds, baseColor, JOY_DOWN_LEFT_LEDs, JOY_DIRECTION_LED_COUNT);
+          Zone::setLEDs(_joystickLogicalLeds, baseColor, JOY_UP_LEFT_LEDs, JOY_DIRECTION_LED_COUNT);
+          break;
+        case JOY_RIGHT_GROUP_INDEX:
+          Zone::setLEDs(_joystickLogicalLeds, reactiveColor, JOY_DOWN_RIGHT_LEDs, JOY_DIRECTION_LED_COUNT);
+          Zone::setLEDs(_joystickLogicalLeds, baseColor, JOY_DOWN_LEFT_LEDs, JOY_DIRECTION_LED_COUNT);
+          Zone::setLEDs(_joystickLogicalLeds, baseColor, JOY_UP_LEFT_LEDs, JOY_DIRECTION_LED_COUNT);
+          Zone::setLEDs(_joystickLogicalLeds, baseColor, JOY_UP_RIGHT_LEDs, JOY_DIRECTION_LED_COUNT);
+          break;
+        case JOY_DOWN_GROUP_INDEX:
+          Zone::setLEDs(_joystickLogicalLeds, reactiveColor, JOY_DOWN_LEFT_LEDs, JOY_DIRECTION_LED_COUNT);
+          Zone::setLEDs(_joystickLogicalLeds, baseColor, JOY_UP_LEFT_LEDs, JOY_DIRECTION_LED_COUNT);
+          Zone::setLEDs(_joystickLogicalLeds, baseColor, JOY_UP_RIGHT_LEDs, JOY_DIRECTION_LED_COUNT);
+          Zone::setLEDs(_joystickLogicalLeds, baseColor, JOY_DOWN_RIGHT_LEDs, JOY_DIRECTION_LED_COUNT);
+          break;
+        case JOY_LEFT_GROUP_INDEX:
+          Zone::setLEDs(_joystickLogicalLeds, reactiveColor, JOY_UP_LEFT_LEDs, JOY_DIRECTION_LED_COUNT);
+          Zone::setLEDs(_joystickLogicalLeds, baseColor, JOY_UP_RIGHT_LEDs, JOY_DIRECTION_LED_COUNT);
+          Zone::setLEDs(_joystickLogicalLeds, baseColor, JOY_DOWN_RIGHT_LEDs, JOY_DIRECTION_LED_COUNT);
+          Zone::setLEDs(_joystickLogicalLeds, baseColor, JOY_DOWN_LEFT_LEDs, JOY_DIRECTION_LED_COUNT);
+          break;
       }
     }
+    else if (_inputProcessor->isJoystickActive(prevDirection)) {// diagonal is pressed (Ex: Up+Left)
+      switch (joyIndex) {
+        case JOY_UP_GROUP_INDEX:
+          Zone::setLEDs(_joystickLogicalLeds, reactiveColor, JOY_UP_LEFT_LEDs, JOY_DIRECTION_LED_COUNT);
+          Zone::setLEDs(_joystickLogicalLeds, baseColor, JOY_DOWN_LEFT_LEDs, JOY_DIRECTION_LED_COUNT);
+          Zone::setLEDs(_joystickLogicalLeds, baseColor, JOY_DOWN_RIGHT_LEDs, JOY_DIRECTION_LED_COUNT);
+          Zone::setLEDs(_joystickLogicalLeds, baseColor, JOY_UP_RIGHT_LEDs, JOY_DIRECTION_LED_COUNT);
+          break;
+        case JOY_RIGHT_GROUP_INDEX:
+          Zone::setLEDs(_joystickLogicalLeds, reactiveColor, JOY_UP_RIGHT_LEDs, JOY_DIRECTION_LED_COUNT);
+          Zone::setLEDs(_joystickLogicalLeds, baseColor, JOY_DOWN_RIGHT_LEDs, JOY_DIRECTION_LED_COUNT);
+          Zone::setLEDs(_joystickLogicalLeds, baseColor, JOY_DOWN_LEFT_LEDs, JOY_DIRECTION_LED_COUNT);
+          Zone::setLEDs(_joystickLogicalLeds, baseColor, JOY_UP_LEFT_LEDs, JOY_DIRECTION_LED_COUNT);
+          break;
+        case JOY_DOWN_GROUP_INDEX:
+          Zone::setLEDs(_joystickLogicalLeds, reactiveColor, JOY_DOWN_RIGHT_LEDs, JOY_DIRECTION_LED_COUNT);
+          Zone::setLEDs(_joystickLogicalLeds, baseColor, JOY_DOWN_LEFT_LEDs, JOY_DIRECTION_LED_COUNT);
+          Zone::setLEDs(_joystickLogicalLeds, baseColor, JOY_UP_LEFT_LEDs, JOY_DIRECTION_LED_COUNT);
+          Zone::setLEDs(_joystickLogicalLeds, baseColor, JOY_UP_RIGHT_LEDs, JOY_DIRECTION_LED_COUNT);
+          break;
+        case JOY_LEFT_GROUP_INDEX:
+          Zone::setLEDs(_joystickLogicalLeds, reactiveColor, JOY_DOWN_LEFT_LEDs, JOY_DIRECTION_LED_COUNT);
+          Zone::setLEDs(_joystickLogicalLeds, baseColor, JOY_UP_LEFT_LEDs, JOY_DIRECTION_LED_COUNT);
+          Zone::setLEDs(_joystickLogicalLeds, baseColor, JOY_UP_RIGHT_LEDs, JOY_DIRECTION_LED_COUNT);
+          Zone::setLEDs(_joystickLogicalLeds, baseColor, JOY_DOWN_RIGHT_LEDs, JOY_DIRECTION_LED_COUNT);
+          break;
+      }
+    }
+    else {
+      Zone::setLEDs(_joystickLogicalLeds, reactiveColor, JOYSTICK_MAP[joyIndex].ledIndices, JOY_DIRECTION_LED_COUNT);
+      // Set remaining directional LEDs to base color
+      for (uint8_t i = 1; i < JOYSTICK_INPUT_COUNT; i++) {
+        uint8_t directionIndexToSet = (joyIndex + 1) % JOYSTICK_INPUT_COUNT;
+        Zone::setLEDs(_joystickLogicalLeds, reactiveColor, JOYSTICK_MAP[directionIndexToSet].ledIndices, JOY_DIRECTION_LED_COUNT);
+      }
+    }
+  }
+  else {
+    Zone::setLEDs(_joystickLogicalLeds, baseColor, JOY_LED_ZONE_COUNT);
   }
   showLEDs();
 }

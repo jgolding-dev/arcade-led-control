@@ -99,8 +99,8 @@ void loop() {
   volumeCtrl.tick();
 
   handleActivity();
-  handleJoyIndicators();
   animController.handleIdleState(systemActive);
+  handleJoyIndicators();
   animController.updatePackets(p1Packet, p2Packet);
   handleMacroEvent(p1Active, p1Packet);
   animController.processAnimations();
@@ -115,7 +115,7 @@ void handleActivity() {
   p1Active = readP1Input();
   p2Active = readP2Input();
 
-  // Run the non-blocking volume update check
+  // Process volume input, and update state
   bool volumeActive = volumeCtrl.update();
 
   // Controller connection state:
