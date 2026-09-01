@@ -490,11 +490,161 @@
         "pcb_color": "rgba(0, 0, 0, 0.000)",
         "priority": 2147483647,
         "schematic_color": "rgba(0, 0, 0, 0.000)",
-        "track_width": 0.2,
+        "track_width": 0.25,
         "tuning_profile": "",
         "via_diameter": 0.6,
-        "via_drill": 0.3,
+        "via_drill": 0.4,
         "wire_width": 6
+      },
+      {
+        "clearance": 0.2,
+        "diff_pair_gap": 0.25,
+        "diff_pair_width": 0.2,
+        "microvia_diameter": 0.3,
+        "microvia_drill": 0.1,
+        "name": "+12V",
+        "pcb_color": "rgb(255, 153, 0)",
+        "priority": 3,
+        "schematic_color": "rgba(0, 0, 0, 0.000)",
+        "track_width": 0.25,
+        "tuning_profile": "",
+        "via_diameter": 0.6,
+        "via_drill": 0.4
+      },
+      {
+        "clearance": 0.2,
+        "diff_pair_gap": 0.25,
+        "diff_pair_width": 0.2,
+        "microvia_diameter": 0.3,
+        "microvia_drill": 0.1,
+        "name": "+3.3V",
+        "pcb_color": "rgb(132, 0, 0)",
+        "priority": 0,
+        "schematic_color": "rgba(0, 0, 0, 0.000)",
+        "track_width": 0.25,
+        "tuning_profile": "",
+        "via_diameter": 0.6,
+        "via_drill": 0.4
+      },
+      {
+        "clearance": 0.2,
+        "diff_pair_gap": 0.25,
+        "diff_pair_width": 0.2,
+        "microvia_diameter": 0.3,
+        "microvia_drill": 0.1,
+        "name": "+5V",
+        "pcb_color": "rgb(255, 11, 19)",
+        "priority": 8,
+        "schematic_color": "rgba(0, 0, 0, 0.000)",
+        "track_width": 0.25,
+        "tuning_profile": "",
+        "via_diameter": 0.6,
+        "via_drill": 0.4
+      },
+      {
+        "clearance": 0.2,
+        "diff_pair_gap": 0.25,
+        "diff_pair_width": 0.2,
+        "microvia_diameter": 0.3,
+        "microvia_drill": 0.1,
+        "name": "Display_Signal",
+        "pcb_color": "rgb(255, 0, 255)",
+        "priority": 1,
+        "schematic_color": "rgba(0, 0, 0, 0.000)",
+        "track_width": 0.25,
+        "tuning_profile": "",
+        "via_diameter": 0.6,
+        "via_drill": 0.4
+      },
+      {
+        "clearance": 0.2,
+        "diff_pair_gap": 0.25,
+        "diff_pair_width": 0.2,
+        "microvia_diameter": 0.3,
+        "microvia_drill": 0.1,
+        "name": "GND",
+        "pcb_color": "rgb(132, 132, 132)",
+        "priority": 9,
+        "schematic_color": "rgba(0, 0, 0, 0.000)",
+        "track_width": 0.25,
+        "tuning_profile": "",
+        "via_diameter": 0.6,
+        "via_drill": 0.4
+      },
+      {
+        "clearance": 0.2,
+        "diff_pair_gap": 0.25,
+        "diff_pair_width": 0.2,
+        "microvia_diameter": 0.3,
+        "microvia_drill": 0.1,
+        "name": "Gamepad_Signal",
+        "pcb_color": "rgb(0, 255, 255)",
+        "priority": 7,
+        "schematic_color": "rgba(0, 0, 0, 0.000)",
+        "track_width": 0.25,
+        "tuning_profile": "",
+        "via_diameter": 0.6,
+        "via_drill": 0.4
+      },
+      {
+        "clearance": 0.2,
+        "diff_pair_gap": 0.25,
+        "diff_pair_width": 0.2,
+        "microvia_diameter": 0.3,
+        "microvia_drill": 0.1,
+        "name": "Jumper",
+        "pcb_color": "rgb(255, 255, 255)",
+        "priority": 6,
+        "schematic_color": "rgba(0, 0, 0, 0.000)",
+        "track_width": 0.25,
+        "tuning_profile": "",
+        "via_diameter": 0.6,
+        "via_drill": 0.4
+      },
+      {
+        "clearance": 0.2,
+        "diff_pair_gap": 0.25,
+        "diff_pair_width": 0.2,
+        "microvia_diameter": 0.3,
+        "microvia_drill": 0.1,
+        "name": "LED_Data",
+        "pcb_color": "rgb(0, 255, 0)",
+        "priority": 5,
+        "schematic_color": "rgba(0, 0, 0, 0.000)",
+        "track_width": 0.25,
+        "tuning_profile": "",
+        "via_diameter": 0.6,
+        "via_drill": 0.4
+      },
+      {
+        "clearance": 0.2,
+        "diff_pair_gap": 0.25,
+        "diff_pair_width": 0.2,
+        "microvia_diameter": 0.3,
+        "microvia_drill": 0.1,
+        "name": "Logic",
+        "pcb_color": "rgb(255, 0, 255)",
+        "priority": 4,
+        "schematic_color": "rgba(0, 0, 0, 0.000)",
+        "track_width": 0.25,
+        "tuning_profile": "",
+        "via_diameter": 0.6,
+        "via_drill": 0.4
+      },
+      {
+        "clearance": 0.2,
+        "diff_pair_gap": 0.25,
+        "diff_pair_width": 0.2,
+        "microvia_diameter": 0.3,
+        "microvia_drill": 0.1,
+        "name": "Rotary_Signal",
+        "pcb_color": "rgb(255, 255, 0)",
+        "priority": 2,
+        "schematic_color": "rgba(0, 0, 0, 0.000)",
+        "track_width": 0.25,
+        "tuning_profile": "",
+        "via_diameter": 0.6,
+        "via_drill": 0.4
       }
     ],
     "meta": {
@@ -502,7 +652,60 @@
     },
     "net_colors": null,
     "netclass_assignments": null,
-    "netclass_patterns": []
+    "netclass_patterns": [
+      {
+        "netclass": "GND",
+        "pattern": "/?([A-Z0-9]+_)*GND(_[0-9])?"
+      },
+      {
+        "netclass": "+5V",
+        "pattern": "/?([A-Z0-9]+_)*\\+5V(_[0-9])?"
+      },
+      {
+        "netclass": "Jumper",
+        "pattern": "Jumper"
+      },
+      {
+        "netclass": "LED_Data",
+        "pattern": "/[0-9][A-Z](\\([0-9]\\))?"
+      },
+      {
+        "netclass": "Logic",
+        "pattern": "/?[0-9](ŌĒ|OE)(\\([0-9]\\))?"
+      },
+      {
+        "netclass": "+12V",
+        "pattern": "/?([A-Z0-9]+_)*\\+12V(_[0-9])?"
+      },
+      {
+        "netclass": "Rotary_Signal",
+        "pattern": "/ROTARY_(SW|DT|CLK)"
+      },
+      {
+        "netclass": "GND",
+        "pattern": "/ROTARY_GND"
+      },
+      {
+        "netclass": "+5V",
+        "pattern": "/ROTARY_VCC"
+      },
+      {
+        "netclass": "Gamepad_Signal",
+        "pattern": "/(P1|P2)_SIG"
+      },
+      {
+        "netclass": "Display_Signal",
+        "pattern": "/DISPLAY_[A-Z0-9]+"
+      },
+      {
+        "netclass": "LED_Data",
+        "pattern": "/(REC|P1|P2|OPTIONS|ACCENT|LS|RS|DP)(_[A-Z0-9]+)*_(CATHODE|DATA|LED|GP)([0-9])?"
+      },
+      {
+        "netclass": "+3.3V",
+        "pattern": "/([A-Z0-9]+_)*(VSS|3V3)(_[A-Z0-9]+)*"
+      }
+    ]
   },
   "pcbnew": {
     "last_paths": {
@@ -632,7 +835,7 @@
         "uuid": "e63e39d7-6ac0-4ffd-8aa3-1841a4541b55"
       }
     ],
-    "used_designators": "J4-5,A1,#PWR58,#PWR67-68,#PWR107,#PWR110-112",
+    "used_designators": "",
     "variants": []
   },
   "sheets": [
