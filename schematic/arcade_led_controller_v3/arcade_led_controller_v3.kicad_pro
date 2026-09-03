@@ -53,7 +53,13 @@
           "min_clearance": 0.5
         }
       },
-      "diff_pair_dimensions": [],
+      "diff_pair_dimensions": [
+        {
+          "gap": 0.0,
+          "via_gap": 0.0,
+          "width": 0.0
+        }
+      ],
       "drc_exclusions": [],
       "meta": {
         "version": 2
@@ -187,7 +193,9 @@
           "td_width_to_size_filter_ratio": 0.9
         }
       ],
-      "track_widths": [],
+      "track_widths": [
+        0.0
+      ],
       "tuning_pattern_settings": {
         "diff_pair_defaults": {
           "corner_radius_percentage": 80,
@@ -214,7 +222,12 @@
           "spacing": 0.6
         }
       },
-      "via_dimensions": [],
+      "via_dimensions": [
+        {
+          "diameter": 0.0,
+          "drill": 0.0
+        }
+      ],
       "zones_allow_external_fillets": false
     },
     "ipc2581": {
@@ -490,7 +503,7 @@
         "pcb_color": "rgba(0, 0, 0, 0.000)",
         "priority": 2147483647,
         "schematic_color": "rgba(0, 0, 0, 0.000)",
-        "track_width": 0.25,
+        "track_width": 0.5,
         "tuning_profile": "",
         "via_diameter": 0.6,
         "via_drill": 0.4,
@@ -506,7 +519,7 @@
         "pcb_color": "rgb(255, 153, 0)",
         "priority": 3,
         "schematic_color": "rgba(0, 0, 0, 0.000)",
-        "track_width": 0.25,
+        "track_width": 1.0,
         "tuning_profile": "",
         "via_diameter": 0.6,
         "via_drill": 0.4
@@ -521,7 +534,7 @@
         "pcb_color": "rgb(132, 0, 0)",
         "priority": 0,
         "schematic_color": "rgba(0, 0, 0, 0.000)",
-        "track_width": 0.25,
+        "track_width": 1.0,
         "tuning_profile": "",
         "via_diameter": 0.6,
         "via_drill": 0.4
@@ -536,7 +549,7 @@
         "pcb_color": "rgb(255, 11, 19)",
         "priority": 8,
         "schematic_color": "rgba(0, 0, 0, 0.000)",
-        "track_width": 0.25,
+        "track_width": 1.0,
         "tuning_profile": "",
         "via_diameter": 0.6,
         "via_drill": 0.4
@@ -551,7 +564,7 @@
         "pcb_color": "rgb(255, 0, 255)",
         "priority": 1,
         "schematic_color": "rgba(0, 0, 0, 0.000)",
-        "track_width": 0.25,
+        "track_width": 0.5,
         "tuning_profile": "",
         "via_diameter": 0.6,
         "via_drill": 0.4
@@ -566,7 +579,7 @@
         "pcb_color": "rgb(132, 132, 132)",
         "priority": 9,
         "schematic_color": "rgba(0, 0, 0, 0.000)",
-        "track_width": 0.25,
+        "track_width": 1.0,
         "tuning_profile": "",
         "via_diameter": 0.6,
         "via_drill": 0.4
@@ -581,7 +594,7 @@
         "pcb_color": "rgb(0, 255, 255)",
         "priority": 7,
         "schematic_color": "rgba(0, 0, 0, 0.000)",
-        "track_width": 0.25,
+        "track_width": 0.5,
         "tuning_profile": "",
         "via_diameter": 0.6,
         "via_drill": 0.4
@@ -596,7 +609,7 @@
         "pcb_color": "rgb(255, 255, 255)",
         "priority": 6,
         "schematic_color": "rgba(0, 0, 0, 0.000)",
-        "track_width": 0.25,
+        "track_width": 0.5,
         "tuning_profile": "",
         "via_diameter": 0.6,
         "via_drill": 0.4
@@ -611,7 +624,7 @@
         "pcb_color": "rgb(0, 255, 0)",
         "priority": 5,
         "schematic_color": "rgba(0, 0, 0, 0.000)",
-        "track_width": 0.25,
+        "track_width": 0.5,
         "tuning_profile": "",
         "via_diameter": 0.6,
         "via_drill": 0.4
@@ -626,7 +639,7 @@
         "pcb_color": "rgb(255, 0, 255)",
         "priority": 4,
         "schematic_color": "rgba(0, 0, 0, 0.000)",
-        "track_width": 0.25,
+        "track_width": 0.5,
         "tuning_profile": "",
         "via_diameter": 0.6,
         "via_drill": 0.4
@@ -641,7 +654,7 @@
         "pcb_color": "rgb(255, 255, 0)",
         "priority": 2,
         "schematic_color": "rgba(0, 0, 0, 0.000)",
-        "track_width": 0.25,
+        "track_width": 0.5,
         "tuning_profile": "",
         "via_diameter": 0.6,
         "via_drill": 0.4
@@ -699,7 +712,7 @@
       },
       {
         "netclass": "LED_Data",
-        "pattern": "/(REC|P1|P2|OPTIONS|ACCENT|LS|RS|DP)(_[A-Z0-9]+)*_(CATHODE|DATA|LED|GP)([0-9])?"
+        "pattern": "/(REC|P1|P2|PWR|OPTIONS|ACCENT|ROTARY|LS|RS|DP)(_[A-Z0-9]+)*_(CATHODE|DATA|LED|GATE|GP)([0-9])?"
       },
       {
         "netclass": "+3.3V",
@@ -835,7 +848,7 @@
         "uuid": "e63e39d7-6ac0-4ffd-8aa3-1841a4541b55"
       }
     ],
-    "used_designators": "#PWR24",
+    "used_designators": "R100k_8,#PWR26,#PWR29,#PWR98,#PWR115,J1,J_PWR_IN1",
     "variants": []
   },
   "sheets": [

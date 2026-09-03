@@ -18,7 +18,7 @@
     "prototype_zone_fills": false,
     "selection_filter": {
       "dimensions": true,
-      "footprints": true,
+      "footprints": false,
       "graphics": true,
       "keepouts": true,
       "lockedItems": false,
@@ -31,29 +31,21 @@
     },
     "visible_items": [
       "vias",
-      "footprint_text",
       "footprint_anchors",
-      "ratsnest",
       "grid",
       "footprints_front",
       "footprints_back",
-      "footprint_values",
-      "footprint_references",
       "tracks",
-      "drc_errors",
       "drawing_sheet",
       "bitmaps",
       "pads",
       "zones",
-      "drc_warnings",
-      "drc_exclusions",
-      "locked_item_shadows",
       "conflict_shadows",
       "shapes",
       "board_outline_area",
       "ly_points"
     ],
-    "visible_layers": "ffffffff_ffffffff_ffffffff_7fffffff",
+    "visible_layers": "ffffffff_ffffffff_ffffffff_ffffffff",
     "zone_display_mode": 0
   },
   "git": {
@@ -63,7 +55,7 @@
     "ssh_key": ""
   },
   "meta": {
-    "filename": "arcade_led_controller_v3.kicad_prl",
+    "filename": "arcade_led_controller_v2.kicad_prl",
     "version": 5
   },
   "net_inspector_panel": {
@@ -101,7 +93,7 @@
       173,
       126,
       173,
-      616
+      173
     ],
     "custom_group_rules": [],
     "expanded_rows": [],
