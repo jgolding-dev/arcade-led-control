@@ -130,7 +130,7 @@
       },
       "rules": {
         "max_error": 0.005,
-        "min_clearance": 0.0,
+        "min_clearance": 0.25,
         "min_connection": 0.0,
         "min_copper_edge_clearance": 0.5,
         "min_groove_width": 0.0,
@@ -194,7 +194,11 @@
         }
       ],
       "track_widths": [
-        0.0
+        0.0,
+        0.5,
+        1.0,
+        1.5,
+        2.0
       ],
       "tuning_pattern_settings": {
         "diff_pair_defaults": {
@@ -848,7 +852,7 @@
         "uuid": "e63e39d7-6ac0-4ffd-8aa3-1841a4541b55"
       }
     ],
-    "used_designators": "R100k_8,#PWR26,#PWR29,#PWR98,#PWR115,J1,J_PWR_IN1",
+    "used_designators": "#PWR41",
     "variants": []
   },
   "sheets": [
