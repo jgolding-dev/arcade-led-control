@@ -1,0 +1,435 @@
+Cmp-Mod V01 Created by PcbNew   date = 2026-09-15T12:32:38
+
+BeginCmp
+TimeStamp = 07d75147-ac92-4ba7-a55a-bb80880e2f08
+Path = 
+Reference = LED7;
+ValeurCmp = WS2812B_5050N;
+IdModule  = WS2812B-NARROW;
+EndCmp
+
+BeginCmp
+TimeStamp = 0914e754-fff7-44e2-a457-d9b302f880b5
+Path = 
+Reference = LED10;
+ValeurCmp = WS2812B_5050N;
+IdModule  = WS2812B-NARROW;
+EndCmp
+
+BeginCmp
+TimeStamp = 09548179-9d4a-4e30-a5bc-912038d687da
+Path = 
+Reference = UNK_HOLE_18;
+ValeurCmp = [NoVal];
+IdModule  = dummyfp18;
+EndCmp
+
+BeginCmp
+TimeStamp = 0fd0607a-3202-4db5-87b7-f65f2ee8c771
+Path = 
+Reference = UNK_HOLE_5;
+ValeurCmp = [NoVal];
+IdModule  = dummyfp5;
+EndCmp
+
+BeginCmp
+TimeStamp = 18532c1d-539a-4cd8-94b9-86798ca812fe
+Path = 
+Reference = C4;
+ValeurCmp = 1uF;
+IdModule  = C0603_334;
+EndCmp
+
+BeginCmp
+TimeStamp = 1a3ad485-0d21-4d42-83ec-cc4bd8e29a45
+Path = 
+Reference = UNK_HOLE_15;
+ValeurCmp = [NoVal];
+IdModule  = dummyfp15;
+EndCmp
+
+BeginCmp
+TimeStamp = 27a51e13-19a4-4fd8-8af7-99def9eabca2
+Path = 
+Reference = JP3;
+ValeurCmp = [NoVal];
+IdModule  = 1X01-CLEANBIG;
+EndCmp
+
+BeginCmp
+TimeStamp = 280eeb35-32e5-42d4-94e4-0739c503e434
+Path = 
+Reference = LED11;
+ValeurCmp = WS2812B_5050N;
+IdModule  = WS2812B-NARROW;
+EndCmp
+
+BeginCmp
+TimeStamp = 32a4b7fb-adf0-4741-afcf-437afc424235
+Path = 
+Reference = LED12;
+ValeurCmp = WS2812B_5050N;
+IdModule  = WS2812B-NARROW;
+EndCmp
+
+BeginCmp
+TimeStamp = 3631d16a-f880-4657-88aa-04d14f18fa4e
+Path = 
+Reference = UNK_HOLE_2;
+ValeurCmp = [NoVal];
+IdModule  = dummyfp2;
+EndCmp
+
+BeginCmp
+TimeStamp = 367b1804-b09a-435b-8831-6d38954a555d
+Path = 
+Reference = UNK_HOLE_10;
+ValeurCmp = [NoVal];
+IdModule  = dummyfp10;
+EndCmp
+
+BeginCmp
+TimeStamp = 3a73ae6e-a600-4128-99c5-dd4bed01ff48
+Path = 
+Reference = C9;
+ValeurCmp = 1uF;
+IdModule  = C0603_334;
+EndCmp
+
+BeginCmp
+TimeStamp = 3f1feb0f-d9cc-4a55-a9a5-bdb61b9ad46e
+Path = 
+Reference = UNK_HOLE_6;
+ValeurCmp = [NoVal];
+IdModule  = dummyfp6;
+EndCmp
+
+BeginCmp
+TimeStamp = 44934e5e-a74f-418b-b7e7-0c3531b551b1
+Path = 
+Reference = UNK_HOLE_14;
+ValeurCmp = [NoVal];
+IdModule  = dummyfp14;
+EndCmp
+
+BeginCmp
+TimeStamp = 478482eb-cd88-4de8-854b-1438cca69686
+Path = 
+Reference = PLABEL3;
+ValeurCmp = [NoVal];
+IdModule  = PLABEL3;
+EndCmp
+
+BeginCmp
+TimeStamp = 51dd5bba-7911-41b6-bc57-a4687a4ee147
+Path = 
+Reference = UNK_HOLE_7;
+ValeurCmp = [NoVal];
+IdModule  = dummyfp7;
+EndCmp
+
+BeginCmp
+TimeStamp = 52c4ab6d-c009-45af-88b9-afdb783d33d5
+Path = 
+Reference = LED1;
+ValeurCmp = WS2812B_5050N;
+IdModule  = WS2812B-NARROW;
+EndCmp
+
+BeginCmp
+TimeStamp = 57c09096-3512-47c8-aead-22da8a47e167
+Path = 
+Reference = UNK_HOLE_1;
+ValeurCmp = [NoVal];
+IdModule  = dummyfp1;
+EndCmp
+
+BeginCmp
+TimeStamp = 60c7fd73-55e7-411f-81fb-c204feea436d
+Path = 
+Reference = UNK_HOLE_19;
+ValeurCmp = [NoVal];
+IdModule  = dummyfp19;
+EndCmp
+
+BeginCmp
+TimeStamp = 629d371f-6199-46c8-921f-1e7c68259ff2
+Path = 
+Reference = JP2;
+ValeurCmp = [NoVal];
+IdModule  = 1X01-CLEANBIG;
+EndCmp
+
+BeginCmp
+TimeStamp = 6a51aa89-3879-4378-a4ac-b63f3c9692ab
+Path = 
+Reference = C10;
+ValeurCmp = 1uF;
+IdModule  = C0603_334;
+EndCmp
+
+BeginCmp
+TimeStamp = 6f37d076-c2bc-45ce-8e1b-f70fd286d34a
+Path = 
+Reference = FID1;
+ValeurCmp = FIDUCIAL_1MM;
+IdModule  = FIDUCIAL_1MM;
+EndCmp
+
+BeginCmp
+TimeStamp = 745ea32f-aed0-4c1c-9307-043b9b303994
+Path = 
+Reference = LED2;
+ValeurCmp = WS2812B_5050N;
+IdModule  = WS2812B-NARROW;
+EndCmp
+
+BeginCmp
+TimeStamp = 7a6ef098-0160-4561-b552-f0ab5ead9723
+Path = 
+Reference = UNK_HOLE_11;
+ValeurCmp = [NoVal];
+IdModule  = dummyfp11;
+EndCmp
+
+BeginCmp
+TimeStamp = 7ae5765c-b997-4142-84bc-55662684cde2
+Path = 
+Reference = UNK_HOLE_0;
+ValeurCmp = [NoVal];
+IdModule  = dummyfp0;
+EndCmp
+
+BeginCmp
+TimeStamp = 7d91f40d-89a6-4628-a832-162cc2a4d317
+Path = 
+Reference = PLABEL0;
+ValeurCmp = [NoVal];
+IdModule  = PLABEL0;
+EndCmp
+
+BeginCmp
+TimeStamp = 7f821d9f-81be-4df8-84f4-e2ac9807c54c
+Path = 
+Reference = UNK_HOLE_13;
+ValeurCmp = [NoVal];
+IdModule  = dummyfp13;
+EndCmp
+
+BeginCmp
+TimeStamp = 86420026-22ac-4180-867f-000ffda8ce2b
+Path = 
+Reference = FID2;
+ValeurCmp = FIDUCIAL_1MM;
+IdModule  = FIDUCIAL_1MM;
+EndCmp
+
+BeginCmp
+TimeStamp = 8b25c1ff-ba76-4809-8d02-f4409b96af75
+Path = 
+Reference = LED5;
+ValeurCmp = WS2812B_5050N;
+IdModule  = WS2812B-NARROW;
+EndCmp
+
+BeginCmp
+TimeStamp = 8e6cac81-2a90-4294-9548-e8c5ed243370
+Path = 
+Reference = R1;
+ValeurCmp = 470;
+IdModule  = 0603-NO;
+EndCmp
+
+BeginCmp
+TimeStamp = 901f7235-145d-4131-8c00-df00b3ef64ec
+Path = 
+Reference = LED9;
+ValeurCmp = WS2812B_5050N;
+IdModule  = WS2812B-NARROW;
+EndCmp
+
+BeginCmp
+TimeStamp = 94a62f6a-26f7-4ac9-acf0-511a3ca3a403
+Path = 
+Reference = UNK_HOLE_9;
+ValeurCmp = [NoVal];
+IdModule  = dummyfp9;
+EndCmp
+
+BeginCmp
+TimeStamp = 9b695868-b607-4bd6-b771-59fb2f215a38
+Path = 
+Reference = UNK_HOLE_17;
+ValeurCmp = [NoVal];
+IdModule  = dummyfp17;
+EndCmp
+
+BeginCmp
+TimeStamp = 9c465d89-1d0e-4884-8500-d3c3ecd78db2
+Path = 
+Reference = UNK_HOLE_3;
+ValeurCmp = [NoVal];
+IdModule  = dummyfp3;
+EndCmp
+
+BeginCmp
+TimeStamp = 9ecdf848-4ac2-419c-aec3-1b07e1d9558a
+Path = 
+Reference = UNK_HOLE_16;
+ValeurCmp = [NoVal];
+IdModule  = dummyfp16;
+EndCmp
+
+BeginCmp
+TimeStamp = a05e76c7-2862-4520-8502-509a0aec1440
+Path = 
+Reference = LED4;
+ValeurCmp = WS2812B_5050N;
+IdModule  = WS2812B-NARROW;
+EndCmp
+
+BeginCmp
+TimeStamp = a5cb2c86-deb5-4e3d-983b-45033b2acf9c
+Path = 
+Reference = JP1;
+ValeurCmp = [NoVal];
+IdModule  = 1X01-CLEANBIG;
+EndCmp
+
+BeginCmp
+TimeStamp = af2f3cd0-c571-4f76-aa9e-9f3dcacf55b8
+Path = 
+Reference = LED6;
+ValeurCmp = WS2812B_5050N;
+IdModule  = WS2812B-NARROW;
+EndCmp
+
+BeginCmp
+TimeStamp = bd04aff5-75f4-4328-9d21-1764643c5ead
+Path = 
+Reference = JP4;
+ValeurCmp = [NoVal];
+IdModule  = 1X01-CLEANBIG;
+EndCmp
+
+BeginCmp
+TimeStamp = c3546e5a-fae9-4354-bee3-ed137a526909
+Path = 
+Reference = UNK_HOLE_4;
+ValeurCmp = [NoVal];
+IdModule  = dummyfp4;
+EndCmp
+
+BeginCmp
+TimeStamp = c945a52a-ae77-41e2-8aaf-ba91b3609974
+Path = 
+Reference = UNK_HOLE_12;
+ValeurCmp = [NoVal];
+IdModule  = dummyfp12;
+EndCmp
+
+BeginCmp
+TimeStamp = ca25f0e9-13eb-43a7-ae14-a9e2db0b8f82
+Path = 
+Reference = UNK_HOLE_8;
+ValeurCmp = [NoVal];
+IdModule  = dummyfp8;
+EndCmp
+
+BeginCmp
+TimeStamp = da2692e2-5787-431b-8f32-400734275c2e
+Path = 
+Reference = C2;
+ValeurCmp = 1uF;
+IdModule  = C0603_334;
+EndCmp
+
+BeginCmp
+TimeStamp = e28e092e-bd11-4a2e-aa5e-b3264db51f08
+Path = 
+Reference = LED8;
+ValeurCmp = WS2812B_5050N;
+IdModule  = WS2812B-NARROW;
+EndCmp
+
+BeginCmp
+TimeStamp = eac1bf85-7b1b-4846-ba1f-b7f096974ce3
+Path = 
+Reference = LED3;
+ValeurCmp = WS2812B_5050N;
+IdModule  = WS2812B-NARROW;
+EndCmp
+
+BeginCmp
+TimeStamp = f7d7e169-e95f-401c-bd5b-28c958908c39
+Path = 
+Reference = PLABEL2;
+ValeurCmp = [NoVal];
+IdModule  = PLABEL2;
+EndCmp
+
+BeginCmp
+TimeStamp = fb8a3b58-3fbe-4c5f-bbf6-60fba56fed9b
+Path = 
+Reference = PLABEL1;
+ValeurCmp = [NoVal];
+IdModule  = PLABEL1;
+EndCmp
+
+BeginCmp
+TimeStamp = fd12d357-3f68-4c9e-a651-c2cce7b9f1b6
+Path = 
+Reference = C6;
+ValeurCmp = 1uF;
+IdModule  = C0603_334;
+EndCmp
+
+BeginCmp
+TimeStamp = 213412ae-1858-4014-be4a-c9ad0675098f
+Path = 
+Reference = PLABEL8;
+ValeurCmp = [NoVal];
+IdModule  = PLABEL8;
+EndCmp
+
+BeginCmp
+TimeStamp = 3ffd6a1e-4a8a-428a-b298-ec956f18a951
+Path = 
+Reference = PLABEL4;
+ValeurCmp = [NoVal];
+IdModule  = PLABEL4;
+EndCmp
+
+BeginCmp
+TimeStamp = 6508dfae-0544-44c3-9dfd-fd3fed50ed2b
+Path = 
+Reference = U$3;
+ValeurCmp = [NoVal];
+IdModule  = ADAFRUIT_5MM;
+EndCmp
+
+BeginCmp
+TimeStamp = 909d8f1c-27f8-47d1-973d-c2ebb44daa72
+Path = 
+Reference = PLABEL5;
+ValeurCmp = [NoVal];
+IdModule  = PLABEL5;
+EndCmp
+
+BeginCmp
+TimeStamp = a58f7c54-c861-42ac-832a-05dee19b2435
+Path = 
+Reference = PLABEL6;
+ValeurCmp = [NoVal];
+IdModule  = PLABEL6;
+EndCmp
+
+BeginCmp
+TimeStamp = b54cd1ae-5187-4202-a4d8-2965d22bef39
+Path = 
+Reference = PLABEL7;
+ValeurCmp = [NoVal];
+IdModule  = PLABEL7;
+EndCmp
+
+EndListe
